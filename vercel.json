@@ -1,7 +1,9 @@
 {
+  "version": 2,
+  "buildCommand": "",
+  "outputDirectory": ".",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
     { "source": "/match", "destination": "/match.html" },
     { "source": "/bracket", "destination": "/bracket.html" },
     { "source": "/team", "destination": "/team.html" },
