@@ -1,0 +1,217 @@
+/* Main Styling and Animations - Red Card Live World Cup 2026 */
+
+/* Fonts & Globals */
+body {
+  background-color: #0A0A0A;
+  color: #e5e2e1;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Skews and Clips */
+.btn-skewed {
+  transform: skewX(-15deg);
+}
+
+.btn-skewed-content {
+  transform: skewX(15deg);
+}
+
+.red-card-clip {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+.red-card-angle {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+
+/* Background patterns */
+.bg-grid-dots {
+  background-image: radial-gradient(circle, #393939 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.hero-glow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(193, 18, 31, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pitch-gradient {
+  background: radial-gradient(circle at center, #1e1e1e 0%, #0a0a0a 100%);
+}
+
+/* Scrollbars */
+.bracket-panner::-webkit-scrollbar {
+  height: 6px;
+}
+
+.bracket-panner::-webkit-scrollbar-track {
+  background: #131313;
+}
+
+.bracket-panner::-webkit-scrollbar-thumb {
+  background: #c1121f;
+  border-radius: 10px;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Card & Line Interactions */
+.match-card {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.match-card:hover {
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+.connection-line {
+  background: linear-gradient(90deg, #353534 0%, #353534 100%);
+  transition: all 0.5s ease;
+}
+
+.connection-line.active {
+  background: linear-gradient(90deg, #c1121f 0%, #c1121f 100%);
+  box-shadow: 0 0 12px rgba(193, 18, 31, 0.4);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(193, 18, 31, 0.2);
+}
+
+.golden-glow {
+  box-shadow: 0 0 15px rgba(233, 196, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.golden-glow:hover {
+  box-shadow: 0 0 25px rgba(233, 196, 0, 0.6);
+}
+
+.stat-bar-reveal {
+  transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Broadcast Animations */
+
+/* Live Pulse */
+@keyframes live-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.25);
+  }
+}
+
+.live-pulse {
+  animation: live-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Score Change / Goal Flash */
+@keyframes goal-celebration-flash {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+  }
+  50% {
+    background-color: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  }
+}
+
+.goal-celebration-flash {
+  animation: goal-celebration-flash 0.8s ease-in-out 4;
+}
+
+/* Red Card Alert Flash */
+@keyframes red-card-flash {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 rgba(193, 18, 31, 0);
+  }
+  50% {
+    background-color: rgba(193, 18, 31, 0.3);
+    box-shadow: 0 0 25px rgba(193, 18, 31, 0.6);
+  }
+}
+
+.red-card-flash {
+  animation: red-card-flash 0.6s ease-in-out 3;
+}
+
+/* Shake Component (for physical weight on goals/cards) */
+@keyframes shake-element {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-6px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(6px);
+  }
+}
+
+.shake-element {
+  animation: shake-element 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Goal Confetti / Spark effect placeholders */
+.goal-celebration-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: rgba(193, 18, 31, 0.95);
+  border: 4px solid #ffd700;
+  box-shadow: 0 0 50px rgba(193, 18, 31, 0.8);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.goal-celebration-banner.active {
+  transform: translate(-50%, -50%) scale(1) skewX(-10deg);
+  opacity: 1;
+}
+
+/* Red Card Display banner */
+.red-card-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: #C1121F;
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 50px rgba(193, 18, 31, 0.8);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.red-card-banner.active {
+  transform: translate(-50%, -50%) scale(1) skewX(-10deg);
+  opacity: 1;
+}

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Red Card Live - FIFA World Cup 2026</title>
+  <!-- Google Fonts: Montserrat, Inter, JetBrains Mono -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..900;1,300..900&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet"/>
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <!-- Custom Core Styles -->
+  <link href="css/main.css" rel="stylesheet"/>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            primary: "#ffb3ad",
+            brand: {
+              red: '#C1121F',
+              black: '#131313',
+              charcoal: '#1c1b1b',
+              gold: '#ffd700',
+              surface: '#201f1f',
+            },
+            surface: "#131313",
+            "surface-container-low": "#1c1b1b",
+            "surface-container": "#201f1f",
+            "on-surface": "#e5e2e1",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-brand-black text-on-surface font-sans min-h-screen flex flex-col selection:bg-brand-red/30">
+
+  <!-- BEGIN: MainHeader -->
+  <header class="h-16 border-b border-brand-charcoal bg-brand-black flex items-center justify-between px-6 z-50 shrink-0 sticky top-0">
+    <div class="flex items-center space-x-12">
+      <!-- Logo -->
+      <a href="index.html" class="text-brand-red font-black italic text-2xl tracking-tighter uppercase hover:opacity-90 transition-opacity">
+        Red Card Live
+      </a>
+      <!-- Top Navigation (Desktop) -->
+      <nav class="hidden md:flex space-x-6 text-[10px] font-bold tracking-widest text-gray-400">
+        <a class="text-white border-b-2 border-brand-red pb-1" href="index.html">MATCHES</a>
+        <a class="hover:text-white transition" href="#news-section">NEWS</a>
+        <a class="hover:text-white transition" href="bracket.html">BRACKET</a>
+        <a class="hover:text-white transition" href="team.html?id=england">TEAMS</a>
+        <a class="hover:text-white transition" href="admin.html">ADMIN</a>
+      </nav>
+    </div>
+    <!-- Search and Actions -->
+    <div class="flex items-center space-x-6 relative">
+      <div class="relative group hidden sm:block">
+        <input id="global-search-input" class="bg-[#1e1e1e] border-none rounded-sm py-1.5 px-4 pr-10 text-xs w-64 focus:ring-1 focus:ring-brand-red" placeholder="Search matches, teams, stadiums..." type="text"/>
+        <span class="material-symbols-outlined absolute right-3 top-1.5 text-gray-500 text-sm select-none">search</span>
+        <!-- Autocomplete Dropdown -->
+        <div id="search-results-dropdown" class="absolute right-0 top-full mt-2 w-72 bg-brand-black border border-brand-charcoal rounded-sm shadow-2xl overflow-hidden hidden z-50"></div>
+      </div>
+      <button class="text-gray-400 hover:text-white relative">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <a href="admin.html" class="text-gray-400 hover:text-white">
+        <span class="material-symbols-outlined">person</span>
+      </a>
+    </div>
+  </header>
+  <!-- END: MainHeader -->
+
+  <!-- Container for Sidebar + Main -->
+  <div class="flex flex-1 overflow-hidden relative">
+    
+    <!-- BEGIN: SidebarNavigation (Desktop Left) -->
+    <aside class="w-60 bg-brand-black border-r border-brand-charcoal flex flex-col shrink-0 hidden lg:flex">
+      <div class="p-6">
+        <h2 class="text-xl font-bold leading-tight">Red Card Live</h2>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">WC 2026 Edition</p>
+      </div>
+      <nav class="flex-1 mt-4">
+        <ul class="space-y-1">
+          <li>
+            <a class="flex items-center px-6 py-3 bg-gradient-to-r from-brand-red/20 to-transparent border-l-4 border-brand-red text-white group" href="index.html">
+              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">home</span>
+              <span class="text-sm font-semibold">Home</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="match.html?id=match_102">
+              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">sports_soccer</span>
+              <span class="text-sm font-semibold">Live Scores</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="bracket.html">
+              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">account_tree</span>
+              <span class="text-sm font-semibold">Bracket</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="team.html?id=england">
+              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">flag</span>
+              <span class="text-sm font-semibold">Teams</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- Quick Watch Admin Button -->
+      <div class="p-6 pb-12 mt-auto">
+        <a id="sidebar-watch-btn" href="#" class="w-full bg-brand-red text-white py-2 rounded-sm btn-skewed shadow-lg shadow-brand-red/20 font-bold italic tracking-tighter text-xs flex justify-center items-center">
+          <span class="btn-skewed-content block uppercase">Watch Live</span>
+        </a>
+      </div>
+    </aside>
+    <!-- END: SidebarNavigation -->
+
+    <!-- BEGIN: MainContent -->
+    <main class="flex-1 bg-brand-black relative bg-grid-dots overflow-y-auto flex flex-col">
+      
+      <!-- Ambient Background Canvas Shader -->
+      <div class="absolute inset-0 w-full h-full opacity-10 pointer-events-none z-0" style="display:block;">
+        <canvas id="shader-canvas-ANIMATION_2" class="w-full h-full"></canvas>
+      </div>
+
+      <!-- BEGIN: HeroSection -->
+      <section id="featured-match-hero" class="min-h-[480px] lg:min-h-[500px] flex flex-col items-center justify-center relative p-8 hero-glow shrink-0 z-10">
+        <!-- Loading Placeholder -->
+        <div class="text-center text-gray-500 py-12 animate-pulse">Loading Featured Matchup...</div>
+      </section>
+      <!-- END: HeroSection -->
+
+      <!-- BEGIN: LiveScores Section -->
+      <section class="bg-brand-black/85 backdrop-blur-md border-t border-brand-charcoal p-6 z-10" data-purpose="live-scores">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full live-pulse"></span>
+            <h4 class="text-lg font-black uppercase tracking-widest">Live Match Centre</h4>
+          </div>
+          <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Auto-refreshes 30s</span>
+        </div>
+        <div id="live-scores-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="text-gray-500 py-6 text-center text-xs animate-pulse">Loading live scores...</div>
+        </div>
+      </section>
+      <!-- END: LiveScores Section -->
+
+      <!-- Content Grid Sections -->
+      <div class="px-6 space-y-16 py-12 z-10 relative">
+        
+        <!-- 1. Today's Matches -->
+        <section>
+          <div class="flex items-end justify-between mb-8">
+            <div>
+              <h2 class="text-3xl font-black italic uppercase tracking-tighter">Today's Matches</h2>
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">FIFA World Cup 2026 fixtures</p>
+            </div>
+            <a class="text-[10px] font-bold text-brand-red hover:underline tracking-widest uppercase" href="#all-matches">View All Fixtures</a>
+          </div>
+          <div id="todays-matches-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="text-gray-500 text-center py-6 text-xs col-span-2">No matches scheduled for today. Check upcoming matchups below.</div>
+          </div>
+        </section>
+
+        <!-- 2. Upcoming Matches -->
+        <section>
+          <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-8">Upcoming Battles</h2>
+          <div id="upcoming-matches-track" class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
+            <div class="text-gray-500 text-xs py-6">Loading upcoming fixtures...</div>
+          </div>
+        </section>
+
+        <!-- 2b. All Fixtures List -->
+        <section id="all-matches" class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm relative red-card-angle">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <h2 class="text-3xl font-black italic uppercase tracking-tighter text-white">All Fixtures</h2>
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Full schedule of the 104 matches</p>
+            </div>
+            
+            <!-- Filters & Search -->
+            <div class="flex flex-wrap gap-3 items-center z-20 relative">
+              <input id="fixtures-search" type="text" class="bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-1.5 px-4 w-48" placeholder="Search team..."/>
+              <select id="fixtures-round-filter" class="bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-1.5 px-3">
+                <option value="ALL">All Rounds</option>
+                <option value="Group Stage">Group Stage</option>
+                <option value="Knockouts">Knockouts</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Matches List Container -->
+          <div id="all-fixtures-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2 divide-y divide-white/5 scrollbar-thin">
+            <div class="text-gray-500 text-xs py-6 text-center animate-pulse">Loading tournament fixtures...</div>
+          </div>
+        </section>
+
+        <!-- Standings and Bracket Split -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          
+          <!-- 3. World Cup Standings Table -->
+          <div class="lg:col-span-2">
+            <div class="flex items-end justify-between mb-8">
+              <h2 id="standings-title" class="text-3xl font-black italic uppercase tracking-tighter">Group B Standings</h2>
+              <a class="text-[10px] font-bold text-brand-red hover:underline tracking-widest uppercase" href="bracket.html">Full Table</a>
+            </div>
+            <div class="bg-brand-charcoal border border-white/5 rounded-sm overflow-hidden">
+              <table class="w-full text-left">
+                <thead class="bg-white/5 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                  <tr>
+                    <th class="px-6 py-3">Team</th>
+                    <th class="px-4 py-3 text-center">P</th>
+                    <th class="px-4 py-3 text-center">GD</th>
+                    <th class="px-4 py-3 text-center">Pts</th>
+                  </tr>
+                </thead>
+                <tbody id="standings-table-body" class="text-sm font-bold">
+                  <!-- Standings load dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 4. Knockout Bracket Preview -->
+          <div class="flex flex-col">
+            <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-8">Road to Glory</h2>
+            <div class="flex-1 bg-brand-charcoal/50 border border-brand-charcoal p-6 rounded-sm relative overflow-hidden flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center space-x-2">
+                  <div class="w-1.5 h-8 bg-brand-red rounded-full"></div>
+                  <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Bracket Status</div>
+                </div>
+                <!-- Visual Mini Bracket -->
+                <div class="relative h-48 mt-4 border-l border-white/10 ml-2 space-y-8 pl-4 py-2">
+                  <div class="relative flex items-center">
+                    <div class="absolute -left-[21px] w-2.5 h-2.5 bg-brand-red rounded-full"></div>
+                    <div class="text-xs font-bold">Argentina vs Netherlands</div>
+                  </div>
+                  <div class="relative flex items-center">
+                    <div class="absolute -left-[21px] w-2.5 h-2.5 bg-green-500 rounded-full live-pulse"></div>
+                    <div class="text-xs font-bold text-primary italic">Argentina vs Brazil <span class="text-[10px] text-green-500 ml-2">LIVE</span></div>
+                  </div>
+                  <div class="relative flex items-center">
+                    <div class="absolute -left-[21px] w-2.5 h-2.5 bg-white/20 rounded-full"></div>
+                    <div class="text-xs font-bold text-gray-500 italic">France vs Germany</div>
+                  </div>
+                </div>
+              </div>
+              <a href="bracket.html" class="w-full text-center mt-8 py-3 border border-brand-red text-brand-red text-[10px] font-black uppercase tracking-widest hover:bg-brand-red hover:text-white transition-all block">
+                Full Bracket Page
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Latest News Grid -->
+        <section id="news-section">
+          <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-8">Pulse of the Tournament</h2>
+          <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- News loaded dynamically -->
+          </div>
+        </section>
+
+        <!-- 6. Match Insights Section -->
+        <section class="bg-brand-charcoal/30 border-y border-white/5 -mx-6 px-6 py-12">
+          <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-8 text-center">Match Insights</h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="p-6 bg-brand-charcoal border border-white/5 text-center rounded-sm">
+              <div class="text-brand-gold text-4xl font-black italic mb-2 font-mono">84%</div>
+              <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Pass Accuracy Avg</div>
+            </div>
+            <div class="p-6 bg-brand-charcoal border border-white/5 text-center rounded-sm">
+              <div class="text-brand-red text-4xl font-black italic mb-2 font-mono">3.2</div>
+              <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Goals Per Match</div>
+            </div>
+            <div class="p-6 bg-brand-charcoal border border-white/5 text-center rounded-sm">
+              <div class="text-brand-gold text-4xl font-black italic mb-2 font-mono">12</div>
+              <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Clean Sheets</div>
+            </div>
+            <div class="p-6 bg-brand-charcoal border border-white/5 text-center rounded-sm">
+              <div class="text-brand-red text-4xl font-black italic mb-2 font-mono">4</div>
+              <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Red Cards Issued</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Stadium Spotlight -->
+        <section>
+          <a href="stadium.html?id=metlife" class="block relative h-[400px] rounded-sm overflow-hidden group border border-white/5">
+            <img alt="Stadium" class="w-full h-full object-cover brightness-50 group-hover:scale-105 transition-transform duration-1000" src="https://images.unsplash.com/photo-1564198879120-ed341af72d89?w=1200&auto=format&fit=crop&q=80"/>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-black/40">
+              <div class="bg-brand-red px-3 py-1 text-[10px] font-black uppercase mb-4 tracking-widest">Stadium Spotlight</div>
+              <h2 class="text-5xl font-black italic uppercase tracking-tighter mb-2 text-white">MetLife Stadium</h2>
+              <p class="text-lg font-bold tracking-widest text-brand-gold uppercase">East Rutherford, New Jersey</p>
+              <div class="mt-8 flex space-x-12">
+                <div class="text-center text-white">
+                  <div class="text-2xl font-black font-mono">82,500</div>
+                  <div class="text-[8px] font-bold text-gray-400 uppercase tracking-widest">Capacity</div>
+                </div>
+                <div class="text-center text-white">
+                  <div class="text-2xl font-black">Finals Host</div>
+                  <div class="text-[8px] font-bold text-gray-400 uppercase tracking-widest">Host Venue</div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </section>
+
+        <!-- 8. Rival in Retro Sponsorship -->
+        <section>
+          <div class="flex items-center justify-between mb-8">
+            <h2 class="text-3xl font-black italic uppercase tracking-tighter">Rival in Retro</h2>
+            <button class="bg-white text-black px-6 py-2 btn-skewed font-black italic text-xs tracking-tighter hover:bg-brand-gold transition-colors">
+              <span class="btn-skewed-content block uppercase">SHOP JERSEYS</span>
+            </button>
+          </div>
+          <div id="retro-jersey-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Jerseys rendered via JS -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- BEGIN: Footer -->
+      <footer class="bg-black border-t border-brand-charcoal pt-16 pb-8 px-6 mt-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16 max-w-7xl mx-auto">
+          <div class="col-span-2">
+            <div class="text-brand-red font-black italic text-3xl tracking-tighter uppercase mb-6">
+              Red Card Live
+            </div>
+            <p class="text-xs text-gray-500 font-inter leading-relaxed max-w-xs">
+              Your ultimate Indian companion for the 2026 World Cup. Real-time broadcast scores, insights, bracket dynamics, and historical depth.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black text-white uppercase tracking-widest mb-4">Tournaments</h4>
+            <ul class="text-xs text-gray-500 space-y-2 font-bold">
+              <li><a class="hover:text-brand-red transition" href="index.html">Fixtures</a></li>
+              <li><a class="hover:text-brand-red transition" href="bracket.html">Standings</a></li>
+              <li><a class="hover:text-brand-red transition" href="team.html?id=england">Teams</a></li>
+              <li><a class="hover:text-brand-red transition" href="stadium.html?id=metlife">Stadiums</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black text-white uppercase tracking-widest mb-4">Content</h4>
+            <ul class="text-xs text-gray-500 space-y-2 font-bold">
+              <li><a class="hover:text-brand-red transition" href="#news-section">Latest News</a></li>
+              <li><a class="hover:text-brand-red transition" href="bracket.html">Insights</a></li>
+              <li><a class="hover:text-brand-red transition" href="admin.html">Admin Dashboard</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black text-white uppercase tracking-widest mb-4">Partner</h4>
+            <ul class="text-xs text-gray-500 space-y-2 font-bold">
+              <li><span class="text-brand-gold italic">Rival in Retro</span></li>
+              <li><span class="text-gray-600">Jersey Sponsorship</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black text-white uppercase tracking-widest mb-4">Social</h4>
+            <div class="flex space-x-4">
+              <a class="text-gray-500 hover:text-white transition font-bold" href="#">𝕏</a>
+              <a class="text-gray-500 hover:text-white transition font-bold" href="#">IG</a>
+              <a class="text-gray-500 hover:text-white transition font-bold" href="#">YT</a>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold text-gray-600 uppercase tracking-widest max-w-7xl mx-auto">
+          <span>© 2026 Red Card Live. All Rights Reserved.</span>
+          <div class="flex space-x-6 mt-4 md:mt-0">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
+      <!-- END: Footer -->
+    </main>
+    <!-- END: MainContent -->
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="fixed bottom-0 w-full h-20 bg-surface-container/95 backdrop-blur-xl border-t border-outline-variant flex justify-around items-center px-4 z-[100] md:hidden">
+    <a class="flex flex-col items-center gap-1 group text-primary active:scale-95 transition-transform" href="index.html">
+      <div class="bg-primary-container/20 px-4 py-1 rounded-full mb-1">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+      </div>
+      <span class="font-label-sm text-[10px] uppercase font-bold tracking-tighter">Home</span>
+    </a>
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="match.html?id=match_102">
+      <span class="material-symbols-outlined text-[28px] mb-1">sports_soccer</span>
+      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Live</span>
+    </a>
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="bracket.html">
+      <span class="material-symbols-outlined text-[28px] mb-1">account_tree</span>
+      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Bracket</span>
+    </a>
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="team.html?id=england">
+      <span class="material-symbols-outlined text-[28px] mb-1">flag</span>
+      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Teams</span>
+    </a>
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="admin.html">
+      <span class="material-symbols-outlined text-[28px] mb-1">admin_panel_settings</span>
+      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Admin</span>
+    </a>
+  </nav>
+
+  <!-- WebGL Atmospheric Shader Script -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('shader-canvas-ANIMATION_2');
+      function syncSize() {
+        const w = canvas.clientWidth || 1280;
+        const h = canvas.clientHeight || 720;
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
+      }
+      if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(syncSize).observe(canvas);
+      }
+      syncSize();
+
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return;
+      const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+      const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = v_texCoord;
+    float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 10.0 - u_time * 0.3);
+    float noise2 = sin(uv.x * 5.0 - u_time * 0.2) * cos(uv.y * 8.0 + u_time * 0.4);
+    vec3 color1 = vec3(0.075, 0.075, 0.075);
+    vec3 color2 = vec3(0.757, 0.071, 0.122);
+    float intensity = (noise + noise2 + 2.0) * 0.25;
+    intensity *= (1.0 - length(uv - 0.5) * 1.2);
+    vec3 finalColor = mix(color1, color2, intensity * 0.4);
+    float particle = sin(uv.x * 50.0 + u_time) * cos(uv.y * 50.0 - u_time * 1.5);
+    if (particle > 0.98) {
+        finalColor += vec3(0.7, 0.1, 0.1) * 0.2;
+    }
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+      function cs(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        return s;
+      }
+      const prog = gl.createProgram();
+      gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(prog);
+      gl.useProgram(prog);
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+      const pos = gl.getAttribLocation(prog, 'a_position');
+      gl.enableVertexAttribArray(pos);
+      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+      const uTime = gl.getUniformLocation(prog, 'u_time');
+      const uRes = gl.getUniformLocation(prog, 'u_resolution');
+
+      function render(t) {
+        if (typeof ResizeObserver === 'undefined') syncSize();
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        if (uTime) gl.uniform1f(uTime, t * 0.001);
+        if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(render);
+      }
+      render(0);
+    })();
+  </script>
+
+  <!-- BEGIN: Core Page Scripts -->
+  <script type="module">
+    import { dbOnSnapshotCollection, dbGetDocs, dbGetDoc } from "./js/firebase-config.js";
+    import { formatToIST, getCountdown, initializeSearch, startLiveMatchSync, renderRetroJerseys, renderFlag } from "./js/app.js";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // 1. Init Search
+      await initializeSearch("global-search-input", "search-results-dropdown");
+
+      // 2. Start SportsDB Sync
+      startLiveMatchSync();
+
+      // 3. Render Retro jerseys
+      renderRetroJerseys("retro-jersey-grid");
+
+      let timerInterval = null;
+
+      // 4. Bind dynamic data listener for Matches
+      dbOnSnapshotCollection("matches", async (matches) => {
+        if (!matches || matches.length === 0) {
+          console.log("Database is empty. Automatically bootstrapping initial dataset...");
+          try {
+            const { bootstrapDatabase } = await import("./js/db-bootstrap.js");
+            await bootstrapDatabase();
+            console.log("Database successfully auto-bootstrapped.");
+          } catch (err) {
+            console.error("Auto-bootstrap failed:", err);
+            document.getElementById("featured-match-hero").innerHTML = `
+              <div class="text-center p-8 bg-brand-charcoal border border-brand-red rounded-sm">
+                <h2 class="text-2xl font-bold uppercase italic text-brand-red mb-4">No Data Initialized</h2>
+                <p class="text-sm text-gray-400 mb-6">Database is empty. Go to the Admin panel to initialize the database in one click.</p>
+                <a href="admin.html" class="px-6 py-2.5 bg-brand-red text-white uppercase font-bold italic btn-skewed text-xs">
+                  <span class="btn-skewed-content block">Go to Admin Panel</span>
+                </a>
+              </div>
+            `;
+          }
+          return;
+        }
+
+        // Sort matches chronologically by date
+        matches.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // Fetch teams to cross-reference logos/names
+        const teams = await dbGetDocs("teams");
+        const getTeam = (id) => teams.find(t => t.id === id) || { name: "TBD", flag: "🏳️", code: "TBD" };
+
+        // 4a. Find Featured Match
+        let featuredMatch = matches.find(m => m.featured === true);
+        if (!featuredMatch) {
+          featuredMatch = matches[0]; // fallback
+        }
+
+        if (featuredMatch) {
+          const homeTeam = getTeam(featuredMatch.homeTeamId);
+          const awayTeam = getTeam(featuredMatch.awayTeamId);
+
+          const heroContainer = document.getElementById("featured-match-hero");
+
+          const isLive = featuredMatch.status === "Live";
+          const watchBtnHtml = featuredMatch.watchLink 
+            ? `<a href="${featuredMatch.watchLink}" target="_blank" class="bg-brand-red text-white px-12 py-4 btn-skewed font-black italic text-xl tracking-tighter hover:bg-red-700 transition-colors shadow-2xl shadow-brand-red/40 flex items-center justify-center">
+                 <span class="btn-skewed-content block uppercase flex items-center">WATCH LIVE NOW <span class="material-symbols-outlined ml-2">play_circle</span></span>
+               </a>`
+            : `<button disabled class="bg-gray-800 text-gray-500 cursor-not-allowed px-12 py-4 btn-skewed font-black italic text-xl tracking-tighter flex items-center justify-center">
+                 <span class="btn-skewed-content block uppercase">NO WATCH LINK</span>
+               </button>`;
+
+          heroContainer.innerHTML = `
+            <div class="flex items-center space-x-4 mb-8">
+              <div class="bg-brand-red text-[10px] font-black uppercase px-3 py-1 tracking-widest rounded-sm">Featured Match</div>
+              <div class="flex items-center text-[10px] font-black uppercase ${isLive ? 'text-green-500' : 'text-brand-gold'} tracking-widest">
+                <span class="w-2 h-2 ${isLive ? 'bg-green-500 animate-pulse' : 'bg-brand-gold'} rounded-full mr-2"></span>
+                ${isLive ? 'LIVE NOW' : 'UPCOMING'}
+              </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl gap-8">
+              <!-- Team Home -->
+              <div class="text-center flex-1">
+                <div class="relative inline-block">
+                  <div class="w-32 h-32 lg:w-40 lg:h-40 bg-[#0a0a0a] border border-gray-800 rounded-sm overflow-hidden flex items-center justify-center shadow-2xl p-4">
+                    ${renderFlag(homeTeam, "w-20 h-14 lg:w-28 lg:h-20 object-cover shadow-md border border-white/10")}
+                  </div>
+                </div>
+                <h3 class="text-3xl lg:text-5xl font-black italic mt-6 tracking-tighter uppercase truncate">${homeTeam.name || featuredMatch.homePlaceholder}</h3>
+              </div>
+              
+              <!-- VS and Countdown -->
+              <div class="text-center px-6 z-10 flex flex-col items-center">
+                <div class="text-4xl lg:text-6xl font-black italic text-white/90 mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                  ${isLive ? `${featuredMatch.homeScore} : ${featuredMatch.awayScore}` : 'VS'}
+                </div>
+                <div id="hero-timer" class="text-brand-gold font-mono text-lg lg:text-xl font-bold tracking-widest bg-black/60 px-4 py-2 border border-brand-charcoal rounded-sm whitespace-nowrap">
+                  ${isLive ? `LIVE • ${featuredMatch.minute}'` : '00 : 00 : 00 : 00'}
+                </div>
+              </div>
+              
+              <!-- Team Away -->
+              <div class="text-center flex-1">
+                <div class="relative inline-block">
+                  <div class="w-32 h-32 lg:w-40 lg:h-40 bg-[#0a0a0a] border border-gray-800 rounded-sm overflow-hidden flex items-center justify-center shadow-2xl p-4">
+                    ${renderFlag(awayTeam, "w-20 h-14 lg:w-28 lg:h-20 object-cover shadow-md border border-white/10")}
+                  </div>
+                </div>
+                <h3 class="text-3xl lg:text-5xl font-black italic mt-6 tracking-tighter uppercase truncate">${awayTeam.name || featuredMatch.awayPlaceholder}</h3>
+              </div>
+            </div>
+            
+            <!-- Hero Actions -->
+            <div class="mt-12 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+              ${watchBtnHtml}
+              <a href="match.html?id=${featuredMatch.id}" class="border border-white/40 text-white px-8 py-3 btn-skewed font-bold text-xs tracking-widest hover:bg-white/10 transition-colors block text-center">
+                <span class="btn-skewed-content block">VIEW MATCH STATS</span>
+              </a>
+            </div>
+          `;
+
+          // Handle global watch link update
+          const sidebarWatch = document.getElementById("sidebar-watch-btn");
+          if (sidebarWatch) {
+            if (featuredMatch.watchLink) {
+              sidebarWatch.href = featuredMatch.watchLink;
+              sidebarWatch.target = "_blank";
+            } else {
+              sidebarWatch.addEventListener('click', (e) => e.preventDefault());
+            }
+          }
+
+          // Trigger interval for countdown if not live
+          if (timerInterval) clearInterval(timerInterval);
+          if (!isLive) {
+            const timerEl = document.getElementById("hero-timer");
+            const updateTimer = () => {
+              if (timerEl) timerEl.innerText = getCountdown(featuredMatch.date);
+            };
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+          }
+        }
+
+        // 4b. Live Matches Section
+        const liveScoresGrid = document.getElementById("live-scores-grid");
+        const liveMatches = matches.filter(m => m.status === "Live");
+
+        if (liveMatches.length === 0) {
+          liveScoresGrid.innerHTML = `
+            <div class="col-span-3 bg-brand-charcoal/30 border border-brand-charcoal p-6 text-center text-xs text-gray-500 rounded-sm">
+              No live matches active at the moment.
+            </div>
+          `;
+        } else {
+          liveScoresGrid.innerHTML = "";
+          liveMatches.forEach(m => {
+            const home = getTeam(m.homeTeamId);
+            const away = getTeam(m.awayTeamId);
+
+            const card = document.createElement("a");
+            card.href = `match.html?id=${m.id}`;
+            card.className = "bg-brand-charcoal/50 border border-brand-charcoal p-4 rounded-sm flex flex-col justify-between h-24 hover:bg-brand-charcoal hover:border-green-500/50 transition-all cursor-pointer group hover-glow";
+            card.innerHTML = `
+              <div class="flex justify-between items-center text-[10px] font-bold text-gray-400">
+                <span>${m.round} • ${m.minute}'</span>
+                <span class="text-green-500 group-hover:animate-pulse font-black">• LIVE</span>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <div class="flex items-center space-x-2 w-1/3">
+                  ${renderFlag(home, "w-6 h-4")}
+                  <span class="font-bold text-sm truncate">${home.code}</span>
+                </div>
+                <div class="text-lg font-black italic w-1/3 text-center">${m.homeScore} - ${m.awayScore}</div>
+                <div class="flex items-center justify-end space-x-2 w-1/3">
+                  <span class="font-bold text-sm truncate">${away.code}</span>
+                  ${renderFlag(away, "w-6 h-4")}
+                </div>
+              </div>
+            `;
+            liveScoresGrid.appendChild(card);
+          });
+        }
+
+        // 4c. Today's Matches
+        const todaysMatchesGrid = document.getElementById("todays-matches-grid");
+        
+        // Let's filter matches for June 11, 2026 (or today relative to database)
+        // For testing, since our live matches represent today's matches, we show matches that are Live or have date set for "today"
+        const todayStr = "2026-06-11";
+        const todayMatches = matches.filter(m => m.date.startsWith(todayStr));
+
+        if (todayMatches.length === 0) {
+          // Fallback: show the first 2 matches from matches collection
+          const firstMatches = matches.slice(0, 2);
+          todaysMatchesGrid.innerHTML = "";
+          firstMatches.forEach(m => {
+            renderTodayMatchCard(m, getTeam);
+          });
+        } else {
+          todaysMatchesGrid.innerHTML = "";
+          todayMatches.forEach(m => {
+            renderTodayMatchCard(m, getTeam);
+          });
+        }
+
+        // 4d. Upcoming Matches (Horizontal Scroll Track)
+        const upcomingTrack = document.getElementById("upcoming-matches-track");
+        const upcomingMatches = matches.filter(m => m.status === "Upcoming").slice(0, 5);
+
+        if (upcomingMatches.length === 0) {
+          upcomingTrack.innerHTML = `<div class="text-gray-500 text-xs">No upcoming matches scheduled.</div>`;
+        } else {
+          upcomingTrack.innerHTML = "";
+          upcomingMatches.forEach(m => {
+            const home = getTeam(m.homeTeamId);
+            const away = getTeam(m.awayTeamId);
+            
+            const card = document.createElement("div");
+            card.className = "min-w-[300px] bg-brand-charcoal/40 border border-white/5 p-5 rounded-sm relative flex flex-col justify-between h-32";
+            card.innerHTML = `
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">${m.round}</span>
+                <span class="text-brand-gold font-mono text-[10px] font-bold">${m.timeIST}</span>
+              </div>
+              <div class="flex items-center justify-center space-x-4 my-2">
+                ${renderFlag(home, "w-6 h-4")}
+                <span class="font-black italic text-base">${home.code || m.homePlaceholder}</span>
+                <span class="text-gray-600 font-black italic text-xs">VS</span>
+                <span class="font-black italic text-base">${away.code || m.awayPlaceholder}</span>
+                ${renderFlag(away, "w-6 h-4")}
+              </div>
+              <a href="match.html?id=${m.id}" class="w-full text-center py-1 border border-white/10 hover:border-brand-red text-[9px] font-bold uppercase transition-all block">
+                Match Details
+              </a>
+            `;
+            upcomingTrack.appendChild(card);
+          });
+        }
+ 
+        // 4e. All Fixtures List Populator
+        const allFixturesList = document.getElementById("all-fixtures-list");
+        const searchInput = document.getElementById("fixtures-search");
+        const roundFilter = document.getElementById("fixtures-round-filter");
+
+        const renderFixturesList = () => {
+          const query = searchInput.value.toLowerCase().trim();
+          const round = roundFilter.value;
+
+          let filtered = [...matches];
+          
+          if (query) {
+            filtered = filtered.filter(m => {
+              const home = getTeam(m.homeTeamId).name.toLowerCase();
+              const away = getTeam(m.awayTeamId).name.toLowerCase();
+              const homePlaceholder = (m.homePlaceholder || "").toLowerCase();
+              const awayPlaceholder = (m.awayPlaceholder || "").toLowerCase();
+              return home.includes(query) || away.includes(query) || homePlaceholder.includes(query) || awayPlaceholder.includes(query);
+            });
+          }
+
+          if (round !== "ALL") {
+            if (round === "Group Stage") {
+              filtered = filtered.filter(m => m.round === "Group Stage");
+            } else {
+              filtered = filtered.filter(m => m.round !== "Group Stage");
+            }
+          }
+
+          filtered.sort((a, b) => {
+            const aNum = parseInt(a.id.split('_')[1]) || 0;
+            const bNum = parseInt(b.id.split('_')[1]) || 0;
+            return aNum - bNum;
+          });
+
+          allFixturesList.innerHTML = "";
+          if (filtered.length === 0) {
+            allFixturesList.innerHTML = `<div class="text-gray-500 text-xs py-8 text-center">No fixtures match your criteria.</div>`;
+            return;
+          }
+
+          filtered.forEach(m => {
+            const home = getTeam(m.homeTeamId);
+            const away = getTeam(m.awayTeamId);
+
+            const homeName = home.name !== "TBD" ? home.name : (m.homePlaceholder || "TBD");
+            const awayName = away.name !== "TBD" ? away.name : (m.awayPlaceholder || "TBD");
+
+            const scoreHtml = (m.status === "Live" || m.status === "Finished")
+              ? `<span class="font-mono text-xs font-bold text-brand-gold bg-brand-black/50 px-2 py-0.5 border border-white/5 rounded-sm">${m.homeScore} - ${m.awayScore}</span>`
+              : `<span class="text-xs text-gray-500 font-bold uppercase tracking-wider">${m.timeIST}</span>`;
+
+            const statusColors = m.status === "Live" ? "text-green-500 border border-green-500/20 bg-green-500/5" : m.status === "Finished" ? "text-gray-400 border border-white/10 bg-white/5" : "text-brand-gold border border-brand-gold/20 bg-brand-gold/5";
+
+            const row = document.createElement("div");
+            row.className = "flex flex-col sm:flex-row justify-between sm:items-center py-4 border-b border-white/5 gap-3 text-xs group hover:bg-white/5 px-3 transition-colors";
+            row.innerHTML = `
+              <div class="flex flex-col gap-1 min-w-[200px]">
+                <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">${formatToIST(m.date)}</span>
+                <span class="text-[8px] text-gray-600 font-bold uppercase tracking-wider">${m.round} ${m.group ? `• Group ${m.group}` : ''}</span>
+              </div>
+              
+              <div class="flex items-center gap-4 flex-1">
+                <div class="flex items-center gap-2 flex-1 justify-end truncate">
+                  <span class="font-bold text-white uppercase text-[10px] truncate">${homeName}</span>
+                  ${renderFlag(home, "w-6 h-4")}
+                </div>
+                <div class="flex-shrink-0 text-center w-20">
+                  ${scoreHtml}
+                </div>
+                <div class="flex items-center gap-2 flex-1 truncate">
+                  ${renderFlag(away, "w-6 h-4")}
+                  <span class="font-bold text-white uppercase text-[10px] truncate">${awayName}</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between sm:justify-end gap-4 min-w-[150px]">
+                <span class="text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-sm ${statusColors}">
+                  ${m.status === "Live" ? `LIVE ${m.minute}'` : m.status}
+                </span>
+                <a href="match.html?id=${m.id}" class="text-brand-red font-bold text-[9px] uppercase tracking-widest hover:underline group-hover:translate-x-1 transition-transform">Match Centre →</a>
+              </div>
+            `;
+            allFixturesList.appendChild(row);
+          });
+        };
+
+        if (!searchInput.dataset.bound) {
+          searchInput.addEventListener("input", renderFixturesList);
+          roundFilter.addEventListener("change", renderFixturesList);
+          searchInput.dataset.bound = "true";
+        }
+
+        renderFixturesList();
+      });
+
+      // 5. Standings Table Binder (Listen to Group B standings as default)
+      const standingsBody = document.getElementById("standings-table-body");
+      dbOnSnapshotDoc("standings", "B", async (standing) => {
+        if (!standing) return;
+        
+        // Fetch teams to map names
+        const teams = await dbGetDocs("teams");
+        
+        standingsBody.innerHTML = "";
+        standing.teams.forEach(row => {
+          const t = teams.find(team => team.id === row.teamId) || { name: "TBD", flag: "🏳️" };
+          const tr = document.createElement("tr");
+          tr.className = "border-b border-white/5 hover:bg-white/5 transition-colors";
+          tr.innerHTML = `
+            <td class="px-6 py-4 flex items-center">
+              <span class="mr-3 shrink-0">${renderFlag(t, "w-6 h-4")}</span>
+              <a href="team.html?id=${row.teamId}" class="hover:text-brand-red transition-colors">${t.name}</a>
+            </td>
+            <td class="px-4 py-4 text-center font-mono">${row.played}</td>
+            <td class="px-4 py-4 text-center font-mono">${row.goalDifference > 0 ? '+' : ''}${row.goalDifference}</td>
+            <td class="px-4 py-4 text-center text-brand-gold font-mono">${row.points}</td>
+          `;
+          standingsBody.appendChild(tr);
+        });
+      });
+
+      // 6. News Grid Binder
+      const newsGrid = document.getElementById("news-grid");
+      dbOnSnapshotCollection("news", (articles) => {
+        if (!articles || articles.length === 0) {
+          newsGrid.innerHTML = `<div class="text-gray-500 text-xs col-span-3">No tournament news articles published yet.</div>`;
+          return;
+        }
+
+        newsGrid.innerHTML = "";
+        // Show top 3 news articles
+        articles.slice(0, 3).forEach(news => {
+          const card = document.createElement("div");
+          card.className = "group cursor-pointer flex flex-col justify-between";
+          card.onclick = () => {
+            alert(`--- ${news.title} ---\n\n${news.content}`);
+          };
+          card.innerHTML = `
+            <div>
+              <div class="aspect-video bg-gray-800 rounded-sm overflow-hidden mb-4 border border-white/5 relative">
+                <img alt="News Thumbnail" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="${news.imageUrl}"/>
+                <div class="absolute top-4 left-4 bg-brand-red px-2 py-1 text-[8px] font-black uppercase tracking-wider">${news.category}</div>
+              </div>
+              <h3 class="text-lg font-black leading-tight group-hover:text-brand-red transition-colors mb-2 uppercase">${news.title}</h3>
+              <p class="text-xs text-gray-400 font-inter leading-relaxed line-clamp-3">${news.summary}</p>
+            </div>
+            <span class="text-[9px] font-bold text-brand-red uppercase tracking-wider mt-4">Read Article →</span>
+          `;
+          newsGrid.appendChild(card);
+        });
+      });
+
+    });
+
+    // Helper to render todays matches
+    function renderTodayMatchCard(m, getTeam) {
+      const todaysMatchesGrid = document.getElementById("todays-matches-grid");
+      const home = getTeam(m.homeTeamId);
+      const away = getTeam(m.awayTeamId);
+
+      const div = document.createElement("div");
+      div.className = "bg-brand-charcoal border border-white/5 p-6 rounded-sm flex items-center justify-between hover:border-brand-red/30 transition-all";
+      div.innerHTML = `
+        <div class="flex-1 flex flex-col items-center">
+          <div class="mb-2 shrink-0">${renderFlag(home, "w-10 h-7")}</div>
+          <span class="text-sm font-black uppercase">${home.code || m.homePlaceholder}</span>
+        </div>
+        <div class="px-6 text-center border-x border-white/5">
+          <div class="text-brand-gold font-mono text-base font-bold">${m.status === 'Live' ? `LIVE • ${m.homeScore}-${m.awayScore}` : m.timeIST}</div>
+          <div class="text-[8px] text-gray-500 uppercase mt-1 tracking-widest">${getTeam(m.stadiumId).name || 'Stadium'}</div>
+          <a href="match.html?id=${m.id}" class="mt-3 px-4 py-1.5 border border-white/20 text-[10px] font-bold uppercase hover:bg-white/10 transition-colors block text-center">Match Center</a>
+        </div>
+        <div class="flex-1 flex flex-col items-center">
+          <div class="mb-2 shrink-0">${renderFlag(away, "w-10 h-7")}</div>
+          <span class="text-sm font-black uppercase">${away.code || m.awayPlaceholder}</span>
+        </div>
+      `;
+      todaysMatchesGrid.appendChild(div);
+    }
+  </script>
+</body>
+</html>

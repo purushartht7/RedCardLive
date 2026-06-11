@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/match", "destination": "/match.html" },
+    { "source": "/bracket", "destination": "/bracket.html" },
+    { "source": "/team", "destination": "/team.html" },
+    { "source": "/stadium", "destination": "/stadium.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
+}

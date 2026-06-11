@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RED CARD LIVE | Admin Dashboard</title>
+  <!-- Google Fonts: Montserrat, Inter, JetBrains Mono -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet"/>
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <!-- Custom Core Styles -->
+  <link href="css/main.css" rel="stylesheet"/>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            primary: "#ffb3ad",
+            brand: {
+              red: '#C1121F',
+              black: '#131313',
+              charcoal: '#1c1b1b',
+              gold: '#ffd700',
+              surface: '#201f1f',
+            },
+            surface: "#131313",
+            "surface-container-low": "#1c1b1b",
+            "surface-container": "#201f1f",
+            "on-surface": "#e5e2e1",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-brand-black text-on-surface font-sans min-h-screen flex flex-col selection:bg-brand-red/30">
+
+  <!-- BEGIN: MainHeader -->
+  <header class="h-16 border-b border-brand-charcoal bg-brand-black flex items-center justify-between px-6 z-50 shrink-0">
+    <div class="flex items-center space-x-12">
+      <a href="index.html" class="text-brand-red font-black italic text-2xl tracking-tighter uppercase">Red Card Live</a>
+      <nav class="hidden md:flex space-x-6 text-[10px] font-bold tracking-widest text-gray-400">
+        <a class="hover:text-white transition" href="index.html">MATCHES</a>
+        <a class="hover:text-white transition" href="index.html#news-section">NEWS</a>
+        <a class="hover:text-white transition" href="bracket.html">BRACKET</a>
+        <a class="hover:text-white transition" href="team.html?id=england">TEAMS</a>
+        <a class="text-white border-b-2 border-brand-red pb-1" href="admin.html">ADMIN</a>
+      </nav>
+    </div>
+    <div class="flex items-center space-x-4">
+      <button id="logout-btn" class="bg-brand-charcoal border border-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider hover:bg-brand-red hover:text-white transition-colors hidden">LOGOUT</button>
+    </div>
+  </header>
+
+  <!-- Login Overlay Panel -->
+  <div id="login-container" class="flex-grow flex items-center justify-center p-6 relative z-10">
+    <div class="bg-brand-surface border border-brand-charcoal p-8 rounded-sm max-w-sm w-full red-card-angle shadow-2xl">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-black italic uppercase text-brand-red">Admin Secure Login</h2>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">WC 2026 Edition</p>
+      </div>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Email Address</label>
+          <input id="login-email" type="email" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white" placeholder="admin@redcardlive.com"/>
+        </div>
+        <div>
+          <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Password</label>
+          <input id="login-password" type="password" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white" placeholder="••••••••"/>
+        </div>
+        <button type="submit" class="w-full py-3 bg-brand-red text-white uppercase text-xs font-bold tracking-widest hover:bg-red-700 transition-colors btn-skewed shadow-lg shadow-brand-red/20 mt-4">
+          <span class="btn-skewed-content block">AUTHENTICATE</span>
+        </button>
+      </form>
+      <div class="text-center mt-6 text-[8px] text-gray-500 uppercase tracking-widest leading-relaxed">
+        Credentials are encrypted. Plain text passwords are never stored. Default: admin@redcardlive.com / password
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Application Workspace (Hidden until auth) -->
+  <div id="admin-workspace" class="flex-grow flex flex-col md:flex-row hidden relative z-10">
+    
+    <!-- Left Admin Tabs Navigation -->
+    <nav class="w-full md:w-60 bg-brand-black border-r border-brand-charcoal flex flex-col shrink-0">
+      <ul id="admin-tabs" class="space-y-1 p-4">
+        <li>
+          <button class="w-full text-left px-4 py-3 bg-brand-red/10 border-l-4 border-brand-red text-white text-xs font-bold uppercase tracking-wider tab-btn" data-tab="bootstrapper">
+            1. Bootstrapper
+          </button>
+        </li>
+        <li>
+          <button class="w-full text-left px-4 py-3 text-gray-400 hover:text-white border-l-4 border-transparent text-xs font-bold uppercase tracking-wider tab-btn" data-tab="match-manager">
+            2. Match Manager
+          </button>
+        </li>
+        <li>
+          <button class="w-full text-left px-4 py-3 text-gray-400 hover:text-white border-l-4 border-transparent text-xs font-bold uppercase tracking-wider tab-btn" data-tab="news-manager">
+            3. News Manager
+          </button>
+        </li>
+        <li>
+          <button class="w-full text-left px-4 py-3 text-gray-400 hover:text-white border-l-4 border-transparent text-xs font-bold uppercase tracking-wider tab-btn" data-tab="api-config">
+            4. API Keys
+          </button>
+        </li>
+      </ul>
+      <div class="p-6 mt-auto text-[10px] text-gray-500 font-bold uppercase tracking-widest text-center border-t border-white/5">
+        Database: <span id="db-status-label" class="text-brand-gold">MOCK STORE</span>
+      </div>
+    </nav>
+
+    <!-- Right Admin Sub-panels -->
+    <main class="flex-grow p-6 bg-brand-charcoal/20">
+      
+      <!-- Tab 1: Database Bootstrapper -->
+      <section id="panel-bootstrapper" class="tab-panel space-y-6">
+        <div class="border-b border-brand-charcoal pb-4">
+          <h2 class="text-2xl font-black italic uppercase text-white">Database Bootstrap Panel</h2>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">One-click data generation</p>
+        </div>
+        <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+          <h3 class="font-bold text-sm text-white uppercase">Initialize FIFA World Cup 2026 Dataset</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            This operation will bootstrap your active Firestore (or Mock localStorage) database with:
+            <br/>• 16 official host stadiums.
+            <br/>• 48 national teams (grouped A to L) with squad rosters.
+            <br/>• 104 matches (including group stage and knockout progression schedule).
+            <br/>• Group standings and sponsor jersey catalog.
+          </p>
+          <div class="bg-brand-black/50 p-4 border border-white/5 text-[10px] font-mono text-gray-500 rounded-sm">
+            Warning: Bootstrapping will overwrite existing matches, teams, and stadiums with the official schedule dataset.
+          </div>
+          <button id="bootstrap-btn" class="px-8 py-3 bg-brand-red text-white font-bold uppercase text-xs btn-skewed shadow-lg shadow-brand-red/20">
+            <span class="btn-skewed-content block">INITIALIZE DATABASE</span>
+          </button>
+          <div id="bootstrap-status" class="text-xs font-mono font-bold text-brand-gold"></div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Match and Watch Link Manager -->
+      <section id="panel-match-manager" class="tab-panel space-y-6 hidden">
+        <div class="border-b border-brand-charcoal pb-4">
+          <h2 class="text-2xl font-black italic uppercase text-white">Tournament Match Manager</h2>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Scores, live events, watch links, and AI previews</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Column Left: Select and Edit Scores -->
+          <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+            <h3 class="font-bold text-sm text-white uppercase">Select Fixture</h3>
+            <div>
+              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Matchup</label>
+              <select id="mgr-match-select" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                <option value="">-- Select a match --</option>
+              </select>
+            </div>
+
+            <hr class="border-white/5"/>
+            <h3 class="font-bold text-sm text-white uppercase">Match Status & Score</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Match Status</label>
+                <select id="mgr-status" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                  <option value="Upcoming">Upcoming</option>
+                  <option value="Live">Live</option>
+                  <option value="Finished">Finished</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Match Minute</label>
+                <input id="mgr-minute" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="74"/>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1" id="mgr-home-team-label">Home Score</label>
+                <input id="mgr-home-score" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1" id="mgr-away-team-label">Away Score</label>
+                <input id="mgr-away-score" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <input id="mgr-featured" type="checkbox" class="bg-[#131313] border-none text-brand-red focus:ring-brand-red rounded-sm"/>
+              <label class="text-[10px] font-bold uppercase text-gray-400">Featured Match Hero (Home Page)</label>
+            </div>
+
+            <div>
+              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Official Live Watch Link</label>
+              <input id="mgr-watch-link" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://www.fifa.com/..."/>
+            </div>
+
+            <div>
+              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">SportsDB Event ID</label>
+              <input id="mgr-sportsdb-id" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="sdb_500001"/>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+              <button id="mgr-save-match-btn" class="px-6 py-2 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
+                <span class="btn-skewed-content block">Save Match Details</span>
+              </button>
+              <button id="mgr-sync-sportsdb-btn" class="px-6 py-2 bg-brand-charcoal border border-white/10 hover:bg-[#e9c400] hover:text-black transition-all text-white font-bold uppercase text-xs btn-skewed">
+                <span class="btn-skewed-content block">Sync from SportsDB</span>
+              </button>
+            </div>
+            <div id="mgr-save-status" class="text-xs font-mono font-bold mt-2"></div>
+          </div>
+
+          <!-- Column Right: Live Event Generator & Gemini Previews -->
+          <div class="space-y-6">
+            
+            <!-- Live Events Injector -->
+            <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+              <h3 class="font-bold text-sm text-white uppercase">Inject Live Timeline Event</h3>
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Event Type</label>
+                  <select id="ev-type" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="Goal">Goal</option>
+                    <option value="Yellow Card">Yellow Card</option>
+                    <option value="Red Card">Red Card</option>
+                    <option value="Substitution">Substitution</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Acting Team</label>
+                  <select id="ev-team-side" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="home">Home Team</option>
+                    <option value="away">Away Team</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Event Minute</label>
+                  <input id="ev-minute" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="62"/>
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Player Name</label>
+                <input id="ev-player" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Lionel Messi"/>
+              </div>
+
+              <div id="sub-extra-fields" class="hidden grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Player Subbed Out</label>
+                  <input id="ev-player-out" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Alexis Mac Allister"/>
+                </div>
+              </div>
+
+              <div id="goal-extra-fields">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Assisted By / Detail</label>
+                  <input id="ev-detail" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Assisted by Rodrigo De Paul"/>
+                </div>
+              </div>
+
+              <button id="ev-inject-btn" class="px-6 py-2 bg-brand-charcoal border border-white/10 hover:bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
+                <span class="btn-skewed-content block">Inject Live Event</span>
+              </button>
+            </div>
+
+            <!-- Gemini AI Preview Generator -->
+            <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+              <h3 class="font-bold text-sm text-brand-gold uppercase flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">smart_toy</span>
+                Gemini Match Preview Generator
+              </h3>
+              <p class="text-[10px] text-gray-500 leading-snug">
+                Contacts Gemini API to generate deep tactical overview, form summary, head-to-head records, storylines, and predictions for the selected matchup. Stored securely.
+              </p>
+              <button id="gemini-generate-btn" class="px-6 py-3 bg-[#e9c400] text-black font-black uppercase text-xs btn-skewed hover:bg-brand-gold transition-colors">
+                <span class="btn-skewed-content block">Generate Preview (Gemini)</span>
+              </button>
+              <div id="gemini-status" class="text-xs font-mono font-bold text-brand-gold"></div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Tab 3: News Manager -->
+      <section id="panel-news-manager" class="tab-panel space-y-6 hidden">
+        <div class="border-b border-brand-charcoal pb-4">
+          <h2 class="text-2xl font-black italic uppercase text-white">Latest News Manager</h2>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Publish tournament updates</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Publish Form -->
+          <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+            <h3 class="font-bold text-sm text-white uppercase">Publish News Article</h3>
+            <form id="news-form" class="space-y-4">
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Article Title</label>
+                <input id="news-title" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="MBAPPÉ DOUBTFUL FOR CLASH"/>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Category</label>
+                  <select id="news-cat" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="Breaking">Breaking</option>
+                    <option value="Update">Update</option>
+                    <option value="Analysis">Analysis</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Image URL</label>
+                  <input id="news-img" type="url" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://images.unsplash.com/..."/>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Brief Summary</label>
+                <input id="news-summary" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Short description for grid feed."/>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Full Content</label>
+                <textarea id="news-content" required rows="5" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="The full news article text goes here..."></textarea>
+              </div>
+              <button type="submit" class="px-6 py-2.5 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
+                <span class="btn-skewed-content block">Publish Article</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Existing News list -->
+          <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+            <h3 class="font-bold text-sm text-white uppercase">Published Articles</h3>
+            <div id="mgr-news-list" class="space-y-3 max-h-[420px] overflow-y-auto pr-2">
+              <!-- Dynamically listing -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 4: API Configuration -->
+      <section id="panel-api-config" class="tab-panel space-y-6 hidden">
+        <div class="border-b border-brand-charcoal pb-4">
+          <h2 class="text-2xl font-black italic uppercase text-white">API Keys Configuration</h2>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Manage external keys securely</p>
+        </div>
+        <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4 max-w-md">
+          <h3 class="font-bold text-sm text-white uppercase">Keys Configuration</h3>
+          <div>
+            <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">TheSportsDB API Key (Default: 2)</label>
+            <input id="api-sportsdb" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="2"/>
+          </div>
+          <div>
+            <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Gemini API Key</label>
+            <input id="api-gemini" type="password" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="AIzaSy..."/>
+          </div>
+          <button id="api-save-btn" class="px-6 py-2 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
+            <span class="btn-skewed-content block">Save Credentials</span>
+          </button>
+          <div id="api-save-status" class="text-xs font-mono font-bold text-green-500"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Module Page scripts -->
+  <script type="module">
+    import { authSignIn, authSignOut, authOnAuthStateChanged, dbGetDoc, dbSetDoc, dbGetDocs, dbAddDoc, dbDeleteDoc, dbOnSnapshotCollection } from "./js/firebase-config.js";
+    import { bootstrapDatabase } from "./js/db-bootstrap.js";
+    import { triggerSportsDbSync } from "./js/app.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      const loginContainer = document.getElementById("login-container");
+      const adminWorkspace = document.getElementById("admin-workspace");
+      const logoutBtn = document.getElementById("logout-btn");
+      const dbStatusLabel = document.getElementById("db-status-label");
+
+      // Set DB label
+      dbStatusLabel.innerText = window.useFirebase ? "FIREBASE CLOUD" : "LOCAL MOCK STORE";
+
+      // 1. Auth state observer
+      authOnAuthStateChanged((user) => {
+        if (user) {
+          loginContainer.classList.add("hidden");
+          adminWorkspace.classList.remove("hidden");
+          logoutBtn.classList.remove("hidden");
+          loadAdminData();
+        } else {
+          loginContainer.classList.remove("hidden");
+          adminWorkspace.classList.add("hidden");
+          logoutBtn.classList.add("hidden");
+        }
+      });
+
+      // 2. Authentication Login Submit
+      const loginForm = document.getElementById("login-form");
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value.trim();
+        const pass = document.getElementById("login-password").value;
+
+        try {
+          await authSignIn(email, pass);
+          alert("Authenticated successfully!");
+        } catch (error) {
+          alert("Failed to authenticate: " + error.message);
+        }
+      });
+
+      // 3. Logout action
+      logoutBtn.addEventListener("click", async () => {
+        await authSignOut();
+        alert("Logged out successfully.");
+      });
+
+      // 4. Tab switching
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
+      tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          // Reset classes
+          tabButtons.forEach(b => {
+            b.classList.remove("bg-brand-red/10", "border-brand-red", "text-white");
+            b.classList.add("text-gray-400", "border-transparent");
+          });
+          panels.forEach(p => p.classList.add("hidden"));
+
+          // Set active classes
+          btn.classList.add("bg-brand-red/10", "border-brand-red", "text-white");
+          btn.classList.remove("text-gray-400", "border-transparent");
+          
+          const targetTab = btn.getAttribute("data-tab");
+          document.getElementById(`panel-${targetTab}`).classList.remove("hidden");
+        });
+      });
+
+      // 5. Database Bootstrapper Button
+      const bootstrapBtn = document.getElementById("bootstrap-btn");
+      const bootstrapStatus = document.getElementById("bootstrap-status");
+      bootstrapBtn.addEventListener("click", async () => {
+        bootstrapStatus.innerText = "Running bootstrap process...";
+        try {
+          await bootstrapDatabase();
+          bootstrapStatus.innerText = "Bootstrap database written successfully! All 104 matches, teams, and stadiums are ready.";
+          loadAdminData(); // Reload select dropdowns
+        } catch (error) {
+          bootstrapStatus.innerText = "Bootstrap failed: " + error.message;
+        }
+      });
+
+      // 6. Match Manager Form handlers
+      const matchSelect = document.getElementById("mgr-match-select");
+      const eventTypeSelect = document.getElementById("ev-type");
+      const goalFields = document.getElementById("goal-extra-fields");
+      const subFields = document.getElementById("sub-extra-fields");
+
+      eventTypeSelect.addEventListener("change", () => {
+        const type = eventTypeSelect.value;
+        if (type === "Goal") {
+          goalFields.classList.remove("hidden");
+          subFields.classList.add("hidden");
+        } else if (type === "Substitution") {
+          subFields.classList.remove("hidden");
+          goalFields.classList.add("hidden");
+        } else {
+          goalFields.classList.add("hidden");
+          subFields.classList.add("hidden");
+        }
+      });
+
+      matchSelect.addEventListener("change", async () => {
+        const id = matchSelect.value;
+        if (!id) return;
+
+        const m = await dbGetDoc("matches", id);
+        if (m) {
+          const teams = await dbGetDocs("teams");
+          const homeTeam = teams.find(t => t.id === m.homeTeamId) || { name: m.homePlaceholder || "TBD" };
+          const awayTeam = teams.find(t => t.id === m.awayTeamId) || { name: m.awayPlaceholder || "TBD" };
+
+          document.getElementById("mgr-home-team-label").innerText = `${homeTeam.name} Score`;
+          document.getElementById("mgr-away-team-label").innerText = `${awayTeam.name} Score`;
+
+          document.getElementById("mgr-status").value = m.status;
+          document.getElementById("mgr-minute").value = m.minute || 0;
+          document.getElementById("mgr-home-score").value = m.homeScore;
+          document.getElementById("mgr-away-score").value = m.awayScore;
+          document.getElementById("mgr-featured").checked = m.featured || false;
+          document.getElementById("mgr-watch-link").value = m.watchLink || "";
+          document.getElementById("mgr-sportsdb-id").value = m.sportsdbEventId || "";
+        }
+      });
+
+      // Save Match details
+      document.getElementById("mgr-save-match-btn").addEventListener("click", async () => {
+        const id = matchSelect.value;
+        if (!id) {
+          alert("Select a match first!");
+          return;
+        }
+
+        const m = await dbGetDoc("matches", id);
+        const status = document.getElementById("mgr-status").value;
+        const minute = parseInt(document.getElementById("mgr-minute").value) || 0;
+        const homeScore = parseInt(document.getElementById("mgr-home-score").value) || 0;
+        const awayScore = parseInt(document.getElementById("mgr-away-score").value) || 0;
+        const featured = document.getElementById("mgr-featured").checked;
+        const watchLink = document.getElementById("mgr-watch-link").value.trim();
+        const sportsdbId = document.getElementById("mgr-sportsdb-id").value.trim();
+
+        // If featured is true, reset all other matches' featured status
+        if (featured) {
+          const allMatches = await dbGetDocs("matches");
+          for (const otherMatch of allMatches) {
+            if (otherMatch.featured && otherMatch.id !== id) {
+              await dbSetDoc("matches", otherMatch.id, { ...otherMatch, featured: false });
+            }
+          }
+        }
+
+        const updated = {
+          ...m,
+          status,
+          minute,
+          homeScore,
+          awayScore,
+          featured,
+          watchLink,
+          sportsdbEventId: sportsdbId
+        };
+
+        await dbSetDoc("matches", id, updated);
+        const saveStatus = document.getElementById("mgr-save-status");
+        saveStatus.innerText = "Match details saved successfully!";
+        saveStatus.className = "text-xs font-mono font-bold text-green-500 mt-2";
+        setTimeout(() => saveStatus.innerText = "", 3000);
+      });
+
+      // Sync from TheSportsDB
+      const syncBtn = document.getElementById("mgr-sync-sportsdb-btn");
+      if (syncBtn) {
+        syncBtn.addEventListener("click", async () => {
+          const id = matchSelect.value;
+          if (!id) {
+            alert("Select a match first!");
+            return;
+          }
+
+          const sportsdbId = document.getElementById("mgr-sportsdb-id").value.trim();
+          if (!sportsdbId) {
+            alert("This match does not have a SportsDB Event ID configured!");
+            return;
+          }
+
+          // First save the current SportsDB ID in database if modified
+          const m = await dbGetDoc("matches", id);
+          if (m.sportsdbEventId !== sportsdbId) {
+            await dbSetDoc("matches", id, { ...m, sportsdbEventId: sportsdbId });
+          }
+
+          const saveStatus = document.getElementById("mgr-save-status");
+          saveStatus.innerText = "Syncing from TheSportsDB (Score, Lineups, Timeline)...";
+          saveStatus.className = "text-xs font-mono font-bold text-brand-gold mt-2";
+
+          try {
+            await triggerSportsDbSync(id, true);
+            
+            // Reload match details from database to reflect the updated fields in UI
+            const updated = await dbGetDoc("matches", id);
+            if (updated) {
+              document.getElementById("mgr-status").value = updated.status;
+              document.getElementById("mgr-minute").value = updated.minute || 0;
+              document.getElementById("mgr-home-score").value = updated.homeScore;
+              document.getElementById("mgr-away-score").value = updated.awayScore;
+              document.getElementById("mgr-featured").checked = updated.featured || false;
+              document.getElementById("mgr-watch-link").value = updated.watchLink || "";
+              document.getElementById("mgr-sportsdb-id").value = updated.sportsdbEventId || "";
+            }
+
+            saveStatus.innerText = "Sync completed! Match score, stats, lineups, and timeline updated.";
+            saveStatus.className = "text-xs font-mono font-bold text-green-500 mt-2";
+            setTimeout(() => saveStatus.innerText = "", 5000);
+          } catch (error) {
+            saveStatus.innerText = "Sync failed: " + error.message;
+            saveStatus.className = "text-xs font-mono font-bold text-brand-red mt-2";
+            setTimeout(() => saveStatus.innerText = "", 5000);
+          }
+        });
+      }
+
+      // Inject Timeline Event
+      document.getElementById("ev-inject-btn").addEventListener("click", async () => {
+        const matchId = matchSelect.value;
+        if (!matchId) {
+          alert("Please select a match first!");
+          return;
+        }
+
+        const type = eventTypeSelect.value;
+        const minute = parseInt(document.getElementById("ev-minute").value) || 90;
+        const playerName = document.getElementById("ev-player").value.trim();
+        const playerNameOut = document.getElementById("ev-player-out").value.trim();
+        const detail = document.getElementById("ev-detail").value.trim();
+
+        if (!playerName) {
+          alert("Enter player name!");
+          return;
+        }
+
+        const matchDoc = await dbGetDoc("matches", matchId);
+        const activeSide = document.getElementById("ev-team-side").value;
+        const teamId = activeSide === "home" ? matchDoc.homeTeamId : matchDoc.awayTeamId;
+
+        const eventId = `ev_${Date.now()}`;
+        const eventData = {
+          id: eventId,
+          type,
+          minute,
+          playerName,
+          teamId
+        };
+        if (type === "Goal" && detail) eventData.detail = detail;
+        if (type === "Substitution" && playerNameOut) eventData.playerNameOut = playerNameOut;
+
+        await dbSetDoc(`matches/${matchId}/events`, eventId, eventData);
+        alert("Live event injected successfully!");
+      });
+
+      // Gemini AI Preview generator button
+      document.getElementById("gemini-generate-btn").addEventListener("click", async () => {
+        const matchId = matchSelect.value;
+        if (!matchId) {
+          alert("Please select a match first!");
+          return;
+        }
+
+        const statusLabel = document.getElementById("gemini-status");
+        statusLabel.innerText = "Loading credentials and match statistics...";
+
+        const m = await dbGetDoc("matches", matchId);
+        const homeTeam = await dbGetDoc("teams", m.homeTeamId);
+        const awayTeam = await dbGetDoc("teams", m.awayTeamId);
+
+        if (!homeTeam || !awayTeam) {
+          statusLabel.innerText = "Error: Teams data not initialized yet. Perform bootstrap first.";
+          return;
+        }
+
+        const settings = await dbGetDoc("settings", "api_keys");
+        const geminiKey = settings && settings.gemini_key ? settings.gemini_key : "";
+
+        if (!geminiKey) {
+          statusLabel.innerText = "Error: Please configure your Gemini API Key in the API Keys tab first.";
+          return;
+        }
+
+        statusLabel.innerText = "Querying gemini-2.5-flash model API...";
+
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{
+                  text: `You are a professional football analyst writing for Indian football fans for FIFA World Cup 2026.
+Generate a structured preview for the upcoming matchup: ${homeTeam.name} vs ${awayTeam.name}.
+FIFA Rankings: ${homeTeam.name} (${homeTeam.rank}), ${awayTeam.name} (${awayTeam.rank}).
+Recent Form: ${homeTeam.name} (${homeTeam.form.join(", ")}), ${awayTeam.name} (${awayTeam.form.join(", ")}).
+
+You MUST return the preview in a valid JSON format with the exact keys:
+"overview": a brief exciting match overview (1-2 sentences)
+"formSummary": comparison of current form (1-2 sentences)
+"h2hSummary": head-to-head match context (1-2 sentences)
+"storylines": major tactical/narrative storylines (1-2 sentences)
+"predictions": score prediction and outcome forecast (1 sentence)
+"insights": final critical match insights for fans (1-2 sentences)
+
+Return ONLY the raw JSON string. Do NOT enclose in markdown codeblocks (no \`\`\`json, no \`\`\`), no formatting, just the raw JSON.`
+                }]
+              }]
+            })
+          });
+
+          const data = await response.json();
+          if (data.error) throw new Error(data.error.message);
+
+          const textResponse = data.candidates[0].content.parts[0].text;
+          const cleanedText = textResponse.replace(/```json/g, "").replace(/```/g, "").trim();
+          const parsed = JSON.parse(cleanedText);
+
+          // Save to previews collection
+          const previewDoc = {
+            id: matchId,
+            overview: parsed.overview,
+            formSummary: parsed.formSummary,
+            h2hSummary: parsed.h2hSummary,
+            storylines: parsed.storylines,
+            predictions: parsed.predictions,
+            insights: parsed.insights,
+            generatedAt: new Date().toISOString()
+          };
+
+          await dbSetDoc("previews", matchId, previewDoc);
+          statusLabel.innerText = "Success! Gemini preview generated and saved to Firestore.";
+        } catch (error) {
+          statusLabel.innerText = "Failed generating preview: " + error.message;
+        }
+      });
+
+      // 7. News Manager Form Submit
+      const newsForm = document.getElementById("news-form");
+      newsForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const title = document.getElementById("news-title").value.trim();
+        const category = document.getElementById("news-cat").value;
+        const imageUrl = document.getElementById("news-img").value.trim();
+        const summary = document.getElementById("news-summary").value.trim();
+        const content = document.getElementById("news-content").value.trim();
+
+        const newsId = `news_${Date.now()}`;
+        const newsData = {
+          id: newsId,
+          title,
+          category,
+          imageUrl,
+          summary,
+          content,
+          publishedAt: new Date().toISOString()
+        };
+
+        try {
+          await dbSetDoc("news", newsId, newsData);
+          alert("News article published successfully!");
+          newsForm.reset();
+        } catch (error) {
+          alert("Failed publishing news: " + error.message);
+        }
+      });
+
+      // 8. API Keys configuration
+      const apiSaveBtn = document.getElementById("api-save-btn");
+      apiSaveBtn.addEventListener("click", async () => {
+        const sportsdb = document.getElementById("api-sportsdb").value.trim() || "2";
+        const gemini = document.getElementById("api-gemini").value.trim();
+
+        await dbSetDoc("settings", "api_keys", {
+          sportsdb_key: sportsdb,
+          gemini_key: gemini
+        });
+        document.getElementById("api-save-status").innerText = "API Credentials updated successfully!";
+        setTimeout(() => document.getElementById("api-save-status").innerText = "", 3000);
+      });
+
+    });
+
+    // Load static dropdown and news indexes
+    async function loadAdminData() {
+      const matches = await dbGetDocs("matches");
+      const teams = await dbGetDocs("teams");
+
+      const matchSelect = document.getElementById("mgr-match-select");
+      matchSelect.innerHTML = `<option value="">-- Select a match --</option>`;
+
+      // Sort matches by index
+      matches.sort((a, b) => parseInt(a.id.split('_')[1]) - parseInt(b.id.split('_')[1]));
+
+      matches.forEach(m => {
+        const home = teams.find(t => t.id === m.homeTeamId) || { name: m.homePlaceholder || "TBD" };
+        const away = teams.find(t => t.id === m.awayTeamId) || { name: m.awayPlaceholder || "TBD" };
+        const op = document.createElement("option");
+        op.value = m.id;
+        op.innerText = `${m.id.toUpperCase()}: ${home.name} vs ${away.name} (${m.round})`;
+        matchSelect.appendChild(op);
+      });
+
+      // Load API Keys config inputs
+      const keys = await dbGetDoc("settings", "api_keys");
+      if (keys) {
+        document.getElementById("api-sportsdb").value = keys.sportsdb_key || "2";
+        document.getElementById("api-gemini").value = keys.gemini_key || "";
+      }
+
+      // Bind dynamic news list observer
+      const newsListContainer = document.getElementById("mgr-news-list");
+      dbOnSnapshotCollection("news", (articles) => {
+        newsListContainer.innerHTML = "";
+        if (!articles || articles.length === 0) {
+          newsListContainer.innerHTML = `<p class="text-xs text-gray-500">No articles published.</p>`;
+          return;
+        }
+
+        articles.forEach(art => {
+          const row = document.createElement("div");
+          row.className = "bg-brand-black/40 border border-brand-charcoal p-3 flex justify-between items-center text-xs";
+          row.innerHTML = `
+            <div>
+              <p class="font-bold text-white uppercase">${art.title}</p>
+              <p class="text-[9px] text-gray-500 uppercase mt-0.5">${art.category} • ${art.id}</p>
+            </div>
+            <button class="text-brand-red font-bold uppercase text-[9px] hover:underline" onclick="deleteArticle('${art.id}')">Delete</button>
+          `;
+          newsListContainer.appendChild(row);
+        });
+      });
+    }
+
+    // Attach deletion globally
+    window.deleteArticle = async (id) => {
+      if (confirm("Are you sure you want to delete this article?")) {
+        await dbDeleteDoc("news", id);
+        alert("Article deleted successfully.");
+      }
+    };
+  </script>
+
+</body>
+</html>
