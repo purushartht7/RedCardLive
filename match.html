@@ -279,6 +279,7 @@
   <script type="module">
     import { dbOnSnapshotDoc, dbOnSnapshotCollection, dbGetDoc, dbGetDocs } from "./js/firebase-config.js";
     import { initializeSearch, renderFlag } from "./js/app.js";
+    import { generateSquads } from "./js/db-bootstrap.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
       // 1. Search Box setup
@@ -633,11 +634,19 @@
       let awayPlayers = match.lineups && match.lineups.away ? match.lineups.away : [];
 
       // Fallback to team squads if no lineups are stored in database
-      if (homePlayers.length === 0 && homeTeam && homeTeam.squad) {
-        homePlayers = homeTeam.squad.slice(0, 4);
+      if (homePlayers.length === 0) {
+        if (homeTeam && homeTeam.squad && homeTeam.squad.length > 0) {
+          homePlayers = homeTeam.squad.slice(0, 4);
+        } else if (match.homeTeamId && match.homeTeamId !== "TBD") {
+          homePlayers = generateSquads(match.homeTeamId).slice(0, 4);
+        }
       }
-      if (awayPlayers.length === 0 && awayTeam && awayTeam.squad) {
-        awayPlayers = awayTeam.squad.slice(0, 4);
+      if (awayPlayers.length === 0) {
+        if (awayTeam && awayTeam.squad && awayTeam.squad.length > 0) {
+          awayPlayers = awayTeam.squad.slice(0, 4);
+        } else if (match.awayTeamId && match.awayTeamId !== "TBD") {
+          awayPlayers = generateSquads(match.awayTeamId).slice(0, 4);
+        }
       }
 
       homeRow.innerHTML = "";

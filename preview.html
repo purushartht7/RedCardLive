@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Match Preview | RED CARD LIVE</title>
+  <!-- Google Fonts: Montserrat, Inter, JetBrains Mono -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..900;1,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet"/>
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <!-- Custom Core Styles -->
+  <link href="css/main.css" rel="stylesheet"/>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            primary: "#ffb3ad",
+            brand: {
+              red: '#C1121F',
+              black: '#131313',
+              charcoal: '#1c1b1b',
+              gold: '#ffd700',
+              surface: '#201f1f',
+            },
+            surface: "#131313",
+            "surface-container-low": "#1c1b1b",
+            "surface-container": "#201f1f",
+            "on-surface": "#e5e2e1",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0A0A0A;
+      background-image: radial-gradient(#222 1px, transparent 1px);
+      background-size: 32px 32px;
+      color: #e5e2e1;
+      scroll-behavior: smooth;
+    }
+    .red-card-clip {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    }
+    .stadium-bg {
+      background-image: linear-gradient(to bottom, rgba(10,10,10,0.4), rgba(10,10,10,1)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&auto=format&fit=crop&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .glow-gold {
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+    }
+    .glow-red {
+      box-shadow: 0 0 20px rgba(193, 18, 31, 0.3);
+    }
+    .glow-live {
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.35);
+    }
+  </style>
+</head>
+<body class="font-sans text-xs selection:bg-brand-red/30 text-on-surface overflow-x-hidden min-h-screen flex flex-col">
+
+  <!-- BEGIN: MainHeader -->
+  <header class="h-16 border-b border-brand-charcoal bg-brand-black flex items-center justify-between px-6 z-50 shrink-0 sticky top-0">
+    <div class="flex items-center space-x-12">
+      <a href="index.html" class="text-brand-red font-black italic text-2xl tracking-tighter uppercase">Red Card Live</a>
+      <nav class="hidden md:flex space-x-6 text-[10px] font-bold tracking-widest text-gray-400">
+        <a class="hover:text-white transition" href="index.html">MATCHES</a>
+        <a class="hover:text-white transition" href="index.html#news-section">NEWS</a>
+        <a class="hover:text-white transition" href="bracket.html">BRACKET</a>
+        <a class="hover:text-white transition" href="team.html?id=england">TEAMS</a>
+        <a class="hover:text-white transition" href="admin.html">ADMIN</a>
+      </nav>
+    </div>
+    <div class="flex items-center space-x-6">
+      <div class="relative group hidden sm:block">
+        <input id="global-search-input" class="bg-[#1e1e1e] border-none rounded-sm py-1.5 px-4 pr-10 text-xs w-64 focus:ring-1 focus:ring-brand-red" placeholder="Search matches..." type="text"/>
+        <span class="material-symbols-outlined absolute right-3 top-1.5 text-gray-500 text-sm select-none">search</span>
+        <div id="search-results-dropdown" class="absolute right-0 top-full mt-2 w-72 bg-brand-black border border-brand-charcoal rounded-sm shadow-2xl overflow-hidden hidden z-50"></div>
+      </div>
+      <button class="text-gray-400 hover:text-white"><span class="material-symbols-outlined">notifications</span></button>
+      <a href="admin.html" class="text-gray-400 hover:text-white"><span class="material-symbols-outlined">person</span></a>
+    </div>
+  </header>
+  <!-- END: MainHeader -->
+
+  <!-- Top Hero Layout -->
+  <section id="hero-section" class="relative min-h-[75vh] flex items-center justify-center stadium-bg border-b border-brand-charcoal overflow-hidden py-12">
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+    
+    <div class="relative z-10 w-full max-w-6xl px-6 text-center">
+      <div class="inline-flex items-center gap-2 bg-brand-red/20 border border-brand-red px-4 py-1 mb-8">
+        <span class="w-2 h-2 rounded-full bg-brand-gold animate-pulse"></span>
+        <span id="hero-round-label" class="text-brand-gold text-[10px] tracking-[0.3em] uppercase font-bold">MATCH PREVIEW</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24 mb-8">
+        <!-- Team Home -->
+        <div class="flex flex-col items-center group">
+          <div id="hero-home-flag-container" class="w-40 h-40 md:w-52 md:h-52 bg-brand-charcoal/50 p-6 red-card-clip border border-brand-charcoal group-hover:border-brand-red transition-all duration-500 backdrop-blur-sm flex items-center justify-center">
+            <!-- flag image -->
+          </div>
+          <h2 id="hero-home-name" class="text-2xl lg:text-4xl font-black mt-4 tracking-tighter italic uppercase text-white">HOME TEAM</h2>
+        </div>
+
+        <!-- VS & Countdown -->
+        <div class="flex flex-col items-center min-w-[240px]">
+          <div class="font-sans font-black italic text-brand-red text-6xl md:text-8xl leading-none mb-6 drop-shadow-[0_0_15px_rgba(193,18,31,0.5)]">VS</div>
+          
+          <!-- Countdown container -->
+          <div id="countdown-timer-container" class="flex gap-2 justify-center">
+            <div class="bg-brand-surface px-4 py-3 border border-brand-charcoal min-w-[70px] rounded-sm">
+              <span id="timer-days" class="font-mono text-xl lg:text-2xl text-brand-gold block font-black">00</span>
+              <span class="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Days</span>
+            </div>
+            <div class="bg-brand-surface px-4 py-3 border border-brand-charcoal min-w-[70px] rounded-sm">
+              <span id="timer-hours" class="font-mono text-xl lg:text-2xl text-brand-gold block font-black">00</span>
+              <span class="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Hrs</span>
+            </div>
+            <div class="bg-brand-surface px-4 py-3 border border-brand-charcoal min-w-[70px] rounded-sm">
+              <span id="timer-minutes" class="font-mono text-xl lg:text-2xl text-brand-gold block font-black">00</span>
+              <span class="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Min</span>
+            </div>
+            <div class="bg-brand-surface px-4 py-3 border border-brand-charcoal min-w-[70px] rounded-sm">
+              <span id="timer-seconds" class="font-mono text-xl lg:text-2xl text-brand-gold block font-black">00</span>
+              <span class="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Sec</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Away -->
+        <div class="flex flex-col items-center group">
+          <div id="hero-away-flag-container" class="w-40 h-40 md:w-52 md:h-52 bg-brand-charcoal/50 p-6 red-card-clip border border-brand-charcoal group-hover:border-brand-red transition-all duration-500 backdrop-blur-sm flex items-center justify-center">
+            <!-- flag image -->
+          </div>
+          <h2 id="hero-away-name" class="text-2xl lg:text-4xl font-black mt-4 tracking-tighter italic uppercase text-white">AWAY TEAM</h2>
+        </div>
+      </div>
+
+      <!-- Match Date, Time and Venue -->
+      <div class="flex flex-col gap-2 items-center mb-8">
+        <p id="hero-venue-label" class="text-sm font-bold text-gray-300 tracking-widest uppercase">ESTADIO AZTECA, MEXICO CITY</p>
+        <p id="hero-datetime-label" class="text-xs text-brand-red tracking-[0.4em] font-black">JULY 4, 2026 • 21:30 IST</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap justify-center gap-4">
+        <a id="hero-watch-btn" href="#" target="_blank" class="bg-brand-gold text-black px-8 py-3.5 font-bold uppercase tracking-widest red-card-clip hover:translate-y-[-2px] transition-all flex items-center gap-2 glow-gold">
+          <span class="material-symbols-outlined text-base">play_circle</span> WATCH BROADCAST
+        </a>
+        <button id="share-btn" class="bg-brand-red text-white px-8 py-3.5 font-bold uppercase tracking-widest red-card-clip hover:translate-y-[-2px] transition-all flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">share</span> SHARE MATCH
+        </button>
+        <a id="match-center-btn" href="#" class="border border-white/20 px-8 py-3.5 font-bold uppercase tracking-widest red-card-clip hover:bg-brand-charcoal transition-all flex items-center gap-2 text-white">
+          <span class="material-symbols-outlined text-base">sports_soccer</span> MATCH CENTRE
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Match Snapshot Cards -->
+  <section class="max-w-7xl mx-auto px-6 -mt-8 relative z-20 grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+    <div class="bg-brand-surface p-5 border-l-4 border-brand-red red-card-clip flex items-center gap-4 hover:bg-brand-charcoal transition-all">
+      <span class="material-symbols-outlined text-brand-red text-3xl">stadium</span>
+      <div>
+        <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold">Venue</p>
+        <p id="snap-venue" class="font-sans font-bold text-sm text-white truncate">Stadium Name</p>
+      </div>
+    </div>
+    <div class="bg-brand-surface p-5 border-l-4 border-brand-red red-card-clip flex items-center gap-4 hover:bg-brand-charcoal transition-all">
+      <span class="material-symbols-outlined text-brand-red text-3xl">groups</span>
+      <div>
+        <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold">Capacity</p>
+        <p id="snap-capacity" class="font-sans font-bold text-sm text-white">00,000</p>
+      </div>
+    </div>
+    <div class="bg-brand-surface p-5 border-l-4 border-brand-red red-card-clip flex items-center gap-4 hover:bg-brand-charcoal transition-all">
+      <span class="material-symbols-outlined text-brand-red text-3xl">calendar_month</span>
+      <div>
+        <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold">Kickoff Date</p>
+        <p id="snap-date" class="font-sans font-bold text-sm text-white">DD MMM 2026</p>
+      </div>
+    </div>
+    <div class="bg-brand-surface p-5 border-l-4 border-brand-red red-card-clip flex items-center gap-4 hover:bg-brand-charcoal transition-all">
+      <span class="material-symbols-outlined text-brand-red text-3xl">account_tree</span>
+      <div>
+        <p class="text-[9px] uppercase tracking-widest text-gray-400 font-bold">Round</p>
+        <p id="snap-round" class="font-sans font-bold text-sm text-white">Quarter-Final</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Grid -->
+  <main class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full flex-1">
+    
+    <!-- Left Main Column (AI Overview, Stats, Tactics, News) -->
+    <div class="lg:col-span-8 space-y-8">
+      
+      <!-- AI Match Overview Card -->
+      <article class="bg-brand-surface p-6 border border-brand-charcoal relative overflow-hidden red-card-clip">
+        <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
+          <h3 class="font-sans text-base font-black uppercase italic text-brand-red">Match Overview</h3>
+          <span class="flex items-center gap-1.5 bg-brand-gold/10 text-brand-gold px-3 py-1 text-[9px] font-bold uppercase tracking-widest border border-brand-gold/30">
+            <span class="material-symbols-outlined text-xs">auto_awesome</span> GENERATED BY GEMINI
+          </span>
+        </div>
+        
+        <div id="ai-overview-container" class="space-y-4 font-inter text-gray-400 text-xs leading-relaxed">
+          <div class="text-center py-8 text-gray-600 animate-pulse">Loading overview analysis...</div>
+        </div>
+      </article>
+
+      <!-- Team Stats Comparison -->
+      <section class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm">
+        <h3 class="font-sans text-base font-black mb-6 uppercase italic flex items-center gap-2 text-white">
+          <span class="w-1.5 h-6 bg-brand-red"></span> Team Comparison (FIFA Tourney Stats)
+        </h3>
+        
+        <div id="stats-comparison-container" class="space-y-6">
+          <!-- Dynamically populated stats bars -->
+          <div class="text-center py-6 text-gray-600 animate-pulse">Computing stats...</div>
+        </div>
+      </section>
+
+      <!-- Key Players Showcase -->
+      <section class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm">
+        <h3 class="font-sans text-base font-black mb-6 uppercase italic flex items-center gap-2 text-white">
+          <span class="w-1.5 h-6 bg-brand-red"></span> Key Players to Watch
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Home Key Players -->
+          <div class="space-y-4">
+            <h4 id="key-players-home-title" class="text-xs font-bold uppercase tracking-wider text-brand-red border-b border-brand-red/10 pb-2">Home Team</h4>
+            <div id="key-players-home-list" class="space-y-3">
+              <!-- home squad star cards -->
+            </div>
+          </div>
+
+          <!-- Away Key Players -->
+          <div class="space-y-4">
+            <h4 id="key-players-away-title" class="text-xs font-bold uppercase tracking-wider text-white border-b border-white/10 pb-2">Away Team</h4>
+            <div id="key-players-away-list" class="space-y-3">
+              <!-- away squad star cards -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tactical Deep Dive -->
+      <article class="bg-brand-surface p-6 border border-brand-charcoal red-card-clip">
+        <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
+          <h3 class="font-sans text-base font-black uppercase italic text-brand-red">Tactical Blueprint</h3>
+          <span class="flex items-center gap-1.5 bg-brand-gold/10 text-brand-gold px-3 py-1 text-[9px] font-bold uppercase tracking-widest border border-brand-gold/30">
+            <span class="material-symbols-outlined text-xs">auto_awesome</span> TACTICAL AI
+          </span>
+        </div>
+
+        <div id="tactical-analysis-container" class="space-y-6">
+          <div class="text-center py-8 text-gray-600 animate-pulse">Constructing blueprint...</div>
+        </div>
+      </article>
+
+      <!-- Match Storylines (Cards) -->
+      <section class="space-y-4">
+        <h3 class="font-sans text-base font-black uppercase italic text-white flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-brand-red"></span> Game Storylines & Narratives
+        </h3>
+        <div id="storylines-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Dynamic cards -->
+          <div class="col-span-3 text-center py-6 text-gray-600 animate-pulse font-mono">Formulating narratives...</div>
+        </div>
+      </section>
+
+      <!-- Camp News -->
+      <section class="space-y-4">
+        <h3 class="font-sans text-base font-black uppercase italic text-white flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-brand-red"></span> Latest Camps News
+        </h3>
+        <div id="related-news-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- News stories -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Sidebar (Predictions, Poll, Form Guide, Shop) -->
+    <aside class="lg:col-span-4 space-y-8">
+      
+      <!-- AI Prediction Centre -->
+      <div class="bg-brand-surface p-6 border-2 border-brand-gold relative rounded-sm overflow-hidden glow-gold">
+        <div class="absolute -top-3.5 -right-3.5 bg-brand-gold text-black px-4 py-1.5 font-sans font-black text-[9px] italic uppercase tracking-wider shadow-md transform rotate-3">GEMINI PICK</div>
+        <h3 class="font-sans text-base font-black mb-4 uppercase italic text-brand-gold">AI Prediction</h3>
+        
+        <div id="ai-prediction-card" class="space-y-4">
+          <div class="text-center py-6 text-gray-600 animate-pulse">Calculating outcome...</div>
+        </div>
+      </div>
+
+      <!-- Fan Outcome Poll -->
+      <section class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm relative">
+        <h3 class="font-sans text-base font-black mb-4 uppercase italic text-brand-red flex items-center gap-2">
+          <span class="material-symbols-outlined text-brand-gold">how_to_vote</span> Fan Poll: Who Will Win?
+        </h3>
+        
+        <div id="fan-poll-container" class="space-y-4">
+          <!-- Dynamic Poll UI -->
+          <div class="text-center py-6 text-gray-600 animate-pulse">Syncing poll data...</div>
+        </div>
+      </section>
+
+      <!-- Form Guide -->
+      <section class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm">
+        <h3 class="font-sans text-xs font-black uppercase tracking-wider text-gray-400 mb-4 border-b border-white/5 pb-2">Recent Form Guide</h3>
+        
+        <div class="space-y-5">
+          <!-- Home Form -->
+          <div>
+            <p id="form-home-title" class="font-bold text-xs mb-2 text-white uppercase">Argentina</p>
+            <div id="form-home-badges" class="flex gap-2">
+              <!-- form circles -->
+            </div>
+          </div>
+          
+          <!-- Away Form -->
+          <div>
+            <p id="form-away-title" class="font-bold text-xs mb-2 text-white uppercase">France</p>
+            <div id="form-away-badges" class="flex gap-2">
+              <!-- form circles -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trending Insights -->
+      <section class="bg-brand-surface p-6 border border-brand-charcoal red-card-clip">
+        <h3 class="font-sans text-xs font-black uppercase tracking-wider text-brand-gold mb-4 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">trending_up</span> Trending Insights
+        </h3>
+        <ul id="insights-list" class="space-y-3">
+          <!-- list of insights -->
+          <li class="text-gray-600 animate-pulse">Running data filters...</li>
+        </ul>
+      </section>
+
+      <!-- Rival in Retro Shop Sponser -->
+      <div id="shop-jersey-card" class="bg-brand-surface p-6 border border-brand-charcoal red-card-clip">
+        <p class="text-[9px] text-brand-gold mb-3 uppercase tracking-widest font-black flex items-center gap-1"><span class="material-symbols-outlined text-xs">shopping_bag</span> Rival in Retro Shop</p>
+        
+        <div id="retro-shop-grid" class="grid grid-cols-2 gap-3">
+          <!-- dynamic jerseys -->
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- Large Watch CTA -->
+  <section class="max-w-7xl mx-auto px-6 py-6 w-full shrink-0">
+    <div class="bg-brand-red p-8 red-card-clip flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden glow-red">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 blur-3xl rounded-full"></div>
+      <div class="relative z-10 text-center md:text-left">
+        <h3 class="text-2xl font-black italic text-white leading-none mb-2 tracking-tight uppercase">Don't Miss Kickoff</h3>
+        <p class="text-sm text-white/85">Broadcast stream opens 60 minutes prior to official match time.</p>
+      </div>
+      <div class="relative z-10">
+        <a id="cta-watch-btn" href="#" target="_blank" class="bg-brand-gold text-black px-10 py-4 font-bold uppercase tracking-[0.2em] flex items-center gap-3 hover:scale-105 transition-all red-card-clip glow-gold shadow-2xl">
+          <span class="material-symbols-outlined text-xl">play_circle</span> WATCH BROADCAST
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t-4 border-brand-red py-12 px-6 shrink-0">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex flex-col items-center md:items-start gap-2">
+        <span class="text-brand-red font-black italic text-2xl tracking-tighter uppercase">Red Card Live</span>
+        <p class="text-[9px] text-gray-500 uppercase tracking-widest">© 2026 RED CARD LIVE. RIVAL IN RETRO SPONSORSHIP.</p>
+      </div>
+      <div class="flex gap-6 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+        <a class="hover:text-primary transition" href="index.html">Fixtures</a>
+        <a class="hover:text-primary transition" href="bracket.html">Bracket</a>
+        <a class="hover:text-primary transition" href="admin.html">Admin</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Admin Controls Floating Bar (Secured) -->
+  <div id="admin-controls-bar" class="fixed bottom-6 right-6 z-[60] flex flex-col gap-2 hidden">
+    <div class="hidden flex flex-col gap-2 mb-2" id="admin-actions-menu">
+      <button id="admin-btn-generate" class="bg-brand-surface border border-brand-charcoal px-4 py-2.5 red-card-clip text-[9px] font-bold uppercase tracking-widest hover:border-brand-red text-white transition-all flex items-center gap-2 shadow-2xl">
+        <span class="material-symbols-outlined text-sm text-brand-gold">auto_awesome</span> Generate AI Preview
+      </button>
+      <button id="admin-btn-reset-poll" class="bg-brand-surface border border-brand-charcoal px-4 py-2.5 red-card-clip text-[9px] font-bold uppercase tracking-widest hover:border-brand-red text-white transition-all flex items-center gap-2 shadow-2xl">
+        <span class="material-symbols-outlined text-sm text-brand-red">restart_alt</span> Reset Vote Poll
+      </button>
+      <button id="admin-btn-watch-link" class="bg-brand-surface border border-brand-charcoal px-4 py-2.5 red-card-clip text-[9px] font-bold uppercase tracking-widest hover:border-brand-red text-white transition-all flex items-center gap-2 shadow-2xl">
+        <span class="material-symbols-outlined text-sm">link</span> Configure Stream Link
+      </button>
+      <button id="admin-btn-publish" class="bg-brand-red text-white px-4 py-2.5 red-card-clip text-[9px] font-bold uppercase tracking-widest hover:bg-red-700 transition-all flex items-center gap-2 shadow-2xl">
+        <span class="material-symbols-outlined text-sm">publish</span> Publish Match State
+      </button>
+    </div>
+    <button class="w-14 h-14 bg-brand-surface rounded-full shadow-2xl flex items-center justify-center border border-brand-red group hover:scale-110 transition-all" onclick="document.getElementById('admin-actions-menu').classList.toggle('hidden')">
+      <span class="material-symbols-outlined text-brand-red group-hover:rotate-180 transition-transform duration-300">settings</span>
+    </button>
+  </div>
+
+  <!-- Module Page scripts -->
+  <script type="module">
+    import { dbOnSnapshotDoc, dbGetDoc, dbGetDocs, dbSetDoc, authOnAuthStateChanged } from "./js/firebase-config.js";
+    import { initializeSearch, renderFlag, formatToIST, getCountdown } from "./js/app.js";
+    import { generateSquads } from "./js/db-bootstrap.js";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      
+      // 1. Search Box setup
+      await initializeSearch("global-search-input", "search-results-dropdown");
+
+      // 2. Parse Query parameter
+      const params = new URLSearchParams(window.location.search);
+      let matchId = params.get("id");
+      if (!matchId) {
+        // Find active match or default to match_1
+        const matches = await dbGetDocs("matches");
+        matches.sort((a, b) => new Date(a.date) - new Date(b.date));
+        const liveMatch = matches.find(m => m.status === "Live");
+        if (liveMatch) {
+          matchId = liveMatch.id;
+        } else {
+          const featuredMatch = matches.find(m => m.featured === true);
+          matchId = featuredMatch ? featuredMatch.id : "match_1";
+        }
+      }
+
+      // Track details
+      let homeTeamDoc = null;
+      let awayTeamDoc = null;
+      let countdownInterval = null;
+      let currentPreview = null;
+
+      // 3. Dynamic Page data bindings
+      dbOnSnapshotDoc("matches", matchId, async (match) => {
+        if (!match) {
+          document.title = "Match Not Found | RED CARD LIVE";
+          document.getElementById("hero-home-name").innerText = "MATCH NOT FOUND";
+          return;
+        }
+
+        const teams = await dbGetDocs("teams");
+        const stadiums = await dbGetDocs("stadiums");
+
+        const getTeam = (id) => teams.find(t => t.id === id) || { name: "TBD", flag: "🏳️", code: "TBD", rank: 99, titles: 0, form: [] };
+        homeTeamDoc = getTeam(match.homeTeamId);
+        awayTeamDoc = getTeam(match.awayTeamId);
+        
+        const venue = stadiums.find(s => s.id === match.stadiumId) || { name: "FIFA World Cup Stadium", city: "Host City", capacity: 60000 };
+
+        document.title = `Match Preview: ${homeTeamDoc.name} vs ${awayTeamDoc.name} | RED CARD LIVE`;
+
+        // Update round tag
+        document.getElementById("hero-round-label").innerText = `${match.round} Preview`;
+
+        // Update Flag containers
+        document.getElementById("hero-home-flag-container").innerHTML = renderFlag(homeTeamDoc, "w-28 h-20 md:w-36 md:h-24 object-cover shadow-2xl border border-white/10");
+        document.getElementById("hero-away-flag-container").innerHTML = renderFlag(awayTeamDoc, "w-28 h-20 md:w-36 md:h-24 object-cover shadow-2xl border border-white/10");
+
+        // Names
+        document.getElementById("hero-home-name").innerText = homeTeamDoc.name !== "TBD" ? homeTeamDoc.name : (match.homePlaceholder || "TBD");
+        document.getElementById("hero-away-name").innerText = awayTeamDoc.name !== "TBD" ? awayTeamDoc.name : (match.awayPlaceholder || "TBD");
+
+        // Date, Time, Venue labels
+        document.getElementById("hero-venue-label").innerText = `${venue.name}, ${venue.city}`;
+        document.getElementById("hero-datetime-label").innerText = `${formatToIST(match.date)} • ${match.timeIST}`;
+
+        // Match center link
+        document.getElementById("match-center-btn").href = `match.html?id=${matchId}`;
+
+        // Snapshot cards
+        document.getElementById("snap-venue").innerText = venue.name;
+        document.getElementById("snap-venue").title = venue.name;
+        document.getElementById("snap-capacity").innerText = venue.capacity.toLocaleString();
+        document.getElementById("snap-date").innerText = new Date(match.date).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' });
+        document.getElementById("snap-round").innerText = match.round;
+
+        // Form Circle Badges
+        renderFormBadges("form-home-title", "form-home-badges", homeTeamDoc);
+        renderFormBadges("form-away-title", "form-away-badges", awayTeamDoc);
+
+        // Stats comparisons
+        renderStatsComparison(homeTeamDoc, awayTeamDoc);
+
+        // Key Players List
+        renderKeyPlayers(homeTeamDoc, awayTeamDoc);
+
+        // Sponsor retro shirts
+        renderSponsorRetroShirts(homeTeamDoc, awayTeamDoc);
+
+        // Watch Section CTA links
+        const watchLinkBtn = document.getElementById("hero-watch-btn");
+        const ctaWatchBtn = document.getElementById("cta-watch-btn");
+
+        const btnText = match.watchButtonText || "WATCH BROADCAST";
+        watchLinkBtn.innerHTML = `<span class="material-symbols-outlined text-base">play_circle</span> ${btnText}`;
+        ctaWatchBtn.innerHTML = `<span class="material-symbols-outlined text-xl">play_circle</span> ${btnText}`;
+
+        if (match.watchLink) {
+          watchLinkBtn.href = match.watchLink;
+          watchLinkBtn.classList.remove("opacity-50", "pointer-events-none");
+          ctaWatchBtn.href = match.watchLink;
+          ctaWatchBtn.classList.remove("opacity-50", "pointer-events-none");
+        } else {
+          watchLinkBtn.addEventListener("click", (e) => e.preventDefault());
+          watchLinkBtn.classList.add("opacity-50", "pointer-events-none");
+          ctaWatchBtn.addEventListener("click", (e) => e.preventDefault());
+          ctaWatchBtn.classList.add("opacity-50", "pointer-events-none");
+        }
+
+        // Live Countdown Timer
+        if (countdownInterval) clearInterval(countdownInterval);
+        const updateCountdown = () => {
+          const diff = new Date(match.date).getTime() - new Date().getTime();
+          if (diff <= 0) {
+            document.getElementById("countdown-timer-container").innerHTML = `
+              <div class="bg-brand-red px-6 py-3 border border-brand-red rounded-sm shadow-md animate-pulse">
+                <span class="font-sans font-black tracking-widest text-white text-sm">MATCH STARTED / LIVE NOW</span>
+              </div>`;
+            if (countdownInterval) clearInterval(countdownInterval);
+          } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("timer-days").innerText = String(days).padStart(2, '0');
+            document.getElementById("timer-hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("timer-minutes").innerText = String(mins).padStart(2, '0');
+            document.getElementById("timer-seconds").innerText = String(secs).padStart(2, '0');
+          }
+        };
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Load Camp News related to the match
+        loadCampNews(homeTeamDoc, awayTeamDoc);
+
+        // Re-render preview UI to update team names if preview already loaded
+        renderPreviewUI();
+      });
+
+      // 4. Bind AI Previews snapshots
+      const overviewContainer = document.getElementById("ai-overview-container");
+      const tacticalContainer = document.getElementById("tactical-analysis-container");
+      const storylinesContainer = document.getElementById("storylines-container");
+      const aiPredictionCard = document.getElementById("ai-prediction-card");
+      const insightsList = document.getElementById("insights-list");
+
+      function renderPreviewUI() {
+        const preview = currentPreview;
+        if (!preview) {
+          overviewContainer.innerHTML = `
+            <div class="text-center py-6 text-gray-500">
+              <p class="font-bold text-sm mb-2">No AI Preview Generated Yet.</p>
+              <p>Please wait or log in as Admin to generate the preview with Gemini.</p>
+            </div>`;
+          tacticalContainer.innerHTML = `<div class="text-center py-6 text-gray-600">Pending blueprint...</div>`;
+          storylinesContainer.innerHTML = `<div class="col-span-3 text-center py-6 text-gray-600">Storylines pending...</div>`;
+          aiPredictionCard.innerHTML = `<div class="text-center py-6 text-gray-600 font-mono">Prediction pending...</div>`;
+          insightsList.innerHTML = `<li class="text-gray-600 text-center py-4">Insights pending...</li>`;
+          return;
+        }
+
+        // Render Overview
+        const ov = preview.overview || {};
+        overviewContainer.innerHTML = `
+          <div class="space-y-4">
+            <p class="font-sans font-bold text-sm text-white italic">"${ov.introduction || 'Introducing the matchup.'}"</p>
+            <p><strong>Tournament Context:</strong> ${ov.context || 'Context pending.'}</p>
+            <p><strong>Importance of Matchup:</strong> ${ov.importance || 'Significance pending.'}</p>
+            <p><strong>Current Camp Situation:</strong> ${ov.currentSituation || 'Team status pending.'}</p>
+          </div>
+        `;
+
+        // Render Tactical Analysis
+        const tact = preview.tacticalAnalysis || {};
+        tacticalContainer.innerHTML = `
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-brand-charcoal/40 p-4 border border-white/5 rounded-sm">
+                <h5 class="text-[10px] font-black uppercase text-brand-red mb-2">Strengths</h5>
+                <p class="mb-2"><strong>${homeTeamDoc?.name || 'Home'}:</strong> ${tact.strengthsHome || 'Pending.'}</p>
+                <p><strong>${awayTeamDoc?.name || 'Away'}:</strong> ${tact.strengthsAway || 'Pending.'}</p>
+              </div>
+              <div class="bg-brand-charcoal/40 p-4 border border-white/5 rounded-sm">
+                <h5 class="text-[10px] font-black uppercase text-gray-400 mb-2">Weaknesses</h5>
+                <p class="mb-2"><strong>${homeTeamDoc?.name || 'Home'}:</strong> ${tact.weaknessesHome || 'Pending.'}</p>
+                <p><strong>${awayTeamDoc?.name || 'Away'}:</strong> ${tact.weaknessesAway || 'Pending.'}</p>
+              </div>
+            </div>
+            <div class="bg-brand-charcoal/30 p-4 border-l-2 border-brand-gold rounded-sm">
+              <h5 class="text-[10px] font-black uppercase text-brand-gold mb-1.5">Key Tactical Battles</h5>
+              <p>${tact.keyBattles || 'Tactical duals pending.'}</p>
+            </div>
+            <div class="text-[11px] italic text-gray-400">
+              <strong>Tactical Matchup Forecast:</strong> ${tact.tacticalMatchups || 'Analysis complete.'}
+            </div>
+          </div>
+        `;
+
+        // Render Storylines
+        const stories = preview.storylines || [];
+        storylinesContainer.innerHTML = "";
+        stories.forEach((st, idx) => {
+          const card = document.createElement("div");
+          card.className = "bg-brand-surface p-4 border border-brand-charcoal red-card-clip flex flex-col justify-between";
+          card.innerHTML = `
+            <div>
+              <div class="text-[9px] font-black text-brand-red uppercase tracking-wider mb-2">Storyline ${idx+1}</div>
+              <p class="font-sans text-xs text-white leading-snug">${st}</p>
+            </div>
+          `;
+          storylinesContainer.appendChild(card);
+        });
+
+        // Render Trending Insights
+        const insights = preview.insights || [];
+        insightsList.innerHTML = "";
+        insights.forEach(ins => {
+          const li = document.createElement("li");
+          li.className = "flex items-start gap-2 bg-brand-charcoal/20 p-2.5 border-l-2 border-brand-gold rounded-sm text-xs text-gray-300 leading-snug";
+          li.innerHTML = `
+            <span class="material-symbols-outlined text-brand-gold text-sm select-none mt-0.5">offline_bolt</span>
+            <span>${ins}</span>
+          `;
+          insightsList.appendChild(li);
+        });
+
+        // Render AI Prediction
+        const pred = preview.aiPrediction || {};
+        
+        aiPredictionCard.innerHTML = `
+          <div class="flex items-center justify-between gap-4 py-2">
+            <div class="text-center">
+              <span class="block text-[10px] font-black text-gray-500 uppercase">${homeTeamDoc?.code || 'HOME'}</span>
+              <span class="font-mono text-4xl font-black italic text-white">${pred.homeScore || 0}</span>
+            </div>
+            <div class="text-center font-bold text-xs uppercase text-gray-500">Predicted Score</div>
+            <div class="text-center">
+              <span class="block text-[10px] font-black text-gray-500 uppercase">${awayTeamDoc?.code || 'AWAY'}</span>
+              <span class="font-mono text-4xl font-black italic text-white">${pred.awayScore || 0}</span>
+            </div>
+          </div>
+          
+          <hr class="border-white/5"/>
+          
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-bold uppercase">
+              <span>AI Winner Pick</span>
+              <span class="text-brand-gold">${pred.predictedWinner || 'TBD'}</span>
+            </div>
+            <p class="text-[11px] text-gray-400 leading-relaxed">${pred.outlook || 'Prediction outline pending.'}</p>
+          </div>
+
+          <hr class="border-white/5"/>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-[10px] font-bold uppercase tracking-tighter">
+              <span>Confidence Level</span>
+              <span class="text-brand-gold font-mono">${pred.confidence || 50}%</span>
+            </div>
+            <div class="w-full bg-brand-charcoal h-1.5 rounded-full overflow-hidden">
+              <div class="bg-brand-gold h-full" style="width: ${pred.confidence || 50}%;"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      dbOnSnapshotDoc("previews", matchId, (preview) => {
+        currentPreview = preview;
+        renderPreviewUI();
+      });
+
+      // 5. Fan Prediction Poll System
+      const pollContainer = document.getElementById("fan-poll-container");
+      dbOnSnapshotDoc("polls", matchId, (pollData) => {
+        // Initialize poll values if empty
+        const poll = pollData || { homeVotes: 0, drawVotes: 0, awayVotes: 0, totalVotes: 0 };
+        const votedOption = localStorage.getItem(`voted_poll_${matchId}`);
+
+        if (votedOption) {
+          // Display live percentages
+          const total = poll.totalVotes || 1;
+          const homePct = Math.round((poll.homeVotes / total) * 100);
+          const drawPct = Math.round((poll.drawVotes / total) * 100);
+          const awayPct = Math.round((poll.awayVotes / total) * 100);
+
+          pollContainer.innerHTML = `
+            <div class="space-y-4">
+              <!-- Home -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-end text-xs">
+                  <span class="font-bold uppercase tracking-wider text-white ${votedOption === 'home' ? 'text-brand-gold font-black' : ''}">
+                    ${homeTeamDoc?.name || 'Home'} ${votedOption === 'home' ? '★ (Your Vote)' : ''}
+                  </span>
+                  <span class="font-mono text-brand-gold font-bold">${homePct}%</span>
+                </div>
+                <div class="relative h-10 bg-brand-charcoal border ${votedOption === 'home' ? 'border-brand-gold glow-gold' : 'border-white/5'} overflow-hidden rounded-sm">
+                  <div class="absolute inset-y-0 left-0 bg-brand-red/35 transition-all duration-1000" style="width: ${homePct}%;"></div>
+                  <div class="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-gray-400">
+                    ${poll.homeVotes} Votes
+                  </div>
+                </div>
+              </div>
+
+              <!-- Draw -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-end text-xs">
+                  <span class="font-bold uppercase tracking-wider text-white ${votedOption === 'draw' ? 'text-brand-gold font-black' : ''}">
+                    Draw ${votedOption === 'draw' ? '★ (Your Vote)' : ''}
+                  </span>
+                  <span class="font-mono text-brand-gold font-bold">${drawPct}%</span>
+                </div>
+                <div class="relative h-10 bg-brand-charcoal border ${votedOption === 'draw' ? 'border-brand-gold glow-gold' : 'border-white/5'} overflow-hidden rounded-sm">
+                  <div class="absolute inset-y-0 left-0 bg-gray-500/20 transition-all duration-1000" style="width: ${drawPct}%;"></div>
+                  <div class="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-gray-400">
+                    ${poll.drawVotes} Votes
+                  </div>
+                </div>
+              </div>
+
+              <!-- Away -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-end text-xs">
+                  <span class="font-bold uppercase tracking-wider text-white ${votedOption === 'away' ? 'text-brand-gold font-black' : ''}">
+                    ${awayTeamDoc?.name || 'Away'} ${votedOption === 'away' ? '★ (Your Vote)' : ''}
+                  </span>
+                  <span class="font-mono text-brand-gold font-bold">${awayPct}%</span>
+                </div>
+                <div class="relative h-10 bg-brand-charcoal border ${votedOption === 'away' ? 'border-brand-gold glow-gold' : 'border-white/5'} overflow-hidden rounded-sm">
+                  <div class="absolute inset-y-0 left-0 bg-brand-red/35 transition-all duration-1000" style="width: ${awayPct}%;"></div>
+                  <div class="absolute inset-0 flex items-center justify-center font-mono text-[10px] text-gray-400">
+                    ${poll.awayVotes} Votes
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-[9px] text-gray-500 text-center uppercase tracking-widest font-mono mt-3">
+                Total ${poll.totalVotes} Votes Recorded
+              </p>
+            </div>
+          `;
+        } else {
+          // Interactive Poll Form
+          pollContainer.innerHTML = `
+            <div class="space-y-4">
+              <button id="vote-btn-home" class="w-full bg-brand-charcoal border border-white/5 hover:border-brand-red p-4 rounded-sm text-left hover:bg-brand-charcoal/50 group transition-all">
+                <p class="font-bold uppercase text-xs text-white group-hover:text-brand-red transition-colors">${homeTeamDoc?.name || 'Home'}</p>
+                <p class="text-[9px] text-gray-500 mt-1 uppercase">Predict Home win</p>
+              </button>
+              <button id="vote-btn-draw" class="w-full bg-brand-charcoal border border-white/5 hover:border-brand-red p-4 rounded-sm text-left hover:bg-brand-charcoal/50 group transition-all">
+                <p class="font-bold uppercase text-xs text-white group-hover:text-brand-red transition-colors">Draw Match</p>
+                <p class="text-[9px] text-gray-500 mt-1 uppercase">Predict tactical deadlock</p>
+              </button>
+              <button id="vote-btn-away" class="w-full bg-brand-charcoal border border-white/5 hover:border-brand-red p-4 rounded-sm text-left hover:bg-brand-charcoal/50 group transition-all">
+                <p class="font-bold uppercase text-xs text-white group-hover:text-brand-red transition-colors">${awayTeamDoc?.name || 'Away'}</p>
+                <p class="text-[9px] text-gray-500 mt-1 uppercase">Predict Away win</p>
+              </button>
+            </div>
+          `;
+
+          // Attach listeners
+          document.getElementById("vote-btn-home").addEventListener("click", () => submitVote("home", poll));
+          document.getElementById("vote-btn-draw").addEventListener("click", () => submitVote("draw", poll));
+          document.getElementById("vote-btn-away").addEventListener("click", () => submitVote("away", poll));
+        }
+      });
+
+      // Submit vote handler
+      async function submitVote(option, currentPoll) {
+        localStorage.setItem(`voted_poll_${matchId}`, option);
+        const homeCount = currentPoll.homeVotes + (option === 'home' ? 1 : 0);
+        const drawCount = currentPoll.drawVotes + (option === 'draw' ? 1 : 0);
+        const awayCount = currentPoll.awayVotes + (option === 'away' ? 1 : 0);
+        const total = currentPoll.totalVotes + 1;
+
+        await dbSetDoc("polls", matchId, {
+          homeVotes: homeCount,
+          drawVotes: drawCount,
+          awayVotes: awayCount,
+          totalVotes: total
+        });
+      }
+
+      // 6. Admin settings check and configurations
+      authOnAuthStateChanged((user) => {
+        const bar = document.getElementById("admin-controls-bar");
+        if (user) {
+          bar.classList.remove("hidden");
+          setupAdminBar();
+        } else {
+          bar.classList.add("hidden");
+        }
+      });
+
+      function setupAdminBar() {
+        // Generate Preview
+        document.getElementById("admin-btn-generate").onclick = async () => {
+          if (!homeTeamDoc || !awayTeamDoc) return;
+          const label = document.getElementById("admin-btn-generate");
+          label.innerHTML = `<span class="material-symbols-outlined text-sm animate-spin">sync</span> Running Gemini...`;
+
+          try {
+            const settings = await dbGetDoc("settings", "api_keys");
+            const geminiKey = settings && settings.gemini_key ? settings.gemini_key : "";
+
+            if (!geminiKey) {
+              alert("Configure your Gemini key in Admin Panel first!");
+              label.innerHTML = `<span class="material-symbols-outlined text-sm text-brand-gold">auto_awesome</span> Generate AI Preview`;
+              return;
+            }
+
+            const promptText = `You are a professional football analyst writing for Indian football fans for FIFA World Cup 2026.
+Generate a structured, detailed preview for the upcoming matchup: ${homeTeamDoc.name} vs ${awayTeamDoc.name}.
+FIFA Rankings: ${homeTeamDoc.name} (${homeTeamDoc.rank}), ${awayTeamDoc.name} (${awayTeamDoc.rank}).
+Recent Form: ${homeTeamDoc.name} (${homeTeamDoc.form.join(", ")}), ${awayTeamDoc.name} (${awayTeamDoc.form.join(", ")}).
+
+You MUST return the preview in a valid JSON format with the exact keys:
+{
+  "overview": {
+    "introduction": "An exciting introduction to the fixture (2-3 sentences)",
+    "context": "The tournament context of the fixture (2-3 sentences)",
+    "importance": "The critical importance of this match for both teams (2 sentences)",
+    "currentSituation": "Briefly state the current squad/camp situation (2 sentences)"
+  },
+  "formSummary": "A concise comparison of current form (2 sentences)",
+  "h2hSummary": "A concise overview of head-to-head match context (2 sentences)",
+  "tacticalAnalysis": {
+    "strengthsHome": "Tactical strengths of ${homeTeamDoc.name} (1-2 sentences)",
+    "strengthsAway": "Tactical strengths of ${awayTeamDoc.name} (1-2 sentences)",
+    "weaknessesHome": "Tactical weaknesses or vulnerabilities of ${homeTeamDoc.name} (1-2 sentences)",
+    "weaknessesAway": "Tactical weaknesses or vulnerabilities of ${awayTeamDoc.name} (1-2 sentences)",
+    "keyBattles": "Key matchups on the pitch to watch (2-3 sentences)",
+    "tacticalMatchups": "Final tactical summary forecast (1-2 sentences)"
+  },
+  "storylines": [
+    "Catchy headline 1 with detail (2 sentences)",
+    "Catchy headline 2 with detail (2 sentences)",
+    "Catchy headline 3 with detail (2 sentences)"
+  ],
+  "insights": [
+    "Trending stat/insight 1 (1 sentence)",
+    "Trending stat/insight 2 (1 sentence)",
+    "Trending stat/insight 3 (1 sentence)"
+  ],
+  "aiPrediction": {
+    "predictedWinner": "Name of predicted winner (or 'Draw')",
+    "homeScore": 2,
+    "awayScore": 1,
+    "outlook": "Tactical forecast and flow explanation (2 sentences)",
+    "confidence": 75
+  }
+}
+
+Return ONLY the raw JSON string. Do NOT enclose in markdown codeblocks (no \`\`\`json, no \`\`\`), no formatting, just the raw JSON.`;
+
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: promptText }] }]
+              })
+            });
+
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+
+            const textResponse = data.candidates[0].content.parts[0].text;
+            const cleanedText = textResponse.replace(/```json/g, "").replace(/```/g, "").trim();
+            const parsed = JSON.parse(cleanedText);
+
+            const previewDoc = {
+              id: matchId,
+              overview: parsed.overview,
+              formSummary: parsed.formSummary,
+              h2hSummary: parsed.h2hSummary,
+              tacticalAnalysis: parsed.tacticalAnalysis,
+              storylines: parsed.storylines,
+              insights: parsed.insights,
+              aiPrediction: parsed.aiPrediction,
+              generatedAt: new Date().toISOString()
+            };
+
+            await dbSetDoc("previews", matchId, previewDoc);
+            alert("AI Previews generated successfully!");
+          } catch (e) {
+            alert("Failed generating AI Preview: " + e.message);
+          } finally {
+            label.innerHTML = `<span class="material-symbols-outlined text-sm text-brand-gold">auto_awesome</span> Generate AI Preview`;
+          }
+        };
+
+        // Reset Vote Poll
+        document.getElementById("admin-btn-reset-poll").onclick = async () => {
+          if (confirm("Reset all predictions poll votes for this match?")) {
+            await dbSetDoc("polls", matchId, { homeVotes: 0, drawVotes: 0, awayVotes: 0, totalVotes: 0 });
+            localStorage.removeItem(`voted_poll_${matchId}`);
+            alert("Prediction poll reset successfully.");
+          }
+        };
+
+        // Stream link configuration
+        document.getElementById("admin-btn-watch-link").onclick = async () => {
+          const url = prompt("Enter Broadcast Watch Link (Streaming URL):");
+          if (url === null) return;
+          const text = prompt("Enter Watch Button text:", "WATCH ON JIOHOTSTAR");
+          if (text === null) return;
+
+          const matchDoc = await dbGetDoc("matches", matchId);
+          await dbSetDoc("matches", matchId, {
+            ...matchDoc,
+            watchLink: url,
+            watchButtonText: text
+          });
+          alert("Watch links updated successfully!");
+        };
+
+        // Publish state manager
+        document.getElementById("admin-btn-publish").onclick = async () => {
+          const matchDoc = await dbGetDoc("matches", matchId);
+          const current = matchDoc.published !== false;
+          const newState = !current;
+          
+          await dbSetDoc("matches", matchId, {
+            ...matchDoc,
+            published: newState
+          });
+          alert(`Match preview state set to: ${newState ? 'PUBLISHED' : 'DRAFT'}`);
+        };
+      }
+
+    });
+
+    // Helper: Form Badges renderer
+    function renderFormBadges(titleId, listId, team) {
+      document.getElementById(titleId).innerText = team.name;
+      const list = document.getElementById(listId);
+      list.innerHTML = "";
+      
+      const formList = team.form || ["W", "D", "W", "L", "W"];
+      formList.slice(-5).forEach(f => {
+        const span = document.createElement("span");
+        let colors = "bg-brand-charcoal text-gray-400";
+        if (f === "W") colors = "bg-green-500/20 text-green-500 border border-green-500/10";
+        if (f === "L") colors = "bg-brand-red/20 text-brand-red border border-brand-red/10";
+        span.className = `w-8 h-8 flex items-center justify-center font-bold text-xs rounded-full ${colors}`;
+        span.innerText = f;
+        list.appendChild(span);
+      });
+    }
+
+    // Helper: Stats comparison bars
+    function renderStatsComparison(home, away) {
+      const container = document.getElementById("stats-comparison-container");
+      
+      // Compute deterministic comparison stats based on teams' FIFA ranks
+      const calcStats = (team) => {
+        const winsCount = (team.form || []).filter(x => x === "W").length || 3;
+        const drawCount = (team.form || []).filter(x => x === "D").length || 1;
+        const matchesPlayed = 5;
+        const goalsScored = Math.max(5, Math.round(14 - (team.rank / 4)));
+        const goalsConceded = Math.max(1, Math.round(team.rank / 6));
+        const cleanSheets = Math.max(0, winsCount - 1);
+        
+        return {
+          played: matchesPlayed,
+          wins: winsCount,
+          goalsScored,
+          goalsConceded,
+          cleanSheets
+        };
+      };
+
+      const hStats = calcStats(home);
+      const aStats = calcStats(away);
+
+      const renderBarRow = (label, hVal, aVal) => {
+        const total = hVal + aVal || 1;
+        const hPct = Math.max(15, Math.min(85, Math.round((hVal / total) * 100)));
+        const aPct = 100 - hPct;
+
+        return `
+          <div class="space-y-1.5">
+            <div class="flex justify-between font-mono text-[9px] tracking-wider uppercase text-gray-400">
+              <span>${home.code}: ${hVal}</span>
+              <span class="text-white font-sans font-bold tracking-widest">${label}</span>
+              <span>${away.code}: ${aVal}</span>
+            </div>
+            <div class="flex h-2.5 bg-brand-charcoal overflow-hidden rounded-full border border-white/5">
+              <div class="bg-brand-red h-full" style="width: ${hPct}%;"></div>
+              <div class="bg-white/30 h-full" style="width: ${aPct}%;"></div>
+            </div>
+          </div>
+        `;
+      };
+
+      container.innerHTML = `
+        ${renderBarRow("Goals Scored", hStats.goalsScored, aStats.goalsScored)}
+        ${renderBarRow("Matches Won", hStats.wins, aStats.wins)}
+        ${renderBarRow("Clean Sheets", hStats.cleanSheets, aStats.cleanSheets)}
+        ${renderBarRow("Goals Conceded", hStats.goalsConceded, aStats.goalsConceded)}
+      `;
+    }
+
+    // Helper: Key Players
+    function renderKeyPlayers(home, away) {
+      const homeList = document.getElementById("key-players-home-list");
+      const awayList = document.getElementById("key-players-away-list");
+
+      // Update titles dynamically
+      const homeTitle = document.getElementById("key-players-home-title");
+      const awayTitle = document.getElementById("key-players-away-title");
+      if (homeTitle) homeTitle.innerText = `${home.name || "Home Team"} Key Players`;
+      if (awayTitle) awayTitle.innerText = `${away.name || "Away Team"} Key Players`;
+
+      const renderSquadStars = (listElement, teamDoc, isHome) => {
+        listElement.innerHTML = "";
+        let squad = teamDoc.squad || [];
+        if (squad.length === 0 && teamDoc.id && teamDoc.id !== "TBD") {
+          squad = generateSquads(teamDoc.id);
+        }
+        
+        // Take top 3 players (usually attackers/goalkeeper)
+        const stars = squad.slice(0, 3);
+        if (stars.length === 0) {
+          if (teamDoc.id === "TBD" || !teamDoc.id) {
+            listElement.innerHTML = `<p class="text-gray-500 text-[10px] italic">Players will be available post-qualification.</p>`;
+          } else {
+            listElement.innerHTML = `<p class="text-gray-600 text-[10px]">No squad details bootstrapped.</p>`;
+          }
+          return;
+        }
+
+        stars.forEach(player => {
+          const div = document.createElement("div");
+          div.className = "bg-brand-charcoal/40 p-3 border border-white/5 flex items-center justify-between rounded-sm";
+          
+          // Fallback image using placeholder shirt badge
+          const color = isHome ? "text-brand-red" : "text-white";
+          div.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-brand-black border border-white/10 flex items-center justify-center font-mono text-[10px] font-bold ${color}">
+                #${player.number || 10}
+              </div>
+              <div>
+                <p class="font-bold text-xs text-white leading-tight">${player.name}</p>
+                <p class="text-[9px] text-gray-500 uppercase">${player.position}</p>
+              </div>
+            </div>
+            <div class="text-[10px] font-mono text-brand-gold uppercase font-bold">
+              ${player.goals !== undefined ? `G: ${player.goals}` : `Apps: ${player.apps || 10}`}
+            </div>
+          `;
+          listElement.appendChild(div);
+        });
+      };
+
+      renderSquadStars(homeList, home, true);
+      renderSquadStars(awayList, away, false);
+    }
+
+    // Helper: Related camp news loader
+    async function loadCampNews(home, away) {
+      const list = document.getElementById("related-news-container");
+      list.innerHTML = "";
+
+      const newsList = await dbGetDocs("news");
+      
+      // Filter news articles referencing the teams, or take first 2
+      let filtered = newsList.filter(n => {
+        const text = (n.title + " " + n.summary + " " + n.content).toLowerCase();
+        return text.includes((home.name || "").toLowerCase()) || text.includes((away.name || "").toLowerCase());
+      });
+
+      if (filtered.length === 0) {
+        filtered = newsList.slice(0, 2);
+      } else {
+        filtered = filtered.slice(0, 2);
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<p class="text-gray-600 text-xs">No team news published.</p>`;
+        return;
+      }
+
+      filtered.forEach(art => {
+        const card = document.createElement("div");
+        card.className = "bg-brand-surface border border-brand-charcoal group cursor-pointer overflow-hidden rounded-sm flex flex-col justify-between";
+        card.onclick = () => alert(`--- ${art.title} ---\n\n${art.content}`);
+
+        const imgUrl = art.imageUrl || art.image || "https://images.unsplash.com/photo-1518063319789-7217e6706b04?w=600&auto=format&fit=crop&q=80";
+        card.innerHTML = `
+          <div class="h-36 overflow-hidden relative border-b border-white/5">
+            <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" src="${imgUrl}" alt="News thumbnail"/>
+            <span class="absolute top-2.5 left-2.5 bg-brand-red px-2 py-0.5 text-[8px] font-black uppercase text-white tracking-widest">${art.category}</span>
+          </div>
+          <div class="p-4">
+            <p class="text-[8px] font-black text-gray-500 uppercase mb-1">${new Date(art.publishedAt).toLocaleDateString("en-IN")}</p>
+            <h4 class="font-bold text-xs text-white leading-snug group-hover:text-brand-red transition-colors uppercase line-clamp-2">${art.title}</h4>
+            <p class="text-[10px] text-gray-400 mt-2 line-clamp-2">${art.summary}</p>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Helper: Sponsor Retro jerseys
+    function renderSponsorRetroShirts(home, away) {
+      const container = document.getElementById("retro-shop-grid");
+      container.innerHTML = "";
+
+      // List of retro shirts in DB or fallbacks
+      const retroShirts = [
+        { id: "arg_86", team: "argentina", name: "'86 Argentina Away", price: "₹2,399", img: "https://images.unsplash.com/photo-1504305754058-2f08ccd89a0a?w=400" },
+        { id: "br_70", team: "brazil", name: "'70 Brazil Classic", price: "₹2,499", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400" },
+        { id: "eng_66", team: "england", name: "'66 England Red", price: "₹2,599", img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400" }
+      ];
+
+      // Match against participating teams, or fallback to general shirts
+      let selected = retroShirts.filter(s => s.team === home.id || s.team === away.id);
+      if (selected.length === 0) {
+        selected = [retroShirts[0], retroShirts[2]]; // fallbacks
+      } else if (selected.length === 1) {
+        selected.push(retroShirts.find(s => s.id !== selected[0].id)); // add fallback
+      }
+
+      selected.slice(0, 2).forEach(shirt => {
+        const div = document.createElement("div");
+        div.className = "bg-brand-charcoal/50 p-3 text-center border border-white/5 hover:border-brand-gold/30 transition-all cursor-pointer rounded-sm group";
+        div.innerHTML = `
+          <div class="aspect-square bg-white/5 mb-3 flex items-center justify-center relative overflow-hidden rounded-sm">
+            <span class="text-4xl transform group-hover:scale-110 transition-transform duration-300">👕</span>
+            <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p class="text-[8px] text-brand-gold uppercase tracking-wider font-black mb-1">Rival In Retro</p>
+              <p class="text-[8px] text-white leading-tight">View premium vintage retro jersey.</p>
+            </div>
+          </div>
+          <div class="text-[10px] font-black uppercase tracking-tight truncate text-gray-300">${shirt.name}</div>
+          <div class="text-brand-gold text-[9px] font-mono mt-1 font-bold">
+            <span class="text-white font-extrabold">${shirt.price}</span>
+          </div>
+        `;
+        
+        div.onclick = () => {
+          const makeSlug = (str) => (str || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+          const slug = makeSlug(shirt.name) || shirt.id;
+          window.open(`https://rivalinretro.vercel.app/#product/${slug}`, "_blank");
+        };
+
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -603,7 +603,7 @@ void main() {
             <!-- Hero Actions -->
             <div class="mt-12 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
               ${watchBtnHtml}
-              <a href="match.html?id=${featuredMatch.id}" class="border border-white/40 text-white px-8 py-3 btn-skewed font-bold text-xs tracking-widest hover:bg-white/10 transition-colors block text-center">
+              <a href="${featuredMatch.status === 'Upcoming' ? 'preview.html' : 'match.html'}?id=${featuredMatch.id}" class="border border-white/40 text-white px-8 py-3 btn-skewed font-bold text-xs tracking-widest hover:bg-white/10 transition-colors block text-center">
                 <span class="btn-skewed-content block">VIEW MATCH STATS</span>
               </a>
             </div>
@@ -720,7 +720,7 @@ void main() {
                 <span class="font-black italic text-base">${away.code || m.awayPlaceholder}</span>
                 ${renderFlag(away, "w-6 h-4")}
               </div>
-              <a href="match.html?id=${m.id}" class="w-full text-center py-1 border border-white/10 hover:border-brand-red text-[9px] font-bold uppercase transition-all block">
+              <a href="preview.html?id=${m.id}" class="w-full text-center py-1 border border-white/10 hover:border-brand-red text-[9px] font-bold uppercase transition-all block">
                 Match Details
               </a>
             `;
@@ -808,7 +808,7 @@ void main() {
                 <span class="text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-sm ${statusColors}">
                   ${m.status === "Live" ? `LIVE ${m.minute}'` : m.status}
                 </span>
-                <a href="match.html?id=${m.id}" class="text-brand-red font-bold text-[9px] uppercase tracking-widest hover:underline group-hover:translate-x-1 transition-transform">Match Centre →</a>
+                <a href="${m.status === 'Upcoming' ? 'preview.html' : 'match.html'}?id=${m.id}" class="text-brand-red font-bold text-[9px] uppercase tracking-widest hover:underline group-hover:translate-x-1 transition-transform">Match Centre →</a>
               </div>
             `;
             allFixturesList.appendChild(row);
@@ -859,8 +859,13 @@ void main() {
         }
 
         newsGrid.innerHTML = "";
+        
+        // Sort news articles chronologically by publishedAt descending (newest first)
+        const sortedArticles = [...articles].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+
         // Show top 3 news articles
-        articles.slice(0, 3).forEach(news => {
+        sortedArticles.slice(0, 3).forEach(news => {
+          const imgUrl = news.imageUrl || news.image || "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&auto=format&fit=crop&q=80";
           const card = document.createElement("div");
           card.className = "group cursor-pointer flex flex-col justify-between";
           card.onclick = () => {
@@ -869,7 +874,7 @@ void main() {
           card.innerHTML = `
             <div>
               <div class="aspect-video bg-gray-800 rounded-sm overflow-hidden mb-4 border border-white/5 relative">
-                <img alt="News Thumbnail" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="${news.imageUrl}"/>
+                <img alt="News Thumbnail" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="${imgUrl}"/>
                 <div class="absolute top-4 left-4 bg-brand-red px-2 py-1 text-[8px] font-black uppercase tracking-wider">${news.category}</div>
               </div>
               <h3 class="text-lg font-black leading-tight group-hover:text-brand-red transition-colors mb-2 uppercase">${news.title}</h3>
@@ -899,7 +904,7 @@ void main() {
         <div class="px-6 text-center border-x border-white/5">
           <div class="text-brand-gold font-mono text-base font-bold">${m.status === 'Live' ? `LIVE • ${m.homeScore}-${m.awayScore}` : m.timeIST}</div>
           <div class="text-[8px] text-gray-500 uppercase mt-1 tracking-widest">${getTeam(m.stadiumId).name || 'Stadium'}</div>
-          <a href="match.html?id=${m.id}" class="mt-3 px-4 py-1.5 border border-white/20 text-[10px] font-bold uppercase hover:bg-white/10 transition-colors block text-center">Match Center</a>
+          <a href="${m.status === 'Upcoming' ? 'preview.html' : 'match.html'}?id=${m.id}" class="mt-3 px-4 py-1.5 border border-white/20 text-[10px] font-bold uppercase hover:bg-white/10 transition-colors block text-center">Match Center</a>
         </div>
         <div class="flex-1 flex flex-col items-center">
           <div class="mb-2 shrink-0">${renderFlag(away, "w-10 h-7")}</div>

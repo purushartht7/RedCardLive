@@ -245,6 +245,7 @@
   <script type="module">
     import { dbGetDoc, dbGetDocs, dbOnSnapshotCollection } from "./js/firebase-config.js";
     import { initializeSearch, formatToIST, renderFlag } from "./js/app.js";
+    import { generateSquads } from "./js/db-bootstrap.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
       // 1. Search Box setup
@@ -277,8 +278,12 @@
       // 4. Render Squad list
       const squadGrid = document.getElementById("squad-grid");
       squadGrid.innerHTML = "";
-      if (team.squad && team.squad.length > 0) {
-        team.squad.forEach(p => {
+      let squad = team.squad || [];
+      if (squad.length === 0 && team.id && team.id !== "TBD") {
+        squad = generateSquads(team.id);
+      }
+      if (squad.length > 0) {
+        squad.forEach(p => {
           const div = document.createElement("div");
           div.className = "bg-brand-surface red-card-angle p-4 border border-brand-charcoal hover:border-brand-red/50 transition-all flex flex-col justify-between group h-36 relative";
           div.innerHTML = `
