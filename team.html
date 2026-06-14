@@ -53,7 +53,7 @@
         <a class="hover:text-white transition" href="index.html">MATCHES</a>
         <a class="hover:text-white transition" href="index.html#news-section">NEWS</a>
         <a class="hover:text-white transition" href="bracket.html">BRACKET</a>
-        <a class="text-white border-b-2 border-brand-red pb-1" href="team.html?id=england">TEAMS</a>
+        <a class="text-white border-b-2 border-brand-red pb-1" href="team.html">TEAMS</a>
         <a class="hover:text-white transition" href="admin.html">ADMIN</a>
       </nav>
     </div>
@@ -87,21 +87,21 @@
             </a>
           </li>
           <li>
-            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="match.html?id=match_102">
-              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">sports_soccer</span>
-              <span class="text-sm font-semibold">Live Scores</span>
-            </a>
-          </li>
-          <li>
             <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="bracket.html">
               <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">account_tree</span>
               <span class="text-sm font-semibold">Bracket</span>
             </a>
           </li>
           <li>
-            <a class="flex items-center px-6 py-3 bg-gradient-to-r from-brand-red/20 to-transparent border-l-4 border-brand-red text-white group" href="team.html?id=england">
+            <a class="flex items-center px-6 py-3 bg-gradient-to-r from-brand-red/20 to-transparent border-l-4 border-brand-red text-white group" href="team.html">
               <span class="material-symbols-outlined mr-4 text-brand-red">flag</span>
               <span class="text-sm font-semibold">Teams</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="index.html#retro-jersey-grid">
+              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">shopping_bag</span>
+              <span class="text-sm font-semibold">Rival in Retro</span>
             </a>
           </li>
         </ul>
@@ -117,7 +117,7 @@
     <main class="flex-grow bg-brand-black overflow-y-auto flex flex-col z-0">
       
       <!-- Top Hero Header Section -->
-      <section class="relative h-[45vh] lg:h-[50vh] overflow-hidden flex items-end">
+      <section id="team-hero-section" class="relative h-[45vh] lg:h-[50vh] overflow-hidden flex items-end">
         <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent z-10"></div>
         <img alt="Stadium Stadium" class="absolute inset-0 w-full h-full object-cover brightness-50" src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1600&auto=format&fit=crop&q=80"/>
         
@@ -155,7 +155,7 @@
       </section>
 
       <!-- Squad & Schedule Split Section -->
-      <section class="px-6 py-12 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 z-10 relative">
+      <section id="team-squad-section" class="px-6 py-12 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 z-10 relative">
         
         <!-- Left: Roster Squad list (8 Columns) -->
         <div class="lg:col-span-8 space-y-6">
@@ -196,6 +196,20 @@
 
       </section>
 
+      <!-- Browse All Teams Section -->
+      <section class="border-t border-brand-charcoal bg-brand-charcoal/10 py-12 px-6">
+        <div class="max-w-7xl mx-auto w-full space-y-6">
+          <div class="border-l-4 border-brand-red pl-3 mb-8">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-white">ALL 48 TEAMS</h2>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Browse teams by tournament group</p>
+          </div>
+          
+          <div id="all-teams-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="text-gray-500 text-xs py-6 animate-pulse">Loading all teams...</div>
+          </div>
+        </div>
+      </section>
+
       <!-- Footer -->
       <footer class="bg-black border-t border-brand-charcoal py-12 px-6 mt-auto">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
@@ -221,19 +235,19 @@
       <span class="material-symbols-outlined text-[28px] mb-1">home</span>
       <span class="font-label-sm text-[10px] uppercase tracking-tighter">Home</span>
     </a>
-    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="match.html?id=match_102">
-      <span class="material-symbols-outlined text-[28px] mb-1">sports_soccer</span>
-      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Live</span>
-    </a>
     <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="bracket.html">
       <span class="material-symbols-outlined text-[28px] mb-1">account_tree</span>
       <span class="font-label-sm text-[10px] uppercase tracking-tighter">Bracket</span>
     </a>
-    <a class="flex flex-col items-center gap-1 group text-primary active:scale-95 transition-transform" href="team.html?id=england">
+    <a class="flex flex-col items-center gap-1 group text-primary active:scale-95 transition-transform" href="team.html">
       <div class="bg-primary-container/20 px-4 py-1 rounded-full mb-1">
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">flag</span>
       </div>
       <span class="font-label-sm text-[10px] uppercase font-bold tracking-tighter">Teams</span>
+    </a>
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="index.html#retro-jersey-grid">
+      <span class="material-symbols-outlined text-[28px] mb-1">shopping_bag</span>
+      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Retro</span>
     </a>
     <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="admin.html">
       <span class="material-symbols-outlined text-[28px] mb-1">admin_panel_settings</span>
@@ -254,130 +268,195 @@
       // 2. Parse Query parameter
       const params = new URLSearchParams(window.location.search);
       let teamId = params.get("id");
+
       if (!teamId) {
-        teamId = "england"; // Default fallback
-      }
-
-      // 3. Load team details
-      const team = await dbGetDoc("teams", teamId);
-      if (!team) {
-        document.getElementById("team-hero-name").innerText = "Team not found.";
-        return;
-      }
-
-      // Render Hero Elements
-      document.getElementById("team-hero-flag").innerHTML = renderFlag(team, "w-16 h-10 lg:w-20 lg:h-14 rounded-sm shadow-2xl border border-white/10");
-      document.getElementById("team-hero-name").innerText = team.name.toUpperCase();
-      document.getElementById("team-hero-desc").innerText = `
-        The ${team.name} national football team returns to the world stage with a renewed hunger for glory. Led by elite tactical precision and a generation of world-class talent, ${team.name} targets the final crown in the FIFA World Cup 2026.
-      `;
-      document.getElementById("stat-rank").innerText = `${team.rank}TH`;
-      document.getElementById("stat-titles").innerText = team.titles;
-      document.getElementById("stat-form").innerText = (team.form || []).join(" ");
-
-      // 4. Render Squad list
-      const squadGrid = document.getElementById("squad-grid");
-      squadGrid.innerHTML = "";
-      let squad = team.squad || [];
-      if (squad.length === 0 && team.id && team.id !== "TBD") {
-        squad = generateSquads(team.id);
-      }
-      if (squad.length > 0) {
-        squad.forEach(p => {
-          const div = document.createElement("div");
-          div.className = "bg-brand-surface red-card-angle p-4 border border-brand-charcoal hover:border-brand-red/50 transition-all flex flex-col justify-between group h-36 relative";
-          div.innerHTML = `
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="font-bold text-sm text-white group-hover:text-brand-red transition-colors">${p.name.toUpperCase()}</h3>
-                <p class="text-brand-gold font-bold text-[9px] uppercase tracking-wider">${p.position}</p>
-              </div>
-              <span class="font-mono text-2xl font-black text-gray-700 group-hover:text-brand-red/30 transition-colors select-none">${p.number}</span>
-            </div>
-            <div class="grid grid-cols-3 gap-1 mt-4 text-center">
-              <div class="bg-brand-black/40 p-1.5 border-b border-brand-charcoal">
-                <span class="block text-white font-mono text-xs font-bold">${p.apps}</span>
-                <span class="text-[8px] text-gray-500 font-bold uppercase">APPS</span>
-              </div>
-              <div class="bg-brand-black/40 p-1.5 border-b border-brand-charcoal">
-                <span class="block text-white font-mono text-xs font-bold">${p.goals}</span>
-                <span class="text-[8px] text-gray-500 font-bold uppercase">${p.position === 'Goalkeeper' ? 'GA' : 'GOALS'}</span>
-              </div>
-              <div class="bg-brand-black/40 p-1.5 border-b border-brand-charcoal">
-                <span class="block text-white font-mono text-xs font-bold">${p.assists !== undefined ? p.assists : p.cleanSheets || 0}</span>
-                <span class="text-[8px] text-gray-500 font-bold uppercase">${p.position === 'Goalkeeper' ? 'CS' : 'AST'}</span>
-              </div>
-            </div>
-            <div class="absolute left-0 bottom-0 top-0 w-0 group-hover:w-1 bg-brand-red transition-all duration-200"></div>
-          `;
-          squadGrid.appendChild(div);
-        });
+        // Hide details sections
+        document.getElementById("team-hero-section").classList.add("hidden");
+        document.getElementById("team-squad-section").classList.add("hidden");
+        // Remove border-t from all teams section so it sits nicely at the top
+        const allTeamsSec = document.querySelector("#all-teams-grid").closest("section");
+        if (allTeamsSec) {
+          allTeamsSec.classList.remove("border-t");
+        }
       } else {
-        squadGrid.innerHTML = `<div class="text-xs text-gray-600">No squad data available.</div>`;
-      }
-
-      // 5. Load team fixtures from matches collection
-      dbOnSnapshotCollection("matches", async (matches) => {
-        if (!matches || matches.length === 0) return;
-        
-        // Filter matches involving this team
-        const teamMatches = matches.filter(m => m.homeTeamId === teamId || m.awayTeamId === teamId);
-        
-        // Fetch teams to map opponent flags
-        const allTeams = await dbGetDocs("teams");
-        const getTeamDetails = (id) => allTeams.find(t => t.id === id) || { name: "TBD", flag: "🏳️", code: "TBD" };
-
-        const fixturesStack = document.getElementById("fixtures-stack");
-        fixturesStack.innerHTML = "";
-
-        if (teamMatches.length === 0) {
-          fixturesStack.innerHTML = `<div class="text-xs text-gray-600">No matches scheduled.</div>`;
+        // 3. Load team details
+        const team = await dbGetDoc("teams", teamId);
+        if (!team) {
+          document.getElementById("team-hero-name").innerText = "Team not found.";
+          document.getElementById("team-squad-section").classList.add("hidden");
           return;
         }
 
-        // Sort by match ID / date order
-        teamMatches.sort((a, b) => new Date(a.date) - new Date(b.date));
+        // Render Hero Elements
+        document.getElementById("team-hero-flag").innerHTML = renderFlag(team, "w-16 h-10 lg:w-20 lg:h-14 rounded-sm shadow-2xl border border-white/10");
+        document.getElementById("team-hero-name").innerText = team.name.toUpperCase();
+        document.getElementById("team-hero-desc").innerText = `
+          The ${team.name} national football team returns to the world stage with a renewed hunger for glory. Led by elite tactical precision and a generation of world-class talent, ${team.name} targets the final crown in the FIFA World Cup 2026.
+        `;
+        document.getElementById("stat-rank").innerText = `${team.rank}TH`;
+        document.getElementById("stat-titles").innerText = team.titles;
+        document.getElementById("stat-form").innerText = (team.form || []).join(" ");
 
-        teamMatches.forEach(m => {
-          const home = getTeamDetails(m.homeTeamId);
-          const away = getTeamDetails(m.awayTeamId);
+        // 4. Render Squad list
+        const squadGrid = document.getElementById("squad-grid");
+        squadGrid.innerHTML = "";
+        let squad = team.squad || [];
+        if (squad.length === 0 && team.id && team.id !== "TBD") {
+          squad = generateSquads(team.id);
+        }
+        if (squad.length > 0) {
+          squad.forEach(p => {
+            const div = document.createElement("div");
+            div.className = "bg-brand-surface red-card-angle p-4 border border-brand-charcoal hover:border-brand-red/50 transition-all flex flex-col justify-between group h-36 relative";
+            div.innerHTML = `
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-bold text-sm text-white group-hover:text-brand-red transition-colors">${p.name.toUpperCase()}</h3>
+                  <p class="text-brand-gold font-bold text-[9px] uppercase tracking-wider">${p.position}</p>
+                </div>
+                <span class="font-mono text-2xl font-black text-gray-700 group-hover:text-brand-red/30 transition-colors select-none">${p.number}</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 mt-4 text-center">
+                <div class="bg-brand-black/40 p-1.5 border-b border-brand-charcoal">
+                  <span class="block text-white font-mono text-xs font-bold">${p.apps}</span>
+                  <span class="text-[8px] text-gray-500 font-bold uppercase">APPS</span>
+                </div>
+                <div class="bg-brand-black/40 p-1.5 border-b border-brand-charcoal">
+                  <span class="block text-white font-mono text-xs font-bold">${p.goals}</span>
+                  <span class="text-[8px] text-gray-500 font-bold uppercase">${p.position === 'Goalkeeper' ? 'GA' : 'GOALS'}</span>
+                </div>
+                <div class="bg-brand-black/40 p-1.5 border-b border-brand-charcoal">
+                  <span class="block text-white font-mono text-xs font-bold">${p.assists !== undefined ? p.assists : p.cleanSheets || 0}</span>
+                  <span class="text-[8px] text-gray-500 font-bold uppercase">${p.position === 'Goalkeeper' ? 'CS' : 'AST'}</span>
+                </div>
+              </div>
+              <div class="absolute left-0 bottom-0 top-0 w-0 group-hover:w-1 bg-brand-red transition-all duration-200"></div>
+            `;
+            squadGrid.appendChild(div);
+          });
+        } else {
+          squadGrid.innerHTML = `<div class="text-xs text-gray-600">No squad data available.</div>`;
+        }
 
-          const isHome = m.homeTeamId === teamId;
-          const opponent = isHome ? away : home;
+        // 5. Load team fixtures from matches collection
+        dbOnSnapshotCollection("matches", async (matches) => {
+          if (!matches || matches.length === 0) return;
           
-          let scoreHtml = "-";
-          if (m.status === "Live" || m.status === "Finished") {
-            scoreHtml = `${m.homeScore} - ${m.awayScore}`;
+          // Filter matches involving this team
+          const teamMatches = matches.filter(m => m.homeTeamId === teamId || m.awayTeamId === teamId);
+          
+          // Fetch teams to map opponent flags
+          const allTeams = await dbGetDocs("teams");
+          const getTeamDetails = (id) => allTeams.find(t => t.id === id) || { name: "TBD", flag: "🏳️", code: "TBD" };
+
+          const fixturesStack = document.getElementById("fixtures-stack");
+          fixturesStack.innerHTML = "";
+
+          if (teamMatches.length === 0) {
+            fixturesStack.innerHTML = `<div class="text-xs text-gray-600">No matches scheduled.</div>`;
+            return;
           }
 
-          const div = document.createElement("a");
-          div.href = `match.html?id=${m.id}`;
-          div.className = "bg-brand-surface p-4 border border-brand-charcoal hover:border-brand-red flex items-center justify-between transition-colors text-xs";
-          div.innerHTML = `
-            <div class="flex flex-col gap-1.5 max-w-[70%]">
-              <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">${formatToIST(m.date)}</span>
-              <div class="flex items-center gap-2">
-                ${renderFlag(opponent, "w-6 h-4")}
-                <span class="font-bold uppercase text-white truncate">${isHome ? 'VS' : 'AT'} ${opponent.name}</span>
-              </div>
-              <span class="text-[8px] text-gray-600 font-bold uppercase tracking-widest">${m.round}</span>
-            </div>
-            <div class="text-right">
-              <span class="font-mono text-sm font-black text-brand-gold">${m.status === 'Live' ? 'LIVE • ' : ''}${scoreHtml}</span>
-              <span class="block text-[8px] text-gray-500 font-bold uppercase mt-1 tracking-wider">${m.status}</span>
-            </div>
-          `;
-          fixturesStack.appendChild(div);
-        });
+          // Sort by match ID / date order
+          teamMatches.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        // Sidebar Watch Link
-        const featuredMatch = matches.find(m => m.featured === true) || matches[0];
-        const sidebarWatch = document.getElementById("sidebar-watch-btn");
-        if (sidebarWatch && featuredMatch && featuredMatch.watchLink) {
-          sidebarWatch.href = featuredMatch.watchLink;
-          sidebarWatch.target = "_blank";
+          teamMatches.forEach(m => {
+            const home = getTeamDetails(m.homeTeamId);
+            const away = getTeamDetails(m.awayTeamId);
+
+            const isHome = m.homeTeamId === teamId;
+            const opponent = isHome ? away : home;
+            
+            let scoreHtml = "-";
+            if (m.status === "Live" || m.status === "Finished") {
+              scoreHtml = `${m.homeScore} - ${m.awayScore}`;
+            }
+
+            const div = document.createElement("a");
+            div.href = `match.html?id=${m.id}`;
+            div.className = "bg-brand-surface p-4 border border-brand-charcoal hover:border-brand-red flex items-center justify-between transition-colors text-xs";
+            div.innerHTML = `
+              <div class="flex flex-col gap-1.5 max-w-[70%]">
+                <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">${formatToIST(m.date)}</span>
+                <div class="flex items-center gap-2">
+                  ${renderFlag(opponent, "w-6 h-4")}
+                  <span class="font-bold uppercase text-white truncate">${isHome ? 'VS' : 'AT'} ${opponent.name}</span>
+                </div>
+                <span class="text-[8px] text-gray-600 font-bold uppercase tracking-widest">${m.round}</span>
+              </div>
+              <div class="text-right">
+                <span class="font-mono text-sm font-black text-brand-gold">${m.status === 'Live' ? 'LIVE • ' : ''}${scoreHtml}</span>
+                <span class="block text-[8px] text-gray-500 font-bold uppercase mt-1 tracking-wider">${m.status}</span>
+              </div>
+            `;
+            fixturesStack.appendChild(div);
+          });
+
+          // Sidebar Watch Link
+          const featuredMatch = matches.find(m => m.featured === true) || matches[0];
+          const sidebarWatch = document.getElementById("sidebar-watch-btn");
+          if (sidebarWatch && featuredMatch && featuredMatch.watchLink) {
+            sidebarWatch.href = featuredMatch.watchLink;
+            sidebarWatch.target = "_blank";
+          }
+        });
+      }
+
+      // 6. Load and render all 48 teams grouped by group (A to L)
+      try {
+        const allTeams = await dbGetDocs("teams");
+        if (allTeams && allTeams.length > 0) {
+          const groups = {};
+          ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"].forEach(g => {
+            groups[g] = [];
+          });
+          
+          allTeams.forEach(t => {
+            if (t.group && groups[t.group]) {
+              groups[t.group].push(t);
+            }
+          });
+
+          const allTeamsGrid = document.getElementById("all-teams-grid");
+          allTeamsGrid.innerHTML = "";
+
+          Object.keys(groups).forEach(groupName => {
+            const groupTeams = groups[groupName];
+            groupTeams.sort((a, b) => a.name.localeCompare(b.name));
+
+            const card = document.createElement("div");
+            card.className = "bg-brand-surface border border-brand-charcoal p-5 rounded-sm flex flex-col justify-between group/card hover:border-brand-red/30 transition-all duration-300 relative overflow-hidden";
+            
+            let teamsListHtml = "";
+            groupTeams.forEach(t => {
+              const isActive = t.id === teamId;
+              teamsListHtml += `
+                <a href="team.html?id=${t.id}" class="flex items-center gap-3 py-2 px-2.5 rounded-sm transition-all duration-200 ${isActive ? 'bg-brand-red/10 border-l-2 border-brand-red text-white' : 'hover:bg-brand-charcoal text-gray-300 hover:text-white'}">
+                  ${renderFlag(t, "w-6 h-4 shadow-sm border border-white/5")}
+                  <span class="text-xs font-bold uppercase tracking-wider truncate flex-grow">${t.name}</span>
+                  <span class="text-[9px] font-mono font-bold text-gray-500 uppercase tracking-wider select-none">#${t.rank}</span>
+                </a>
+              `;
+            });
+
+            card.innerHTML = `
+              <div class="mb-4 flex justify-between items-center border-b border-white/5 pb-2">
+                <h3 class="font-black italic text-sm text-brand-red tracking-wider">GROUP ${groupName}</h3>
+                <span class="text-[9px] text-gray-600 font-bold uppercase tracking-widest font-mono">STAGE 1</span>
+              </div>
+              <div class="space-y-1">
+                ${teamsListHtml}
+              </div>
+            `;
+            allTeamsGrid.appendChild(card);
+          });
+        } else {
+          document.getElementById("all-teams-grid").innerHTML = `<div class="text-xs text-gray-600 col-span-full">No team lists found in the database. Run the bootstrapper in the Admin panel.</div>`;
         }
-      });
+      } catch (err) {
+        console.error("Error loading all teams:", err);
+        document.getElementById("all-teams-grid").innerHTML = `<div class="text-xs text-gray-600 col-span-full">Error loading team profiles list: ${err.message}</div>`;
+      }
 
     });
   </script>

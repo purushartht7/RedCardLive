@@ -511,10 +511,29 @@ export const renderRetroJerseys = async (containerId) => {
 
     if (products.length === 0) throw new Error("No active products");
 
-    // Shuffle products
-    const shuffled = products.sort(() => 0.5 - Math.random());
-    // Get top 4
-    const selected = shuffled.slice(0, 4);
+    // Filter by World Cup category or 2026 World Cup in the name
+    let selected = products.filter(p => p.cat === "world-cup" || (p.name && p.name.toLowerCase().includes("world cup 2026")) || (p.name && p.name.toLowerCase().includes("2026 world cup")));
+
+    // Shuffle the matching products
+    selected = selected.sort(() => 0.5 - Math.random());
+
+    // If we have fewer than 4 products from the API, complement them with mock retro jerseys from the World Cup
+    if (selected.length < 4) {
+      const mocks = [
+        { id: "br_70", name: "Brazil '70 Classic", price: 2499, mrp: 3999, icon: "👕", desc: "The signature yellow worn by Pele in Mexico." },
+        { id: "arg_86", name: "Argentina '86 Away", price: 2399, mrp: 3899, icon: "👕", desc: "The legendary blue worn by Maradona in Azteca." },
+        { id: "it_90", name: "Italy '90 Home", price: 2299, mrp: 3799, icon: "👕", desc: "Elegant azzurri retro design from Italia '90." },
+        { id: "eng_66", name: "England '66 Red", price: 2599, mrp: 4199, icon: "👕", desc: "Worn during the historic victory at Wembley." }
+      ];
+      
+      const existingNames = new Set(selected.map(p => p.name.toLowerCase()));
+      for (const mock of mocks) {
+        if (selected.length >= 4) break;
+        if (!existingNames.has(mock.name.toLowerCase())) {
+          selected.push(mock);
+        }
+      }
+    }
 
     container.innerHTML = "";
     

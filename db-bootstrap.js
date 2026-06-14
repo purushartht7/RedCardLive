@@ -1,5 +1,6 @@
 // Database Bootstrapper and Fixture Generator - Red Card Live World Cup 2026
 import { dbSetDoc, dbGetDoc } from "./firebase-config.js";
+import TEAMS_DATA from "../world_cup_2026_team_profiles.json";
 
 export const STADIUMS = [
   { id: "metlife", name: "MetLife Stadium", city: "East Rutherford, NJ", capacity: 82500, image: "https://images.unsplash.com/photo-1564198879120-ed341af72d89?w=600&auto=format&fit=crop&q=80" },
@@ -20,68 +21,22 @@ export const STADIUMS = [
   { id: "guadalajara", name: "Estadio Akron", city: "Guadalajara, Mexico", capacity: 48071, image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&auto=format&fit=crop&q=80" }
 ];
 
-export const TEAMS = [
-  // Group A
-  { id: "mexico", name: "Mexico", code: "MEX", flag: "🇲🇽", group: "A", rank: 15, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "south_africa", name: "South Africa", code: "RSA", flag: "🇿🇦", group: "A", rank: 58, titles: 0, form: ["L", "D", "W", "L", "D"] },
-  { id: "south_korea", name: "South Korea", code: "KOR", flag: "🇰🇷", group: "A", rank: 22, titles: 0, form: ["W", "L", "W", "D", "W"] },
-  { id: "czechia", name: "Czechia", code: "CZE", flag: "🇨🇿", group: "A", rank: 36, titles: 0, form: ["W", "D", "L", "W", "L"] },
-  // Group B
-  { id: "canada", name: "Canada", code: "CAN", flag: "🇨🇦", group: "B", rank: 40, titles: 0, form: ["L", "W", "D", "W", "W"] },
-  { id: "bosnia", name: "Bosnia & Herzegovina", code: "BIH", flag: "🇧🇦", group: "B", rank: 74, titles: 0, form: ["L", "D", "W", "L", "L"] },
-  { id: "qatar", name: "Qatar", code: "QAT", flag: "🇶🇦", group: "B", rank: 38, titles: 0, form: ["W", "W", "D", "L", "L"] },
-  { id: "switzerland", name: "Switzerland", code: "SUI", flag: "🇨🇭", group: "B", rank: 19, titles: 0, form: ["W", "D", "L", "W", "D"] },
-  // Group C
-  { id: "brazil", name: "Brazil", code: "BRA", flag: "🇧🇷", group: "C", rank: 3, titles: 5, form: ["W", "W", "D", "W", "W"] },
-  { id: "morocco", name: "Morocco", code: "MAR", flag: "🇲🇦", group: "C", rank: 13, titles: 0, form: ["W", "W", "D", "W", "W"] },
-  { id: "haiti", name: "Haiti", code: "HAI", flag: "🇭🇹", group: "C", rank: 86, titles: 0, form: ["L", "L", "W", "D", "L"] },
-  { id: "scotland", name: "Scotland", code: "SCO", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", rank: 39, titles: 0, form: ["L", "W", "D", "L", "W"] },
-  // Group D
-  { id: "usa", name: "United States", code: "USA", flag: "🇺🇸", group: "D", rank: 11, titles: 0, form: ["W", "D", "W", "L", "W"] },
-  { id: "paraguay", name: "Paraguay", code: "PAR", flag: "🇵🇾", group: "D", rank: 56, titles: 0, form: ["L", "L", "W", "D", "L"] },
-  { id: "australia", name: "Australia", code: "AUS", flag: "🇦🇺", group: "D", rank: 24, titles: 0, form: ["W", "D", "L", "W", "W"] },
-  { id: "turkey", name: "Türkiye", code: "TUR", flag: "🇹🇷", group: "D", rank: 35, titles: 0, form: ["W", "D", "L", "W", "W"] },
-  // Group E
-  { id: "germany", name: "Germany", code: "GER", flag: "🇩🇪", group: "E", rank: 16, titles: 4, form: ["W", "L", "W", "D", "W"] },
-  { id: "curacao", name: "Curaçao", code: "CUW", flag: "🇨🇼", group: "E", rank: 88, titles: 0, form: ["L", "W", "D", "L", "L"] },
-  { id: "ivory_coast", name: "Ivory Coast", code: "CIV", flag: "🇨🇮", group: "E", rank: 37, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "ecuador", name: "Ecuador", code: "ECU", flag: "🇪🇨", group: "E", rank: 31, titles: 0, form: ["W", "W", "L", "D", "W"] },
-  // Group F
-  { id: "netherlands", name: "Netherlands", code: "NED", flag: "🇳🇱", group: "F", rank: 7, titles: 0, form: ["W", "W", "D", "W", "L"] },
-  { id: "japan", name: "Japan", code: "JPN", flag: "🇯🇵", group: "F", rank: 18, titles: 0, form: ["W", "W", "L", "W", "W"] },
-  { id: "sweden", name: "Sweden", code: "SWE", flag: "🇸🇪", group: "F", rank: 23, titles: 0, form: ["L", "W", "D", "L", "W"] },
-  { id: "tunisia", name: "Tunisia", code: "TUN", flag: "🇹🇳", group: "F", rank: 41, titles: 0, form: ["L", "W", "D", "L", "L"] },
-  // Group G
-  { id: "belgium", name: "Belgium", code: "BEL", flag: "🇧🇪", group: "G", rank: 5, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "egypt", name: "Egypt", code: "EGY", flag: "🇪🇬", group: "G", rank: 36, titles: 0, form: ["W", "L", "L", "W", "W"] },
-  { id: "iran", name: "Iran", code: "IRN", flag: "🇮🇷", group: "G", rank: 20, titles: 0, form: ["W", "W", "D", "W", "L"] },
-  { id: "new_zealand", name: "New Zealand", code: "NZL", flag: "🇳🇿", group: "G", rank: 104, titles: 0, form: ["W", "L", "L", "W", "D"] },
-  // Group H
-  { id: "spain", name: "Spain", code: "ESP", flag: "🇪🇸", group: "H", rank: 8, titles: 1, form: ["W", "W", "W", "W", "D"] },
-  { id: "cape_verde", name: "Cape Verde", code: "CPV", flag: "🇨🇻", group: "H", rank: 65, titles: 0, form: ["W", "L", "L", "W", "D"] },
-  { id: "saudi_arabia", name: "Saudi Arabia", code: "KSA", flag: "🇸🇦", group: "H", rank: 56, titles: 0, form: ["L", "L", "W", "D", "L"] },
-  { id: "uruguay", name: "Uruguay", code: "URU", flag: "🇺🇾", group: "H", rank: 14, titles: 2, form: ["W", "D", "W", "L", "W"] },
-  // Group I
-  { id: "france", name: "France", code: "FRA", flag: "🇫🇷", group: "I", rank: 2, titles: 2, form: ["W", "W", "D", "W", "L"] },
-  { id: "senegal", name: "Senegal", code: "SEN", flag: "🇸🇳", group: "I", rank: 17, titles: 0, form: ["W", "L", "W", "W", "D"] },
-  { id: "iraq", name: "Iraq", code: "IRQ", flag: "🇮🇶", group: "I", rank: 59, titles: 0, form: ["W", "L", "D", "L", "W"] },
-  { id: "norway", name: "Norway", code: "NOR", flag: "🇳🇴", group: "I", rank: 47, titles: 0, form: ["L", "W", "D", "L", "W"] },
-  // Group J
-  { id: "argentina", name: "Argentina", code: "ARG", flag: "🇦🇷", group: "J", rank: 1, titles: 3, form: ["W", "W", "W", "D", "W"] },
-  { id: "algeria", name: "Algeria", code: "ALG", flag: "🇩🇿", group: "J", rank: 33, titles: 0, form: ["L", "W", "W", "D", "L"] },
-  { id: "austria", name: "Austria", code: "AUT", flag: "🇦🇹", group: "J", rank: 25, titles: 0, form: ["W", "L", "W", "D", "L"] },
-  { id: "jordan", name: "Jordan", code: "JOR", flag: "🇯🇴", group: "J", rank: 71, titles: 0, form: ["W", "L", "W", "D", "L"] },
-  // Group K
-  { id: "portugal", name: "Portugal", code: "POR", flag: "🇵🇹", group: "K", rank: 6, titles: 0, form: ["W", "W", "D", "W", "L"] },
-  { id: "dr_congo", name: "DR Congo", code: "COD", flag: "🇨🇩", group: "K", rank: 62, titles: 0, form: ["L", "W", "L", "D", "L"] },
-  { id: "uzbekistan", name: "Uzbekistan", code: "UZB", flag: "UZB", group: "K", rank: 64, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "colombia", name: "Colombia", code: "COL", flag: "🇨🇴", group: "K", rank: 12, titles: 0, form: ["W", "L", "W", "W", "D"] },
-  // Group L
-  { id: "england", name: "England", code: "ENG", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", group: "L", rank: 4, titles: 1, form: ["W", "W", "D", "L", "W"] },
-  { id: "croatia", name: "Croatia", code: "CRO", flag: "🇭🇷", group: "L", rank: 10, titles: 0, form: ["W", "L", "W", "D", "W"] },
-  { id: "ghana", name: "Ghana", code: "GHA", flag: "🇬🇭", group: "L", rank: 60, titles: 0, form: ["L", "W", "L", "D", "L"] },
-  { id: "panama", name: "Panama", code: "PAN", flag: "🇵🇦", group: "L", rank: 41, titles: 0, form: ["W", "W", "L", "D", "L"] }
-];
+const ID_MAP = {
+  "south-africa": "south_africa",
+  "south-korea": "south_korea",
+  "bosnia-and-herzegovina": "bosnia",
+  "united-states": "usa",
+  "ivory-coast": "ivory_coast",
+  "new-zealand": "new_zealand",
+  "saudi-arabia": "saudi_arabia",
+  "cape-verde": "cape_verde",
+  "dr-congo": "dr_congo"
+};
+
+export const TEAMS = TEAMS_DATA.map(t => ({
+  ...t,
+  id: ID_MAP[t.id] || t.id
+}));
 
 export const generateSquads = (teamId) => {
   const players = {

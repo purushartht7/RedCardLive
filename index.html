@@ -57,7 +57,7 @@
         <a class="text-white border-b-2 border-brand-red pb-1" href="index.html">MATCHES</a>
         <a class="hover:text-white transition" href="#news-section">NEWS</a>
         <a class="hover:text-white transition" href="bracket.html">BRACKET</a>
-        <a class="hover:text-white transition" href="team.html?id=england">TEAMS</a>
+        <a class="hover:text-white transition" href="team.html">TEAMS</a>
         <a class="hover:text-white transition" href="admin.html">ADMIN</a>
       </nav>
     </div>
@@ -92,14 +92,8 @@
         <ul class="space-y-1">
           <li>
             <a class="flex items-center px-6 py-3 bg-gradient-to-r from-brand-red/20 to-transparent border-l-4 border-brand-red text-white group" href="index.html">
-              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">home</span>
+              <span class="material-symbols-outlined mr-4 text-brand-red">home</span>
               <span class="text-sm font-semibold">Home</span>
-            </a>
-          </li>
-          <li>
-            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="match.html?id=match_102">
-              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">sports_soccer</span>
-              <span class="text-sm font-semibold">Live Scores</span>
             </a>
           </li>
           <li>
@@ -109,9 +103,15 @@
             </a>
           </li>
           <li>
-            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="team.html?id=england">
+            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="team.html">
               <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">flag</span>
               <span class="text-sm font-semibold">Teams</span>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center px-6 py-3 text-gray-400 hover:text-white transition group" href="index.html#retro-jersey-grid">
+              <span class="material-symbols-outlined mr-4 group-hover:text-brand-red transition-colors">shopping_bag</span>
+              <span class="text-sm font-semibold">Rival in Retro</span>
             </a>
           </li>
         </ul>
@@ -140,20 +140,7 @@
       </section>
       <!-- END: HeroSection -->
 
-      <!-- BEGIN: LiveScores Section -->
-      <section class="bg-brand-black/85 backdrop-blur-md border-t border-brand-charcoal p-6 z-10" data-purpose="live-scores">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center space-x-2">
-            <span class="w-2.5 h-2.5 bg-green-500 rounded-full live-pulse"></span>
-            <h4 class="text-lg font-black uppercase tracking-widest">Live Match Centre</h4>
-          </div>
-          <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Auto-refreshes 30s</span>
-        </div>
-        <div id="live-scores-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="text-gray-500 py-6 text-center text-xs animate-pulse">Loading live scores...</div>
-        </div>
-      </section>
-      <!-- END: LiveScores Section -->
+
 
       <!-- Content Grid Sections -->
       <div class="px-6 space-y-16 py-12 z-10 relative">
@@ -270,7 +257,7 @@
             <ul class="text-xs text-gray-500 space-y-2 font-bold">
               <li><a class="hover:text-brand-red transition" href="index.html">Fixtures</a></li>
               <li><a class="hover:text-brand-red transition" href="bracket.html">Standings</a></li>
-              <li><a class="hover:text-brand-red transition" href="team.html?id=england">Teams</a></li>
+              <li><a class="hover:text-brand-red transition" href="team.html">Teams</a></li>
               <li><a class="hover:text-brand-red transition" href="stadium.html?id=metlife">Stadiums</a></li>
             </ul>
           </div>
@@ -319,17 +306,17 @@
       </div>
       <span class="font-label-sm text-[10px] uppercase font-bold tracking-tighter">Home</span>
     </a>
-    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="match.html?id=match_102">
-      <span class="material-symbols-outlined text-[28px] mb-1">sports_soccer</span>
-      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Live</span>
-    </a>
     <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="bracket.html">
       <span class="material-symbols-outlined text-[28px] mb-1">account_tree</span>
       <span class="font-label-sm text-[10px] uppercase tracking-tighter">Bracket</span>
     </a>
-    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="team.html?id=england">
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="team.html">
       <span class="material-symbols-outlined text-[28px] mb-1">flag</span>
       <span class="font-label-sm text-[10px] uppercase tracking-tighter">Teams</span>
+    </a>
+    <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="index.html#retro-jersey-grid">
+      <span class="material-symbols-outlined text-[28px] mb-1">shopping_bag</span>
+      <span class="font-label-sm text-[10px] uppercase tracking-tighter">Retro</span>
     </a>
     <a class="flex flex-col items-center gap-1 group text-on-surface-variant active:scale-95 transition-transform" href="admin.html">
       <span class="material-symbols-outlined text-[28px] mb-1">admin_panel_settings</span>
@@ -557,42 +544,44 @@ void main() {
 
         // 4b. Live Matches Section
         const liveScoresGrid = document.getElementById("live-scores-grid");
-        const liveMatches = matches.filter(m => m.status === "Live");
+        if (liveScoresGrid) {
+          const liveMatches = matches.filter(m => m.status === "Live");
 
-        if (liveMatches.length === 0) {
-          liveScoresGrid.innerHTML = `
-            <div class="col-span-3 bg-brand-charcoal/30 border border-brand-charcoal p-6 text-center text-xs text-gray-500 rounded-sm">
-              No live matches active at the moment.
-            </div>
-          `;
-        } else {
-          liveScoresGrid.innerHTML = "";
-          liveMatches.forEach(m => {
-            const home = getTeam(m.homeTeamId);
-            const away = getTeam(m.awayTeamId);
-
-            const card = document.createElement("a");
-            card.href = `match.html?id=${m.id}`;
-            card.className = "bg-brand-charcoal/50 border border-brand-charcoal p-4 rounded-sm flex flex-col justify-between h-24 hover:bg-brand-charcoal hover:border-green-500/50 transition-all cursor-pointer group hover-glow";
-            card.innerHTML = `
-              <div class="flex justify-between items-center text-[10px] font-bold text-gray-400">
-                <span>${m.round} • ${m.minute}'</span>
-                <span class="text-green-500 group-hover:animate-pulse font-black">• LIVE</span>
-              </div>
-              <div class="flex items-center justify-between mt-2">
-                <div class="flex items-center space-x-2 w-1/3">
-                  ${renderFlag(home, "w-6 h-4")}
-                  <span class="font-bold text-sm truncate">${home.code}</span>
-                </div>
-                <div class="text-lg font-black italic w-1/3 text-center">${m.homeScore} - ${m.awayScore}</div>
-                <div class="flex items-center justify-end space-x-2 w-1/3">
-                  <span class="font-bold text-sm truncate">${away.code}</span>
-                  ${renderFlag(away, "w-6 h-4")}
-                </div>
+          if (liveMatches.length === 0) {
+            liveScoresGrid.innerHTML = `
+              <div class="col-span-3 bg-brand-charcoal/30 border border-brand-charcoal p-6 text-center text-xs text-gray-500 rounded-sm">
+                No live matches active at the moment.
               </div>
             `;
-            liveScoresGrid.appendChild(card);
-          });
+          } else {
+            liveScoresGrid.innerHTML = "";
+            liveMatches.forEach(m => {
+              const home = getTeam(m.homeTeamId);
+              const away = getTeam(m.awayTeamId);
+
+              const card = document.createElement("a");
+              card.href = `match.html?id=${m.id}`;
+              card.className = "bg-brand-charcoal/50 border border-brand-charcoal p-4 rounded-sm flex flex-col justify-between h-24 hover:bg-brand-charcoal hover:border-green-500/50 transition-all cursor-pointer group hover-glow";
+              card.innerHTML = `
+                <div class="flex justify-between items-center text-[10px] font-bold text-gray-400">
+                  <span>${m.round} • ${m.minute}'</span>
+                  <span class="text-green-500 group-hover:animate-pulse font-black">• LIVE</span>
+                </div>
+                <div class="flex items-center justify-between mt-2">
+                  <div class="flex items-center space-x-2 w-1/3">
+                    ${renderFlag(home, "w-6 h-4")}
+                    <span class="font-bold text-sm truncate">${home.code}</span>
+                  </div>
+                  <div class="text-lg font-black italic w-1/3 text-center">${m.homeScore} - ${m.awayScore}</div>
+                  <div class="flex items-center justify-end space-x-2 w-1/3">
+                    <span class="font-bold text-sm truncate">${away.code}</span>
+                    ${renderFlag(away, "w-6 h-4")}
+                  </div>
+                </div>
+              `;
+              liveScoresGrid.appendChild(card);
+            });
+          }
         }
 
         // 4c. Today's Matches

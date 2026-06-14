@@ -53,7 +53,7 @@
         <a class="hover:text-white transition" href="index.html">MATCHES</a>
         <a class="hover:text-white transition" href="index.html#news-section">NEWS</a>
         <a class="hover:text-white transition" href="bracket.html">BRACKET</a>
-        <a class="hover:text-white transition" href="team.html?id=england">TEAMS</a>
+        <a class="hover:text-white transition" href="team.html">TEAMS</a>
         <a class="text-white border-b-2 border-brand-red pb-1" href="admin.html">ADMIN</a>
       </nav>
     </div>
@@ -302,40 +302,59 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Publish Form -->
-          <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
-            <h3 class="font-bold text-sm text-white uppercase">Publish News Article</h3>
-            <form id="news-form" class="space-y-4">
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Article Title</label>
-                <input id="news-title" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="MBAPPÉ DOUBTFUL FOR CLASH"/>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Category</label>
-                  <select id="news-cat" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
-                    <option value="Breaking">Breaking</option>
-                    <option value="Update">Update</option>
-                    <option value="Analysis">Analysis</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Image URL</label>
-                  <input id="news-img" type="url" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://images.unsplash.com/..."/>
-                </div>
-              </div>
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Brief Summary</label>
-                <input id="news-summary" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Short description for grid feed."/>
-              </div>
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Full Content</label>
-                <textarea id="news-content" required rows="5" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="The full news article text goes here..."></textarea>
-              </div>
-              <button type="submit" class="px-6 py-2.5 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
-                <span class="btn-skewed-content block">Publish Article</span>
+          <!-- Left column: Gemini Generator and Manual Form -->
+          <div class="space-y-6">
+            
+            <!-- Gemini Pulse of the Tournament Generator -->
+            <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+              <h3 class="font-bold text-sm text-brand-gold uppercase flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">auto_awesome</span>
+                Pulse of the Tournament Generator (Gemini)
+              </h3>
+              <p class="text-[10px] text-gray-500 leading-snug">
+                Analyzes live match results, completed schedules, and group standings to auto-generate a batch of 3 tournament news articles (Breaking, Update, Analysis) powered by Gemini.
+              </p>
+              <button id="gemini-news-generate-btn" class="px-6 py-3 bg-[#e9c400] text-black font-black uppercase text-xs btn-skewed hover:bg-brand-gold transition-colors block w-full text-center">
+                <span class="btn-skewed-content block">Generate News Batch (Gemini)</span>
               </button>
-            </form>
+              <div id="news-gemini-status" class="text-xs font-mono font-bold text-brand-gold"></div>
+            </div>
+
+            <!-- Publish Form -->
+            <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
+              <h3 class="font-bold text-sm text-white uppercase">Publish News Article</h3>
+              <form id="news-form" class="space-y-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Article Title</label>
+                  <input id="news-title" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="MBAPPÉ DOUBTFUL FOR CLASH"/>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Category</label>
+                    <select id="news-cat" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                      <option value="Breaking">Breaking</option>
+                      <option value="Update">Update</option>
+                      <option value="Analysis">Analysis</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Image URL</label>
+                    <input id="news-img" type="url" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://images.unsplash.com/..."/>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Brief Summary</label>
+                  <input id="news-summary" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Short description for grid feed."/>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Full Content</label>
+                  <textarea id="news-content" required rows="5" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="The full news article text goes here..."></textarea>
+                </div>
+                <button type="submit" class="px-6 py-2.5 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
+                  <span class="btn-skewed-content block">Publish Article</span>
+                </button>
+              </form>
+            </div>
           </div>
 
           <!-- Existing News list -->
@@ -450,13 +469,23 @@
       const bootstrapBtn = document.getElementById("bootstrap-btn");
       const bootstrapStatus = document.getElementById("bootstrap-status");
       bootstrapBtn.addEventListener("click", async () => {
-        bootstrapStatus.innerText = "Running bootstrap process...";
+        bootstrapStatus.innerHTML = "Running bootstrap process...";
         try {
           await bootstrapDatabase();
-          bootstrapStatus.innerText = "Bootstrap database written successfully! All 104 matches, teams, and stadiums are ready.";
+          bootstrapStatus.innerHTML = "Bootstrap database written successfully! All 104 matches, teams, and stadiums are ready.";
           loadAdminData(); // Reload select dropdowns
         } catch (error) {
-          bootstrapStatus.innerText = "Bootstrap failed: " + error.message;
+          console.error(error);
+          let message = "Bootstrap failed: " + error.message;
+          if (error.message && error.message.toLowerCase().includes("permission")) {
+            message += `<br/><br/><strong class="text-brand-red uppercase text-[11px] tracking-wider block mb-1">How to Resolve:</strong>` +
+                       `<div class="space-y-2 mt-2 text-gray-400">` +
+                       `<p><strong>Option A: Update Firestore Rules</strong><br/>Go to your Firebase Console &rarr; Firestore Database &rarr; Rules tab, and update them to allow writes during setup:</p>` +
+                       `<pre class="bg-black/80 p-3 rounded-sm border border-white/5 text-[10px] font-mono text-gray-300 select-all leading-normal">rules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if true;\n    }\n  }\n}</pre>` +
+                       `<p class="mt-2"><strong>Option B: Switch to Local Mock Store</strong><br/>Open <code class="text-white bg-white/10 px-1 py-0.5 rounded font-mono">js/firebase-config.js</code> and clear the <code class="text-white">apiKey</code> property (e.g. set it to <code class="text-white">""</code>). This will automatically fall back to browser LocalStorage, bypassing Firebase entirely.</p>` +
+                       `</div>`;
+          }
+          bootstrapStatus.innerHTML = message;
         }
       });
 
@@ -676,17 +705,46 @@
               contents: [{
                 parts: [{
                   text: `You are a professional football analyst writing for Indian football fans for FIFA World Cup 2026.
-Generate a structured preview for the upcoming matchup: ${homeTeam.name} vs ${awayTeam.name}.
+Generate a structured, detailed preview for the upcoming matchup: ${homeTeam.name} vs ${awayTeam.name}.
 FIFA Rankings: ${homeTeam.name} (${homeTeam.rank}), ${awayTeam.name} (${awayTeam.rank}).
 Recent Form: ${homeTeam.name} (${homeTeam.form.join(", ")}), ${awayTeam.name} (${awayTeam.form.join(", ")}).
 
 You MUST return the preview in a valid JSON format with the exact keys:
-"overview": a brief exciting match overview (1-2 sentences)
-"formSummary": comparison of current form (1-2 sentences)
-"h2hSummary": head-to-head match context (1-2 sentences)
-"storylines": major tactical/narrative storylines (1-2 sentences)
-"predictions": score prediction and outcome forecast (1 sentence)
-"insights": final critical match insights for fans (1-2 sentences)
+{
+  "overview": {
+    "introduction": "An exciting introduction to the fixture (2-3 sentences)",
+    "context": "The tournament context of the fixture (2-3 sentences)",
+    "importance": "The critical importance of this match for both teams (2 sentences)",
+    "currentSituation": "Briefly state the current squad/camp situation (2 sentences)"
+  },
+  "formSummary": "A concise comparison of current form (2 sentences)",
+  "h2hSummary": "A concise overview of head-to-head match context (2 sentences)",
+  "tacticalAnalysis": {
+    "strengthsHome": "Tactical strengths of ${homeTeam.name} (1-2 sentences)",
+    "strengthsAway": "Tactical strengths of ${awayTeam.name} (1-2 sentences)",
+    "weaknessesHome": "Tactical weaknesses or vulnerabilities of ${homeTeam.name} (1-2 sentences)",
+    "weaknessesAway": "Tactical weaknesses or vulnerabilities of ${awayTeam.name} (1-2 sentences)",
+    "keyBattles": "Key matchups on the pitch to watch (2-3 sentences)",
+    "tacticalMatchups": "Final tactical summary forecast (1-2 sentences)"
+  },
+  "storylines": [
+    "Catchy headline 1 with detail (2 sentences)",
+    "Catchy headline 2 with detail (2 sentences)",
+    "Catchy headline 3 with detail (2 sentences)"
+  ],
+  "insights": [
+    "Trending stat/insight 1 (e.g. unbeaten streak, goal scoring records, etc. 1 sentence)",
+    "Trending stat/insight 2 (1 sentence)",
+    "Trending stat/insight 3 (1 sentence)"
+  ],
+  "aiPrediction": {
+    "predictedWinner": "Name of predicted winner (or 'Draw')",
+    "homeScore": 2,
+    "awayScore": 1,
+    "outlook": "Tactical forecast and flow explanation (2 sentences)",
+    "confidence": 75
+  }
+}
 
 Return ONLY the raw JSON string. Do NOT enclose in markdown codeblocks (no \`\`\`json, no \`\`\`), no formatting, just the raw JSON.`
                 }]
@@ -707,9 +765,10 @@ Return ONLY the raw JSON string. Do NOT enclose in markdown codeblocks (no \`\`\
             overview: parsed.overview,
             formSummary: parsed.formSummary,
             h2hSummary: parsed.h2hSummary,
+            tacticalAnalysis: parsed.tacticalAnalysis,
             storylines: parsed.storylines,
-            predictions: parsed.predictions,
             insights: parsed.insights,
+            aiPrediction: parsed.aiPrediction,
             generatedAt: new Date().toISOString()
           };
 
@@ -741,12 +800,172 @@ Return ONLY the raw JSON string. Do NOT enclose in markdown codeblocks (no \`\`\
           publishedAt: new Date().toISOString()
         };
 
+      });
+
+      // Gemini Pulse of the Tournament Generator
+      const geminiNewsBtn = document.getElementById("gemini-news-generate-btn");
+      const newsStatusLabel = document.getElementById("news-gemini-status");
+
+      geminiNewsBtn.addEventListener("click", async () => {
+        newsStatusLabel.innerText = "Analyzing tournament data (matches, standings)...";
+        newsStatusLabel.className = "text-xs font-mono font-bold text-brand-gold mt-2";
+
         try {
-          await dbSetDoc("news", newsId, newsData);
-          alert("News article published successfully!");
-          newsForm.reset();
+          const matches = await dbGetDocs("matches");
+          const teams = await dbGetDocs("teams");
+
+          if (!matches || matches.length === 0 || !teams || teams.length === 0) {
+            newsStatusLabel.innerText = "Error: Database is empty. Please run Bootstrapper first.";
+            newsStatusLabel.className = "text-xs font-mono font-bold text-brand-red mt-2";
+            return;
+          }
+
+          const settings = await dbGetDoc("settings", "api_keys");
+          const geminiKey = settings && settings.gemini_key ? settings.gemini_key : "";
+
+          if (!geminiKey) {
+            newsStatusLabel.innerText = "Error: Configure Gemini API Key in the API Keys tab first.";
+            newsStatusLabel.className = "text-xs font-mono font-bold text-brand-red mt-2";
+            return;
+          }
+
+          newsStatusLabel.innerText = "Preparing context for Gemini model...";
+
+          const completedMatches = matches.filter(m => m.status === "Finished");
+          const liveMatches = matches.filter(m => m.status === "Live");
+
+          let matchSummary = `Total matches scheduled: ${matches.length}. `;
+          matchSummary += `Completed matches: ${completedMatches.length}. Live matches: ${liveMatches.length}. `;
+
+          if (completedMatches.length > 0) {
+            matchSummary += "Recent results: ";
+            const recentFinished = completedMatches.slice(-8);
+            recentFinished.forEach(m => {
+              const home = teams.find(t => t.id === m.homeTeamId) || { name: m.homePlaceholder || "TBD" };
+              const away = teams.find(t => t.id === m.awayTeamId) || { name: m.awayPlaceholder || "TBD" };
+              matchSummary += `${home.name} ${m.homeScore}-${m.awayScore} ${away.name} (${m.round}); `;
+            });
+          }
+
+          if (liveMatches.length > 0) {
+            matchSummary += "Active Live matches: ";
+            liveMatches.forEach(m => {
+              const home = teams.find(t => t.id === m.homeTeamId) || { name: m.homePlaceholder || "TBD" };
+              const away = teams.find(t => t.id === m.awayTeamId) || { name: m.awayPlaceholder || "TBD" };
+              matchSummary += `${home.name} ${m.homeScore}-${m.awayScore} ${away.name} (Minute ${m.minute}', ${m.round}); `;
+            });
+          }
+
+          let teamsSummary = "Participating Teams highlight: ";
+          const topTeams = [...teams].sort((a, b) => a.rank - b.rank).slice(0, 10);
+          topTeams.forEach(t => {
+            teamsSummary += `${t.name} (Rank ${t.rank}, Form: ${t.form.join(",")}); `;
+          });
+
+          const promptText = `You are a professional sports journalist reporting on the FIFA World Cup 2026.
+Based on the following actual tournament data, generate exactly 3 news articles that capture the "Pulse of the Tournament".
+
+Tournament Context:
+${matchSummary}
+${teamsSummary}
+
+Generate exactly 3 diverse news articles matching these requirements:
+1. Article 1 (Breaking): A dramatic story based on a recent match result, a shock defeat, a stellar performance, or a major event in the live matches.
+2. Article 2 (Update): An update on group qualification standings, team medical reports, or statements from team camps.
+3. Article 3 (Analysis): A deep dive into tactical trends, player rivalries, standout players, or stadium atmospheres (such as Azteca or MetLife).
+
+For each article, you must provide:
+- "title": A catchy, professional sports headline in all caps.
+- "category": Must be exactly one of "Breaking", "Update", "Analysis".
+- "summary": A brief one-sentence summary to show in the grid card feed.
+- "content": A full article content of 2-3 paragraphs. Write in a realistic, high-quality, professional, and exciting style.
+- "unsplashSearchTerm": A simple search query that best matches the story's visual theme (e.g. "goalkeeper saving ball", "stadium cheering fans", "striker celebrating goal", "soccer tackle").
+
+You MUST return a valid JSON array of 3 objects with the exact keys described. Return ONLY the raw JSON array. Do NOT wrap in markdown codeblocks (no \`\`\`json, no \`\`\`), no formatting, just the raw JSON.`;
+
+          newsStatusLabel.innerText = "Querying Gemini API for news articles...";
+
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{
+                  text: promptText
+                }]
+              }]
+            })
+          });
+
+          const data = await response.json();
+          if (data.error) throw new Error(data.error.message);
+
+          const textResponse = data.candidates[0].content.parts[0].text;
+          const cleanedText = textResponse.replace(/```json/g, "").replace(/```/g, "").trim();
+          const parsedArticles = JSON.parse(cleanedText);
+
+          if (!Array.isArray(parsedArticles) || parsedArticles.length === 0) {
+            throw new Error("Invalid output format: Expected a JSON array.");
+          }
+
+          newsStatusLabel.innerText = "Saving generated news articles...";
+
+          const UNSPLASH_IMAGES = {
+            stadium: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&auto=format&fit=crop&q=80",
+            fans: "https://images.unsplash.com/photo-1518063319789-7217e6706b04?w=800&auto=format&fit=crop&q=80",
+            action: "https://images.unsplash.com/photo-1504305754058-2f08ccd89a0a?w=800&auto=format&fit=crop&q=80",
+            ball: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&auto=format&fit=crop&q=80",
+            goal: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&auto=format&fit=crop&q=80",
+            celebration: "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=800&auto=format&fit=crop&q=80",
+          };
+
+          const getUnsplashUrl = (term, category) => {
+            const cleanTerm = (term || "").toLowerCase();
+            if (cleanTerm.includes("stadium") || cleanTerm.includes("crowd") || cleanTerm.includes("arena")) {
+              return UNSPLASH_IMAGES.stadium;
+            }
+            if (cleanTerm.includes("fan") || cleanTerm.includes("cheer") || cleanTerm.includes("audience")) {
+              return UNSPLASH_IMAGES.fans;
+            }
+            if (cleanTerm.includes("goal") || cleanTerm.includes("score") || cleanTerm.includes("save")) {
+              return UNSPLASH_IMAGES.goal;
+            }
+            if (cleanTerm.includes("celebrat") || cleanTerm.includes("win") || cleanTerm.includes("happy")) {
+              return UNSPLASH_IMAGES.celebration;
+            }
+            if (cleanTerm.includes("tackle") || cleanTerm.includes("kick") || cleanTerm.includes("run") || cleanTerm.includes("action")) {
+              return UNSPLASH_IMAGES.action;
+            }
+            if (category === "Breaking") return UNSPLASH_IMAGES.action;
+            if (category === "Analysis") return UNSPLASH_IMAGES.ball;
+            return UNSPLASH_IMAGES.stadium;
+          };
+
+          for (let i = 0; i < parsedArticles.length; i++) {
+            const art = parsedArticles[i];
+            const newsId = `news_gemini_${Date.now()}_${i}`;
+            const imgUrl = getUnsplashUrl(art.unsplashSearchTerm, art.category);
+            
+            const newsDoc = {
+              id: newsId,
+              title: art.title,
+              category: art.category,
+              summary: art.summary,
+              content: art.content,
+              imageUrl: imgUrl,
+              publishedAt: new Date().toISOString()
+            };
+
+            await dbSetDoc("news", newsId, newsDoc);
+          }
+
+          newsStatusLabel.innerText = "Success! Generated 3 news articles and saved to Firestore.";
+          newsStatusLabel.className = "text-xs font-mono font-bold text-green-500 mt-2";
+          setTimeout(() => newsStatusLabel.innerText = "", 5000);
         } catch (error) {
-          alert("Failed publishing news: " + error.message);
+          console.error("Gemini news generation error:", error);
+          newsStatusLabel.innerText = "Generation failed: " + error.message;
+          newsStatusLabel.className = "text-xs font-mono font-bold text-brand-red mt-2";
         }
       });
 

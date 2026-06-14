@@ -5,6 +5,7 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/match", "destination": "/match.html" },
+    { "source": "/preview", "destination": "/preview.html" },
     { "source": "/bracket", "destination": "/bracket.html" },
     { "source": "/team", "destination": "/team.html" },
     { "source": "/stadium", "destination": "/stadium.html" },
