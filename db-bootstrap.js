@@ -361,14 +361,14 @@ export const generateFixtures = () => {
 
   // Round of 16 (8 matches: July 4 - July 7)
   const r16Matches = [
-    { home: "argentina", away: "australia", homeScore: 3, awayScore: 1, status: "Finished" },
-    { home: "netherlands", away: "usa", homeScore: 2, awayScore: 0, status: "Finished" },
-    { home: "france", away: "poland", homeScore: 3, awayScore: 1, status: "Finished" },
-    { home: "england", away: "senegal", homeScore: 3, awayScore: 0, status: "Finished" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 1", awayPlaceholder: "Winner R32 Match 2", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 3", awayPlaceholder: "Winner R32 Match 4", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R32 Match 5", awayPlaceholder: "Winner R32 Match 6", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R32 Match 7", awayPlaceholder: "Winner R32 Match 8", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R32 Match 9", awayPlaceholder: "Winner R32 Match 10", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 11", awayPlaceholder: "Winner R32 Match 12", homeScore: 0, awayScore: 0, status: "Upcoming" }
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 11", awayPlaceholder: "Winner R32 Match 12", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 13", awayPlaceholder: "Winner R32 Match 14", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 15", awayPlaceholder: "Winner R32 Match 16", homeScore: 0, awayScore: 0, status: "Upcoming" }
   ];
   r16Matches.forEach((match, idx) => {
     const matchDate = new Date("2026-07-04T18:00:00Z");
@@ -402,8 +402,8 @@ export const generateFixtures = () => {
 
   // Quarter Finals (4 matches: July 9 - July 11)
   const qfMatches = [
-    { home: "argentina", away: "netherlands", homeScore: 2, awayScore: 2, homePenalties: 4, awayPenalties: 3, status: "Finished" },
-    { home: "england", away: "france", homeScore: 1, awayScore: 2, status: "Finished" },
+    { home: "", away: "", homePlaceholder: "Winner R16 Match 1", awayPlaceholder: "Winner R16 Match 2", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R16 Match 3", awayPlaceholder: "Winner R16 Match 4", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R16 Match 5", awayPlaceholder: "Winner R16 Match 6", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R16 Match 7", awayPlaceholder: "Winner R16 Match 8", homeScore: 0, awayScore: 0, status: "Upcoming" }
   ];
@@ -441,9 +441,11 @@ export const generateFixtures = () => {
 
   // Semi Finals (2 matches: July 14 - July 15)
   fixtures.push({
-    id: `match_${matchIdx}`, // match_102
-    homeTeamId: "argentina",
-    awayTeamId: "brazil",
+    id: `match_${matchIdx}`,
+    homeTeamId: "",
+    awayTeamId: "",
+    homePlaceholder: "Winner Quarter-Final 1",
+    awayPlaceholder: "Winner Quarter-Final 2",
     date: new Date("2026-07-14T18:00:00Z").toISOString(),
     timeIST: "20:30 IST",
     stadiumId: "sofi",
@@ -459,9 +461,11 @@ export const generateFixtures = () => {
   matchIdx++;
 
   fixtures.push({
-    id: `match_${matchIdx}`, // match_103
-    homeTeamId: "france",
-    awayTeamId: "germany",
+    id: `match_${matchIdx}`,
+    homeTeamId: "",
+    awayTeamId: "",
+    homePlaceholder: "Winner Quarter-Final 3",
+    awayPlaceholder: "Winner Quarter-Final 4",
     date: new Date("2026-07-15T18:00:00Z").toISOString(),
     timeIST: "20:30 IST",
     stadiumId: "dallas",
@@ -478,7 +482,7 @@ export const generateFixtures = () => {
 
   // Final (July 19)
   fixtures.push({
-    id: `match_${matchIdx}`, // match_104
+    id: `match_${matchIdx}`,
     homeTeamId: "",
     awayTeamId: "",
     homePlaceholder: "Winner Semi-Final 1",
