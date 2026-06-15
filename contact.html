@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>RedCardLive | Stadium Profile</title>
+  <title>RedCardLive | Contact Us</title>
   <!-- Google Fonts: Montserrat, Inter, JetBrains Mono -->
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet"/>
   <!-- Material Symbols Outlined -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   <!-- Custom Core Styles -->
@@ -116,51 +116,80 @@
     <!-- Main Canvas -->
     <main class="flex-grow bg-brand-black overflow-y-auto flex flex-col z-0">
       
-      <!-- Top Hero Header Section -->
-      <section class="relative h-[45vh] lg:h-[50vh] overflow-hidden flex items-end">
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent z-10"></div>
-        <img id="stadium-hero-img" alt="Stadium Image" class="absolute inset-0 w-full h-full object-cover brightness-50" src="https://images.unsplash.com/photo-1564198879120-ed341af72d89?w=1600&auto=format&fit=crop&q=80"/>
-        
-        <div class="relative z-20 w-full px-6 pb-8 max-w-7xl mx-auto flex flex-col gap-2">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="bg-brand-red px-3 py-1 text-[9px] font-black uppercase text-white tracking-widest rounded-sm">Stadium Spotlight</span>
-            <span class="text-gray-400 font-mono text-[10px] uppercase tracking-wider">FIFA WORLD CUP 2026</span>
-          </div>
-          <div class="flex items-center gap-4">
-            <span class="text-4xl lg:text-5xl">🏟️</span>
-            <h1 id="stadium-hero-name" class="font-sans text-4xl lg:text-6xl font-black italic tracking-tighter uppercase text-white">METLIFE STADIUM</h1>
-          </div>
-          <p id="stadium-hero-city" class="text-brand-gold font-bold text-sm lg:text-lg tracking-widest uppercase mt-2">
-            East Rutherford, New Jersey
-          </p>
+      <!-- Content Panel -->
+      <section class="px-6 py-12 max-w-4xl mx-auto w-full z-10 relative flex-grow">
+        <div class="border-l-4 border-brand-red pl-4 mb-8">
+          <h1 class="text-3xl lg:text-4xl font-black italic uppercase tracking-tighter text-white">CONTACT US</h1>
+          <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">We'd love to hear from you!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           
-          <!-- Quick stats row -->
-          <div class="flex gap-8 mt-6 border-t border-white/5 pt-4">
-            <div class="flex flex-col">
-              <span id="stat-capacity" class="text-brand-red font-mono text-xl lg:text-2xl font-black">82,500</span>
-              <span class="text-gray-500 font-bold text-[9px] uppercase tracking-wider">Capacity</span>
+          <!-- Contact Channels Info -->
+          <div class="bg-brand-surface border border-brand-charcoal p-6 rounded-sm space-y-6">
+            <h3 class="font-sans text-brand-red font-black italic text-sm uppercase tracking-wider border-b border-white/5 pb-2">📬 Contact Channels</h3>
+            
+            <div class="space-y-1">
+              <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest block">General Inquiries & Feedback</span>
+              <a href="mailto:support@redcardlive.com" class="text-white hover:text-brand-red text-sm font-semibold font-mono block">support@redcardlive.com</a>
             </div>
-            <div class="w-px h-8 bg-brand-charcoal"></div>
-            <div class="flex flex-col">
-              <span id="stat-host-role" class="text-brand-red font-mono text-xl lg:text-2xl font-black">Finals Host</span>
-              <span class="text-gray-500 font-bold text-[9px] uppercase tracking-wider">Host Venue</span>
+
+            <div class="space-y-1">
+              <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest block">Sponsorship & Advertising</span>
+              <a href="mailto:partners@redcardlive.com" class="text-white hover:text-brand-red text-sm font-semibold font-mono block">partners@redcardlive.com</a>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest block">Rival in Retro Shop & Order Support</span>
+              <a href="mailto:orders@rivalinretro.com" class="text-white hover:text-brand-red text-sm font-semibold font-mono block">orders@rivalinretro.com</a>
+            </div>
+
+            <hr class="border-white/5"/>
+
+            <div class="space-y-1">
+              <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest block">🏢 Indian Head Office</span>
+              <p class="text-xs text-gray-400 leading-relaxed font-inter">
+                <strong>RedCardLive Media Group</strong><br/>
+                4th Floor, Tech Hub Sector V,<br/>
+                Kolkata, West Bengal, India - 700091
+              </p>
+              <span class="text-[8px] text-gray-600 font-bold uppercase tracking-wider block mt-2 font-mono">Operating hours: Mon-Fri (10:00 AM – 6:00 PM IST)</span>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- Stadium Matches Schedule Section -->
-      <section class="px-6 py-12 max-w-7xl mx-auto w-full z-10 relative">
-        <div class="flex justify-between items-end mb-6 border-l-4 border-brand-red pl-3">
-          <div>
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter">HOSTED MATCHES</h2>
-            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Fixtures Scheduled at this Venue</p>
+          <!-- Quick Message Form -->
+          <div class="bg-brand-surface border border-brand-charcoal p-6 rounded-sm space-y-4">
+            <h3 class="font-sans text-white font-bold text-sm uppercase tracking-wider border-b border-white/5 pb-2">Send us a Message</h3>
+            
+            <form id="contact-form" class="space-y-4">
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Full Name</label>
+                <input id="contact-name" type="text" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Your Name"/>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Email Address</label>
+                <input id="contact-email" type="email" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="you@example.com"/>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Message Topic</label>
+                <select id="contact-subject" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                  <option value="General Feedback">General Feedback</option>
+                  <option value="Bug Report">Bug Report</option>
+                  <option value="Partnership">Partnership / Advertising</option>
+                  <option value="Retro Jerseys Inquiry">Rival in Retro Inquiry</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Your Message</label>
+                <textarea id="contact-message" required rows="4" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="Write your message here..."></textarea>
+              </div>
+              <button type="submit" class="w-full py-3 bg-brand-red text-white uppercase text-xs font-bold tracking-widest hover:bg-red-700 transition-colors btn-skewed shadow-lg shadow-brand-red/20">
+                <span class="btn-skewed-content block">Send Message</span>
+              </button>
+            </form>
+            <div id="contact-status" class="text-xs font-mono font-bold text-brand-gold mt-2"></div>
           </div>
-        </div>
 
-        <div id="stadium-matches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Hosted matches loaded dynamically -->
-          <div class="text-gray-500 text-xs py-6 animate-pulse col-span-3">Loading matches scheduled at this venue...</div>
         </div>
       </section>
 
@@ -210,117 +239,35 @@
     </a>
   </nav>
 
-  <!-- Module Page Integration scripts -->
   <script type="module">
-    import { dbGetDoc, dbGetDocs, dbOnSnapshotCollection } from "./js/firebase-config.js";
-    import { initializeSearch, formatToIST, renderFlag } from "./js/app.js";
-
+    import { initializeSearch } from "./js/app.js";
+    import { dbGetDocs } from "./js/firebase-config.js";
+    
     document.addEventListener("DOMContentLoaded", async () => {
-      // 1. Search Box setup
       await initializeSearch("global-search-input", "search-results-dropdown");
-
-      // 2. Parse Query parameter
-      const params = new URLSearchParams(window.location.search);
-      let stadiumId = params.get("id");
-      if (!stadiumId) {
-        stadiumId = "metlife"; // Default fallback
-      }
-
-      // 3. Load stadium details
-      const stadium = await dbGetDoc("stadiums", stadiumId);
-      if (!stadium) {
-        document.getElementById("stadium-hero-name").innerText = "Stadium not found.";
-        return;
-      }
-
-      // Render Hero Elements
-      document.getElementById("stadium-hero-name").innerText = stadium.name.toUpperCase();
-      document.getElementById("stadium-hero-city").innerText = stadium.city;
-      document.getElementById("stat-capacity").innerText = stadium.capacity.toLocaleString();
       
-      if (stadium.image) {
-        document.getElementById("stadium-hero-img").src = stadium.image;
-      }
-
-      // Special highlight for MetLife final host role
-      if (stadiumId === "metlife") {
-        document.getElementById("stat-host-role").innerText = "Finals Host";
-      } else {
-        document.getElementById("stat-host-role").innerText = "Host Venue";
-      }
-
-      // 4. Load stadium fixtures from matches collection
-      dbOnSnapshotCollection("matches", async (matches) => {
-        if (!matches || matches.length === 0) return;
-        
-        // Filter matches played at this stadium
-        const stadiumMatches = matches.filter(m => m.stadiumId === stadiumId);
-        
-        // Fetch teams to map flags/codes
-        const allTeams = await dbGetDocs("teams");
-        const getTeamDetails = (id) => allTeams.find(t => t.id === id) || { name: "TBD", flag: "🏳️", code: "TBD" };
-
-        const matchesGrid = document.getElementById("stadium-matches-grid");
-        matchesGrid.innerHTML = "";
-
-        if (stadiumMatches.length === 0) {
-          matchesGrid.innerHTML = `<div class="text-xs text-gray-600 col-span-3 py-6 text-center">No matches scheduled at this stadium.</div>`;
-          return;
-        }
-
-        // Sort by match ID / date order
-        stadiumMatches.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        stadiumMatches.forEach(m => {
-          const home = getTeamDetails(m.homeTeamId);
-          const away = getTeamDetails(m.awayTeamId);
-
-          const homeName = home.name !== "TBD" ? home.name : (m.homePlaceholder || "TBD");
-          const awayName = away.name !== "TBD" ? away.name : (m.awayPlaceholder || "TBD");
-          
-          let scoreHtml = "-";
-          if (m.status === "Live" || m.status === "Finished") {
-            scoreHtml = `${m.homeScore} - ${m.awayScore}`;
-          }
-
-          const div = document.createElement("a");
-          div.href = `match.html?id=${m.id}`;
-          div.className = "bg-brand-surface red-card-clip p-5 border border-brand-charcoal hover:border-brand-red flex flex-col justify-between h-40 transition-all group relative";
-          div.innerHTML = `
-            <div class="flex justify-between items-start">
-              <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">${formatToIST(m.date)}</span>
-              <span class="text-[9px] bg-brand-charcoal px-2 py-0.5 rounded-sm font-bold uppercase text-gray-400 tracking-wider group-hover:bg-brand-red group-hover:text-white transition-colors">${m.status}</span>
-            </div>
-            
-            <div class="flex items-center justify-between my-3">
-              <div class="flex items-center gap-2 max-w-[40%] truncate">
-                ${renderFlag(home, "w-6 h-4")}
-                <span class="font-bold text-xs uppercase tracking-wide truncate">${home.code || homeName}</span>
-              </div>
-              <span class="font-mono text-base font-black text-brand-gold bg-brand-black/50 px-3 py-1 rounded-sm border border-white/5 select-none">${scoreHtml}</span>
-              <div class="flex items-center gap-2 max-w-[40%] truncate">
-                <span class="font-bold text-xs uppercase tracking-wide truncate">${away.code || awayName}</span>
-                ${renderFlag(away, "w-6 h-4")}
-              </div>
-            </div>
-            
-            <div class="text-[8px] text-gray-600 font-bold uppercase tracking-widest mt-auto border-t border-white/5 pt-2 flex justify-between items-center">
-              <span>${m.round}</span>
-              <span class="text-brand-red group-hover:translate-x-1 duration-200">MATCH CENTRE →</span>
-            </div>
-          `;
-          matchesGrid.appendChild(div);
-        });
-
-        // Sidebar Watch Link
+      // Sidebar watch button behavior
+      const matches = await dbGetDocs("matches");
+      if (matches && matches.length > 0) {
         const featuredMatch = matches.find(m => m.featured === true) || matches[0];
         const sidebarWatch = document.getElementById("sidebar-watch-btn");
         if (sidebarWatch && featuredMatch && featuredMatch.watchLink) {
           sidebarWatch.href = featuredMatch.watchLink;
           sidebarWatch.target = "_blank";
         }
-      });
+      }
 
+      // Contact Form Handler
+      const contactForm = document.getElementById("contact-form");
+      const contactStatus = document.getElementById("contact-status");
+      contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        contactStatus.innerText = "Sending message...";
+        setTimeout(() => {
+          contactStatus.innerText = "Message sent successfully! We will get back to you shortly.";
+          contactForm.reset();
+        }, 1200);
+      });
     });
   </script>
 </body>

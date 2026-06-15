@@ -1,4 +1,4 @@
-// Database Bootstrapper and Fixture Generator - Red Card Live World Cup 2026
+// Database Bootstrapper and Fixture Generator - RedCardLive World Cup 2026
 import { dbSetDoc, dbGetDoc } from "./firebase-config.js";
 import TEAMS_DATA from "../world_cup_2026_team_profiles.json";
 

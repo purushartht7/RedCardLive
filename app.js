@@ -1,4 +1,4 @@
-// Core Application Helper - Red Card Live World Cup 2026
+// Core Application Helper - RedCardLive World Cup 2026
 import { dbGetDocs, dbGetDoc, dbSetDoc, dbOnSnapshotDoc } from "./firebase-config.js";
 
 // 1. IST Time Helpers
