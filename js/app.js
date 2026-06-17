@@ -1,4 +1,4 @@
-// Core Application Helper - Red Card Live World Cup 2026
+// Core Application Helper - RedCardLive World Cup 2026
 import { dbGetDocs, dbGetDoc, dbSetDoc, dbOnSnapshotDoc } from "./firebase-config.js";
 
 // 1. IST Time Helpers
@@ -112,6 +112,13 @@ export const initializeSearch = async (searchInputId, resultsContainerId) => {
       container.classList.add("hidden");
     }
   });
+
+  // Set up global sidebar watch button automatically if present
+  const sidebarWatch = document.getElementById("sidebar-watch-btn");
+  if (sidebarWatch && matches && matches.length > 0) {
+    const featuredMatch = matches.find(m => m.featured === true) || matches[0];
+    setupWatchButton(sidebarWatch, featuredMatch);
+  }
 };
 
 // 3. SportsDB score synchronizer (client-side automation)
@@ -370,8 +377,84 @@ export const triggerSportsDbSync = async (matchId, force = false) => {
   }
 };
 
-// Start background syncing loop for active live matches
+// Estimate match minute based on elapsed time
+const estimateMatchMinute = (elapsedMinutes, round) => {
+  const elapsed = Math.floor(elapsedMinutes);
+  if (elapsed < 0) return 0;
+  
+  if (elapsed <= 45) {
+    return elapsed; // First half: 0 to 45 mins
+  }
+  if (elapsed <= 60) {
+    return 45; // Halftime: 15 mins break (45th min)
+  }
+  if (elapsed <= 105) {
+    return elapsed - 15; // Second half: 46 to 90 mins
+  }
+  
+  // Extra time check for knockouts
+  if (round !== "Group Stage") {
+    if (elapsed <= 110) {
+      return 90; // Break before extra time
+    }
+    if (elapsed <= 125) {
+      return 90 + (elapsed - 110); // First half of extra time: 91 to 105 mins
+    }
+    if (elapsed <= 130) {
+      return 105; // Break in extra time
+    }
+    if (elapsed <= 145) {
+      return 105 + (elapsed - 130); // Second half of extra time: 106 to 120 mins
+    }
+    return 120; // Stoppage/penalty shootout time
+  }
+  
+  return 90; // Group stage full time
+};
+
+// Start background syncing loop for active live matches and auto-start/finish schedules
 export const startLiveMatchSync = async () => {
+  const checkAutoStartFinish = async () => {
+    try {
+      const matches = await dbGetDocs("matches");
+      const now = new Date();
+      for (const m of matches) {
+        if (!m.date) continue;
+        const startTime = new Date(m.date);
+        const elapsedMinutes = (now - startTime) / (1000 * 60);
+
+        if (elapsedMinutes >= 150) {
+          if (m.status !== "Finished") {
+            console.log(`Auto-finishing match ${m.id} as 150 minutes have elapsed since start.`);
+            const updatedMatch = {
+              ...m,
+              status: "Finished",
+              minute: m.round === "Group Stage" ? 90 : 120,
+              lastSynced: now.toISOString()
+            };
+            await dbSetDoc("matches", m.id, updatedMatch);
+          }
+        } else if (elapsedMinutes >= 0) {
+          if (m.status === "Upcoming") {
+            console.log(`Auto-starting match ${m.id} as kickoff time has reached.`);
+            const updatedMatch = {
+              ...m,
+              status: "Live",
+              minute: estimateMatchMinute(elapsedMinutes, m.round),
+              lastSynced: now.toISOString()
+            };
+            await dbSetDoc("matches", m.id, updatedMatch);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error in checkAutoStartFinish:", err);
+    }
+  };
+
+  // Run initial start/finish check
+  await checkAutoStartFinish();
+
   const matches = await dbGetDocs("matches");
   const liveMatches = matches.filter(m => m.status === "Live");
 
@@ -381,6 +464,8 @@ export const startLiveMatchSync = async () => {
 
   // Check every 30 seconds
   setInterval(async () => {
+    await checkAutoStartFinish();
+
     const allMatches = await dbGetDocs("matches");
     const activeLives = allMatches.filter(m => m.status === "Live");
     activeLives.forEach(async (m) => {
@@ -433,10 +518,29 @@ export const renderRetroJerseys = async (containerId) => {
 
     if (products.length === 0) throw new Error("No active products");
 
-    // Shuffle products
-    const shuffled = products.sort(() => 0.5 - Math.random());
-    // Get top 4
-    const selected = shuffled.slice(0, 4);
+    // Filter by World Cup category or 2026 World Cup in the name
+    let selected = products.filter(p => p.cat === "world-cup" || (p.name && p.name.toLowerCase().includes("world cup 2026")) || (p.name && p.name.toLowerCase().includes("2026 world cup")));
+
+    // Shuffle the matching products
+    selected = selected.sort(() => 0.5 - Math.random());
+
+    // If we have fewer than 4 products from the API, complement them with mock retro jerseys from the World Cup
+    if (selected.length < 4) {
+      const mocks = [
+        { id: "br_70", name: "Brazil '70 Classic", price: 2499, mrp: 3999, icon: "👕", desc: "The signature yellow worn by Pele in Mexico." },
+        { id: "arg_86", name: "Argentina '86 Away", price: 2399, mrp: 3899, icon: "👕", desc: "The legendary blue worn by Maradona in Azteca." },
+        { id: "it_90", name: "Italy '90 Home", price: 2299, mrp: 3799, icon: "👕", desc: "Elegant azzurri retro design from Italia '90." },
+        { id: "eng_66", name: "England '66 Red", price: 2599, mrp: 4199, icon: "👕", desc: "Worn during the historic victory at Wembley." }
+      ];
+      
+      const existingNames = new Set(selected.map(p => p.name.toLowerCase()));
+      for (const mock of mocks) {
+        if (selected.length >= 4) break;
+        if (!existingNames.has(mock.name.toLowerCase())) {
+          selected.push(mock);
+        }
+      }
+    }
 
     container.innerHTML = "";
     
@@ -585,4 +689,132 @@ export const renderFlag = (team, imgClass = "w-6 h-4") => {
     return `<img alt="${team.name || ''}" class="${imgClass} object-cover inline-block align-middle shadow-sm border border-white/10 shrink-0" src="${flagSrc}"/>`;
   }
   return `<span class="inline-block shrink-0">${flagSrc || "🏳️"}</span>`;
+};
+
+// 6. Device-specific Watch stream selection modal and button setup
+export const showWatchLinksModal = (watchLinkAndroid, watchLinkIOS) => {
+  // Check if modal container already exists
+  let modal = document.getElementById("watch-links-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "watch-links-modal";
+    modal.className = "fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none";
+    document.body.appendChild(modal);
+  }
+  
+  modal.innerHTML = `
+    <div class="bg-[#201f1f] border-2 border-[#C1121F] rounded-sm p-6 max-w-sm w-full relative shadow-2xl transform scale-95 transition-all duration-300">
+      <!-- Close Button -->
+      <button id="modal-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-base">close</span>
+      </button>
+      
+      <!-- Icon/Header -->
+      <div class="flex flex-col items-center mb-6">
+        <span class="material-symbols-outlined text-brand-red text-4xl mb-2 animate-pulse">live_tv</span>
+        <h3 class="text-xl font-black italic uppercase tracking-tighter text-white">SELECT STREAM</h3>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">FIFA World Cup 2026 Live</p>
+      </div>
+      
+      <p class="text-xs text-gray-400 font-inter mb-6 leading-relaxed">
+        Choose the stream link optimized for your device ecosystem.
+      </p>
+      
+      <!-- Choices -->
+      <div class="space-y-4">
+        <!-- Android / PC -->
+        <a href="${watchLinkAndroid}" target="_blank" id="modal-link-android" class="w-full bg-[#C1121F] text-white py-3 rounded-sm btn-skewed shadow-lg shadow-brand-red/20 font-bold italic tracking-tighter text-sm flex justify-center items-center group">
+          <span class="btn-skewed-content block uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined text-base group-hover:scale-110 transition-transform">adb</span>
+            ANDROID & PC STREAM
+          </span>
+        </a>
+        
+        <!-- iOS / PC -->
+        <a href="${watchLinkIOS}" target="_blank" id="modal-link-ios" class="w-full bg-transparent border border-brand-gold text-brand-gold py-3 rounded-sm btn-skewed font-bold italic tracking-tighter text-sm flex justify-center items-center hover:bg-brand-gold hover:text-black transition-colors group">
+          <span class="btn-skewed-content block uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined text-base group-hover:scale-110 transition-transform">phone_iphone</span>
+            iOS & PC STREAM
+          </span>
+        </a>
+      </div>
+      
+      <div class="mt-6 text-center">
+        <button id="modal-cancel-btn" class="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-widest transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // Show modal with animation
+  setTimeout(() => {
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    const containerDiv = modal.querySelector("div");
+    if (containerDiv) containerDiv.classList.remove("scale-95");
+  }, 50);
+  
+  // Close handlers
+  const closeModal = () => {
+    modal.classList.add("opacity-0", "pointer-events-none");
+    const containerDiv = modal.querySelector("div");
+    if (containerDiv) containerDiv.classList.add("scale-95");
+  };
+  
+  modal.querySelector("#modal-close-btn").addEventListener("click", closeModal);
+  modal.querySelector("#modal-cancel-btn").addEventListener("click", closeModal);
+  modal.querySelector("#modal-link-android").addEventListener("click", closeModal);
+  modal.querySelector("#modal-link-ios").addEventListener("click", closeModal);
+  
+  // Also close on click outside the container
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+};
+
+export const setupWatchButton = (button, match) => {
+  if (!button || !match) return;
+  
+  const hasAndroid = !!match.watchLinkAndroid;
+  const hasIOS = !!match.watchLinkIOS;
+  const hasDefault = !!match.watchLink;
+  
+  if (!hasAndroid && !hasIOS && !hasDefault) {
+    button.classList.add("opacity-50", "pointer-events-none");
+    const span = button.querySelector("span.btn-skewed-content") || button.querySelector("span") || button;
+    if (span) {
+      if (span.querySelector(".material-symbols-outlined")) {
+        span.innerHTML = `<span class="material-symbols-outlined mr-2">play_circle</span> NO WATCH LINK`;
+      } else {
+        span.innerText = "NO WATCH LINK AVAILABLE";
+      }
+    }
+    if (button.tagName === "A") {
+      button.removeAttribute("href");
+    }
+    return;
+  }
+  
+  button.classList.remove("opacity-50", "pointer-events-none");
+  
+  // Clean up existing watch handler to avoid duplicate registrations
+  if (button._watchHandler) {
+    button.removeEventListener("click", button._watchHandler);
+  }
+  
+  button._watchHandler = (e) => {
+    e.preventDefault();
+    if (hasAndroid && hasIOS) {
+      showWatchLinksModal(match.watchLinkAndroid, match.watchLinkIOS);
+    } else {
+      const fallbackLink = match.watchLinkAndroid || match.watchLinkIOS || match.watchLink;
+      if (fallbackLink) {
+        window.open(fallbackLink, "_blank");
+      }
+    }
+  };
+  
+  button.addEventListener("click", button._watchHandler);
 };
