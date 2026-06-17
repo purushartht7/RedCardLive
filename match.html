@@ -297,7 +297,7 @@
   <!-- Module Page Integration scripts -->
   <script type="module">
     import { dbOnSnapshotDoc, dbOnSnapshotCollection, dbGetDoc, dbGetDocs } from "./js/firebase-config.js";
-    import { initializeSearch, renderFlag } from "./js/app.js";
+    import { initializeSearch, renderFlag, setupWatchButton } from "./js/app.js";
     import { generateSquads } from "./js/db-bootstrap.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -367,14 +367,7 @@
 
         // Watch Link
         const watchBtn = document.getElementById("match-watch-btn");
-        if (match.watchLink) {
-          watchBtn.href = match.watchLink;
-          watchBtn.classList.remove("opacity-50", "pointer-events-none");
-        } else {
-          watchBtn.addEventListener("click", (e) => e.preventDefault());
-          watchBtn.querySelector("span").innerText = "NO WATCH LINK AVAILABLE";
-          watchBtn.classList.add("opacity-50", "pointer-events-none");
-        }
+        setupWatchButton(watchBtn, match);
 
         // 3b. Goal Celebration Animation triggers
         if (lastHomeScore !== null && lastAwayScore !== null) {

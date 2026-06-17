@@ -112,6 +112,13 @@ export const initializeSearch = async (searchInputId, resultsContainerId) => {
       container.classList.add("hidden");
     }
   });
+
+  // Set up global sidebar watch button automatically if present
+  const sidebarWatch = document.getElementById("sidebar-watch-btn");
+  if (sidebarWatch && matches && matches.length > 0) {
+    const featuredMatch = matches.find(m => m.featured === true) || matches[0];
+    setupWatchButton(sidebarWatch, featuredMatch);
+  }
 };
 
 // 3. SportsDB score synchronizer (client-side automation)
@@ -682,4 +689,132 @@ export const renderFlag = (team, imgClass = "w-6 h-4") => {
     return `<img alt="${team.name || ''}" class="${imgClass} object-cover inline-block align-middle shadow-sm border border-white/10 shrink-0" src="${flagSrc}"/>`;
   }
   return `<span class="inline-block shrink-0">${flagSrc || "🏳️"}</span>`;
+};
+
+// 6. Device-specific Watch stream selection modal and button setup
+export const showWatchLinksModal = (watchLinkAndroid, watchLinkIOS) => {
+  // Check if modal container already exists
+  let modal = document.getElementById("watch-links-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "watch-links-modal";
+    modal.className = "fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none";
+    document.body.appendChild(modal);
+  }
+  
+  modal.innerHTML = `
+    <div class="bg-[#201f1f] border-2 border-[#C1121F] rounded-sm p-6 max-w-sm w-full relative shadow-2xl transform scale-95 transition-all duration-300">
+      <!-- Close Button -->
+      <button id="modal-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-base">close</span>
+      </button>
+      
+      <!-- Icon/Header -->
+      <div class="flex flex-col items-center mb-6">
+        <span class="material-symbols-outlined text-brand-red text-4xl mb-2 animate-pulse">live_tv</span>
+        <h3 class="text-xl font-black italic uppercase tracking-tighter text-white">SELECT STREAM</h3>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">FIFA World Cup 2026 Live</p>
+      </div>
+      
+      <p class="text-xs text-gray-400 font-inter mb-6 leading-relaxed">
+        Choose the stream link optimized for your device ecosystem.
+      </p>
+      
+      <!-- Choices -->
+      <div class="space-y-4">
+        <!-- Android / PC -->
+        <a href="${watchLinkAndroid}" target="_blank" id="modal-link-android" class="w-full bg-[#C1121F] text-white py-3 rounded-sm btn-skewed shadow-lg shadow-brand-red/20 font-bold italic tracking-tighter text-sm flex justify-center items-center group">
+          <span class="btn-skewed-content block uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined text-base group-hover:scale-110 transition-transform">adb</span>
+            ANDROID & PC STREAM
+          </span>
+        </a>
+        
+        <!-- iOS / PC -->
+        <a href="${watchLinkIOS}" target="_blank" id="modal-link-ios" class="w-full bg-transparent border border-brand-gold text-brand-gold py-3 rounded-sm btn-skewed font-bold italic tracking-tighter text-sm flex justify-center items-center hover:bg-brand-gold hover:text-black transition-colors group">
+          <span class="btn-skewed-content block uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined text-base group-hover:scale-110 transition-transform">phone_iphone</span>
+            iOS & PC STREAM
+          </span>
+        </a>
+      </div>
+      
+      <div class="mt-6 text-center">
+        <button id="modal-cancel-btn" class="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-widest transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // Show modal with animation
+  setTimeout(() => {
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    const containerDiv = modal.querySelector("div");
+    if (containerDiv) containerDiv.classList.remove("scale-95");
+  }, 50);
+  
+  // Close handlers
+  const closeModal = () => {
+    modal.classList.add("opacity-0", "pointer-events-none");
+    const containerDiv = modal.querySelector("div");
+    if (containerDiv) containerDiv.classList.add("scale-95");
+  };
+  
+  modal.querySelector("#modal-close-btn").addEventListener("click", closeModal);
+  modal.querySelector("#modal-cancel-btn").addEventListener("click", closeModal);
+  modal.querySelector("#modal-link-android").addEventListener("click", closeModal);
+  modal.querySelector("#modal-link-ios").addEventListener("click", closeModal);
+  
+  // Also close on click outside the container
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+};
+
+export const setupWatchButton = (button, match) => {
+  if (!button || !match) return;
+  
+  const hasAndroid = !!match.watchLinkAndroid;
+  const hasIOS = !!match.watchLinkIOS;
+  const hasDefault = !!match.watchLink;
+  
+  if (!hasAndroid && !hasIOS && !hasDefault) {
+    button.classList.add("opacity-50", "pointer-events-none");
+    const span = button.querySelector("span.btn-skewed-content") || button.querySelector("span") || button;
+    if (span) {
+      if (span.querySelector(".material-symbols-outlined")) {
+        span.innerHTML = `<span class="material-symbols-outlined mr-2">play_circle</span> NO WATCH LINK`;
+      } else {
+        span.innerText = "NO WATCH LINK AVAILABLE";
+      }
+    }
+    if (button.tagName === "A") {
+      button.removeAttribute("href");
+    }
+    return;
+  }
+  
+  button.classList.remove("opacity-50", "pointer-events-none");
+  
+  // Clean up existing watch handler to avoid duplicate registrations
+  if (button._watchHandler) {
+    button.removeEventListener("click", button._watchHandler);
+  }
+  
+  button._watchHandler = (e) => {
+    e.preventDefault();
+    if (hasAndroid && hasIOS) {
+      showWatchLinksModal(match.watchLinkAndroid, match.watchLinkIOS);
+    } else {
+      const fallbackLink = match.watchLinkAndroid || match.watchLinkIOS || match.watchLink;
+      if (fallbackLink) {
+        window.open(fallbackLink, "_blank");
+      }
+    }
+  };
+  
+  button.addEventListener("click", button._watchHandler);
 };

@@ -203,8 +203,19 @@
               <label class="text-[10px] font-bold uppercase text-gray-400">Featured Match Hero (Home Page)</label>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Android & PC Watch Link</label>
+                <input id="mgr-watch-link-android" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://android.stream/..."/>
+              </div>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">iOS & PC Watch Link</label>
+                <input id="mgr-watch-link-ios" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://ios.stream/..."/>
+              </div>
+            </div>
+
             <div>
-              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Official Live Watch Link</label>
+              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Default Watch Link (Fallback)</label>
               <input id="mgr-watch-link" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://www.fifa.com/..."/>
             </div>
 
@@ -530,6 +541,8 @@
           document.getElementById("mgr-home-score").value = m.homeScore;
           document.getElementById("mgr-away-score").value = m.awayScore;
           document.getElementById("mgr-featured").checked = m.featured || false;
+          document.getElementById("mgr-watch-link-android").value = m.watchLinkAndroid || "";
+          document.getElementById("mgr-watch-link-ios").value = m.watchLinkIOS || "";
           document.getElementById("mgr-watch-link").value = m.watchLink || "";
           document.getElementById("mgr-sportsdb-id").value = m.sportsdbEventId || "";
         }
@@ -549,6 +562,8 @@
         const homeScore = parseInt(document.getElementById("mgr-home-score").value) || 0;
         const awayScore = parseInt(document.getElementById("mgr-away-score").value) || 0;
         const featured = document.getElementById("mgr-featured").checked;
+        const watchLinkAndroid = document.getElementById("mgr-watch-link-android").value.trim();
+        const watchLinkIOS = document.getElementById("mgr-watch-link-ios").value.trim();
         const watchLink = document.getElementById("mgr-watch-link").value.trim();
         const sportsdbId = document.getElementById("mgr-sportsdb-id").value.trim();
 
@@ -570,6 +585,8 @@
           awayScore,
           featured,
           watchLink,
+          watchLinkAndroid,
+          watchLinkIOS,
           sportsdbEventId: sportsdbId
         };
 
@@ -617,6 +634,8 @@
               document.getElementById("mgr-home-score").value = updated.homeScore;
               document.getElementById("mgr-away-score").value = updated.awayScore;
               document.getElementById("mgr-featured").checked = updated.featured || false;
+              document.getElementById("mgr-watch-link-android").value = updated.watchLinkAndroid || "";
+              document.getElementById("mgr-watch-link-ios").value = updated.watchLinkIOS || "";
               document.getElementById("mgr-watch-link").value = updated.watchLink || "";
               document.getElementById("mgr-sportsdb-id").value = updated.sportsdbEventId || "";
             }

@@ -429,7 +429,7 @@
   <!-- Module Page scripts -->
   <script type="module">
     import { dbOnSnapshotDoc, dbGetDoc, dbGetDocs, dbSetDoc, authOnAuthStateChanged } from "./js/firebase-config.js";
-    import { initializeSearch, renderFlag, formatToIST, getCountdown } from "./js/app.js";
+    import { initializeSearch, renderFlag, formatToIST, getCountdown, setupWatchButton } from "./js/app.js";
     import { generateSquads } from "./js/db-bootstrap.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -524,17 +524,8 @@
         watchLinkBtn.innerHTML = `<span class="material-symbols-outlined text-base">play_circle</span> ${btnText}`;
         ctaWatchBtn.innerHTML = `<span class="material-symbols-outlined text-xl">play_circle</span> ${btnText}`;
 
-        if (match.watchLink) {
-          watchLinkBtn.href = match.watchLink;
-          watchLinkBtn.classList.remove("opacity-50", "pointer-events-none");
-          ctaWatchBtn.href = match.watchLink;
-          ctaWatchBtn.classList.remove("opacity-50", "pointer-events-none");
-        } else {
-          watchLinkBtn.addEventListener("click", (e) => e.preventDefault());
-          watchLinkBtn.classList.add("opacity-50", "pointer-events-none");
-          ctaWatchBtn.addEventListener("click", (e) => e.preventDefault());
-          ctaWatchBtn.classList.add("opacity-50", "pointer-events-none");
-        }
+        setupWatchButton(watchLinkBtn, match);
+        setupWatchButton(ctaWatchBtn, match);
 
         // Live Countdown Timer
         if (countdownInterval) clearInterval(countdownInterval);
@@ -930,15 +921,25 @@ Return ONLY the raw JSON string. Do NOT enclose in markdown codeblocks (no \`\`\
 
         // Stream link configuration
         document.getElementById("admin-btn-watch-link").onclick = async () => {
-          const url = prompt("Enter Broadcast Watch Link (Streaming URL):");
-          if (url === null) return;
-          const text = prompt("Enter Watch Button text:", "WATCH ON JIOHOTSTAR");
+          const matchDoc = await dbGetDoc("matches", matchId) || {};
+          
+          const watchLinkAndroid = prompt("Enter Android & PC Watch Link:", matchDoc.watchLinkAndroid || "");
+          if (watchLinkAndroid === null) return;
+          
+          const watchLinkIOS = prompt("Enter iOS & PC Watch Link:", matchDoc.watchLinkIOS || "");
+          if (watchLinkIOS === null) return;
+
+          const defaultUrl = prompt("Enter Default Watch Link (Fallback):", matchDoc.watchLink || "");
+          if (defaultUrl === null) return;
+          
+          const text = prompt("Enter Watch Button text:", matchDoc.watchButtonText || "WATCH BROADCAST");
           if (text === null) return;
 
-          const matchDoc = await dbGetDoc("matches", matchId);
           await dbSetDoc("matches", matchId, {
             ...matchDoc,
-            watchLink: url,
+            watchLink: defaultUrl,
+            watchLinkAndroid,
+            watchLinkIOS,
             watchButtonText: text
           });
           alert("Watch links updated successfully!");

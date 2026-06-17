@@ -423,7 +423,7 @@ void main() {
   <!-- BEGIN: Core Page Scripts -->
   <script type="module">
     import { dbOnSnapshotCollection, dbGetDocs, dbGetDoc } from "./js/firebase-config.js";
-    import { formatToIST, getCountdown, initializeSearch, startLiveMatchSync, renderRetroJerseys, renderFlag } from "./js/app.js";
+    import { formatToIST, getCountdown, initializeSearch, startLiveMatchSync, renderRetroJerseys, renderFlag, setupWatchButton } from "./js/app.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
       // 1. Init Search
@@ -480,10 +480,11 @@ void main() {
           const heroContainer = document.getElementById("featured-match-hero");
 
           const isLive = featuredMatch.status === "Live";
-          const watchBtnHtml = featuredMatch.watchLink 
-            ? `<a href="${featuredMatch.watchLink}" target="_blank" class="bg-brand-red text-white px-12 py-4 btn-skewed font-black italic text-xl tracking-tighter hover:bg-red-700 transition-colors shadow-2xl shadow-brand-red/40 flex items-center justify-center">
+          const hasLinks = !!(featuredMatch.watchLink || featuredMatch.watchLinkAndroid || featuredMatch.watchLinkIOS);
+          const watchBtnHtml = hasLinks 
+            ? `<button id="hero-watch-btn" class="bg-brand-red text-white px-12 py-4 btn-skewed font-black italic text-xl tracking-tighter hover:bg-red-700 transition-colors shadow-2xl shadow-brand-red/40 flex items-center justify-center">
                  <span class="btn-skewed-content block uppercase flex items-center">WATCH LIVE NOW <span class="material-symbols-outlined ml-2">play_circle</span></span>
-               </a>`
+               </button>`
             : `<button disabled class="bg-gray-800 text-gray-500 cursor-not-allowed px-12 py-4 btn-skewed font-black italic text-xl tracking-tighter flex items-center justify-center">
                  <span class="btn-skewed-content block uppercase">NO WATCH LINK</span>
                </button>`;
@@ -538,15 +539,16 @@ void main() {
             </div>
           `;
 
+          // Handle hero watch button
+          const heroWatch = document.getElementById("hero-watch-btn");
+          if (heroWatch) {
+            setupWatchButton(heroWatch, featuredMatch);
+          }
+
           // Handle global watch link update
           const sidebarWatch = document.getElementById("sidebar-watch-btn");
           if (sidebarWatch) {
-            if (featuredMatch.watchLink) {
-              sidebarWatch.href = featuredMatch.watchLink;
-              sidebarWatch.target = "_blank";
-            } else {
-              sidebarWatch.addEventListener('click', (e) => e.preventDefault());
-            }
+            setupWatchButton(sidebarWatch, featuredMatch);
           }
 
           // Trigger interval for countdown if not live
