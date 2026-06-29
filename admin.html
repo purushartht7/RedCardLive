@@ -144,10 +144,15 @@
           <div class="bg-brand-black/50 p-4 border border-white/5 text-[10px] font-mono text-gray-500 rounded-sm">
             Warning: Bootstrapping will overwrite existing matches, teams, and stadiums with the official schedule dataset.
           </div>
-          <button id="bootstrap-btn" class="px-8 py-3 bg-brand-red text-white font-bold uppercase text-xs btn-skewed shadow-lg shadow-brand-red/20">
-            <span class="btn-skewed-content block">INITIALIZE DATABASE</span>
-          </button>
-          <div id="bootstrap-status" class="text-xs font-mono font-bold text-brand-gold"></div>
+                  <div class="flex flex-wrap gap-4">
+            <button id="bootstrap-btn" class="px-8 py-3 bg-brand-red text-white font-bold uppercase text-xs btn-skewed shadow-lg shadow-brand-red/20">
+              <span class="btn-skewed-content block">INITIALIZE DATABASE</span>
+            </button>
+            <button id="bootstrap-r32-btn" class="px-8 py-3 bg-brand-charcoal border border-white/10 text-white hover:bg-brand-red hover:border-transparent font-bold uppercase text-xs btn-skewed transition-colors">
+              <span class="btn-skewed-content block">BOOTSTRAP ROUND OF 32 ONLY</span>
+            </button>
+          </div>
+          <div id="bootstrap-status" class="text-xs font-mono font-bold text-brand-gold mt-2"></div>
         </div>
       </section>
 
@@ -160,79 +165,159 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          <!-- Column Left: Select and Edit Scores -->
           <div class="bg-brand-surface p-6 border border-brand-charcoal rounded-sm space-y-4">
-            <h3 class="font-bold text-sm text-white uppercase">Select Fixture</h3>
-            <div>
-              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Matchup</label>
-              <select id="mgr-match-select" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
-                <option value="">-- Select a match --</option>
-              </select>
+            
+            <!-- Toggle Mode Buttons -->
+            <div class="flex border-b border-brand-charcoal pb-2">
+              <button id="mgr-toggle-edit" class="flex-1 py-2 text-center text-xs font-bold uppercase tracking-wider text-white border-b-2 border-brand-red">
+                Edit Existing
+              </button>
+              <button id="mgr-toggle-create" class="flex-1 py-2 text-center text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white border-b-2 border-transparent">
+                Create New Match
+              </button>
             </div>
 
-            <hr class="border-white/5"/>
-            <h3 class="font-bold text-sm text-white uppercase">Match Status & Score</h3>
-            <div class="grid grid-cols-2 gap-4">
+            <!-- Edit Form Container -->
+            <div id="mgr-edit-container" class="space-y-4">
+              <h3 class="font-bold text-sm text-white uppercase">Select Fixture</h3>
               <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Match Status</label>
-                <select id="mgr-status" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
-                  <option value="Upcoming">Upcoming</option>
-                  <option value="Live">Live</option>
-                  <option value="Finished">Finished</option>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Matchup</label>
+                <select id="mgr-match-select" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                  <option value="">-- Select a match --</option>
                 </select>
               </div>
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Match Minute</label>
-                <input id="mgr-minute" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="74"/>
+
+              <hr class="border-white/5"/>
+              <h3 class="font-bold text-sm text-white uppercase">Match Status & Score</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Match Status</label>
+                  <select id="mgr-status" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Live">Live</option>
+                    <option value="Finished">Finished</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Match Minute</label>
+                  <input id="mgr-minute" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="74"/>
+                </div>
               </div>
-            </div>
 
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1" id="mgr-home-team-label">Home Score</label>
-                <input id="mgr-home-score" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1" id="mgr-home-team-label">Home Score</label>
+                  <input id="mgr-home-score" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1" id="mgr-away-team-label">Away Score</label>
+                  <input id="mgr-away-score" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+                </div>
               </div>
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1" id="mgr-away-team-label">Away Score</label>
-                <input id="mgr-away-score" type="number" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+
+              <div class="flex items-center gap-2">
+                <input id="mgr-featured" type="checkbox" class="bg-[#131313] border-none text-brand-red focus:ring-brand-red rounded-sm"/>
+                <label class="text-[10px] font-bold uppercase text-gray-400">Featured Match Hero (Home Page)</label>
               </div>
-            </div>
 
-            <div class="flex items-center gap-2">
-              <input id="mgr-featured" type="checkbox" class="bg-[#131313] border-none text-brand-red focus:ring-brand-red rounded-sm"/>
-              <label class="text-[10px] font-bold uppercase text-gray-400">Featured Match Hero (Home Page)</label>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Android & PC Watch Link</label>
-                <input id="mgr-watch-link-android" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://android.stream/..."/>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Android & PC Watch Link</label>
+                  <input id="mgr-watch-link-android" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://android.stream/..."/>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">iOS & PC Watch Link</label>
+                  <input id="mgr-watch-link-ios" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://ios.stream/..."/>
+                </div>
               </div>
+
               <div>
-                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">iOS & PC Watch Link</label>
-                <input id="mgr-watch-link-ios" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://ios.stream/..."/>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Default Watch Link (Fallback)</label>
+                <input id="mgr-watch-link" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://www.fifa.com/..."/>
               </div>
+
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">SportsDB Event ID</label>
+                <input id="mgr-sportsdb-id" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="sdb_500001"/>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <button id="mgr-save-match-btn" class="px-6 py-2 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
+                  <span class="btn-skewed-content block">Save Match Details</span>
+                </button>
+                <button id="mgr-sync-sportsdb-btn" class="px-6 py-2 bg-brand-charcoal border border-white/10 hover:bg-[#e9c400] hover:text-black transition-all text-white font-bold uppercase text-xs btn-skewed">
+                  <span class="btn-skewed-content block">Sync from SportsDB</span>
+                </button>
+              </div>
+              <div id="mgr-save-status" class="text-xs font-mono font-bold mt-2"></div>
             </div>
 
-            <div>
-              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Default Watch Link (Fallback)</label>
-              <input id="mgr-watch-link" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://www.fifa.com/..."/>
-            </div>
+            <!-- Create Form Container -->
+            <div id="mgr-create-container" class="space-y-4 hidden">
+              <h3 class="font-bold text-sm text-white uppercase">New Match Details</h3>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Home Team</label>
+                  <select id="new-home-team" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="">-- Select Team --</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Away Team</label>
+                  <select id="new-away-team" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="">-- Select Team --</option>
+                  </select>
+                </div>
+              </div>
 
-            <div>
-              <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">SportsDB Event ID</label>
-              <input id="mgr-sportsdb-id" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="sdb_500001"/>
-            </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Date & Time (IST)</label>
+                  <input id="new-match-date" type="datetime-local" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2"/>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Round</label>
+                  <select id="new-match-round" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                    <option value="Group Stage">Group Stage</option>
+                    <option value="Round of 32" selected>Round of 32</option>
+                    <option value="Round of 16">Round of 16</option>
+                    <option value="Quarter Finals">Quarter Finals</option>
+                    <option value="Semi Finals">Semi Finals</option>
+                    <option value="Final">Final</option>
+                  </select>
+                </div>
+              </div>
 
-            <div class="flex flex-wrap gap-3">
-              <button id="mgr-save-match-btn" class="px-6 py-2 bg-brand-red text-white font-bold uppercase text-xs btn-skewed">
-                <span class="btn-skewed-content block">Save Match Details</span>
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Stadium</label>
+                <select id="new-match-stadium" required class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2">
+                  <option value="">-- Select Stadium --</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">Android & PC Stream</label>
+                  <input id="new-watch-android" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://..."/>
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">iOS & PC Stream</label>
+                  <input id="new-watch-ios" type="url" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="https://..."/>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">SportsDB Event ID (Optional)</label>
+                <input id="new-sportsdb-id" type="text" class="w-full bg-[#131313] border-none text-xs rounded-sm focus:ring-1 focus:ring-brand-red text-white py-2" placeholder="sdb_500123"/>
+              </div>
+
+              <button id="mgr-create-match-btn" class="px-6 py-2.5 bg-brand-red text-white font-bold uppercase text-xs btn-skewed w-full text-center">
+                <span class="btn-skewed-content block">Create Match Fixture</span>
               </button>
-              <button id="mgr-sync-sportsdb-btn" class="px-6 py-2 bg-brand-charcoal border border-white/10 hover:bg-[#e9c400] hover:text-black transition-all text-white font-bold uppercase text-xs btn-skewed">
-                <span class="btn-skewed-content block">Sync from SportsDB</span>
-              </button>
+              
+              <div id="mgr-create-status" class="text-xs font-mono font-bold mt-2"></div>
             </div>
-            <div id="mgr-save-status" class="text-xs font-mono font-bold mt-2"></div>
           </div>
 
           <!-- Column Right: Live Event Generator & Gemini Previews -->
@@ -410,7 +495,7 @@
   <!-- Module Page scripts -->
   <script type="module">
     import { authSignIn, authSignOut, authOnAuthStateChanged, dbGetDoc, dbSetDoc, dbGetDocs, dbAddDoc, dbDeleteDoc, dbOnSnapshotCollection } from "./js/firebase-config.js";
-    import { bootstrapDatabase } from "./js/db-bootstrap.js";
+    import { bootstrapDatabase, bootstrapRoundOf32Only } from "./js/db-bootstrap.js";
     import { triggerSportsDbSync } from "./js/app.js";
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -502,6 +587,151 @@
           bootstrapStatus.innerHTML = message;
         }
       });
+
+      // 5b. Bootstrap Round of 32 Only Button
+      const bootstrapR32Btn = document.getElementById("bootstrap-r32-btn");
+      if (bootstrapR32Btn) {
+        bootstrapR32Btn.addEventListener("click", async () => {
+          bootstrapStatus.innerHTML = "Running Round of 32 bootstrap process...";
+          try {
+            await bootstrapRoundOf32Only();
+            bootstrapStatus.innerHTML = "Round of 32 matches bootstrapped successfully! Matches are updated.";
+            loadAdminData(); // Reload select dropdowns
+          } catch (error) {
+            console.error(error);
+            bootstrapStatus.innerHTML = "Bootstrap failed: " + error.message;
+          }
+        });
+      }
+
+      // Match Manager Toggle Edit/Create modes
+      const toggleEditBtn = document.getElementById("mgr-toggle-edit");
+      const toggleCreateBtn = document.getElementById("mgr-toggle-create");
+      const editContainer = document.getElementById("mgr-edit-container");
+      const createContainer = document.getElementById("mgr-create-container");
+
+      if (toggleEditBtn && toggleCreateBtn) {
+        toggleEditBtn.addEventListener("click", () => {
+          toggleEditBtn.className = "flex-1 py-2 text-center text-xs font-bold uppercase tracking-wider text-white border-b-2 border-brand-red";
+          toggleCreateBtn.className = "flex-1 py-2 text-center text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white border-b-2 border-transparent";
+          editContainer.classList.remove("hidden");
+          createContainer.classList.add("hidden");
+        });
+
+        toggleCreateBtn.addEventListener("click", () => {
+          toggleCreateBtn.className = "flex-1 py-2 text-center text-xs font-bold uppercase tracking-wider text-white border-b-2 border-brand-red";
+          toggleEditBtn.className = "flex-1 py-2 text-center text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white border-b-2 border-transparent";
+          createContainer.classList.remove("hidden");
+          editContainer.classList.add("hidden");
+        });
+      }
+
+      // Manual Match Creation Submit handler
+      const createMatchBtn = document.getElementById("mgr-create-match-btn");
+      const createStatus = document.getElementById("mgr-create-status");
+
+      if (createMatchBtn) {
+        createMatchBtn.addEventListener("click", async () => {
+          const homeTeamId = document.getElementById("new-home-team").value;
+          const awayTeamId = document.getElementById("new-away-team").value;
+          const localVal = document.getElementById("new-match-date").value;
+          const round = document.getElementById("new-match-round").value;
+          const stadiumId = document.getElementById("new-match-stadium").value;
+          const watchLinkAndroid = document.getElementById("new-watch-android").value.trim();
+          const watchLinkIOS = document.getElementById("new-watch-ios").value.trim();
+          const sportsdbIdInput = document.getElementById("new-sportsdb-id").value.trim();
+
+          if (!homeTeamId || !awayTeamId || !localVal || !stadiumId) {
+            alert("Please fill in all required fields (Teams, Date/Time, and Stadium)!");
+            return;
+          }
+
+          if (homeTeamId === awayTeamId) {
+            alert("Home team and Away team cannot be the same!");
+            return;
+          }
+
+          createStatus.innerText = "Creating match fixture...";
+          createStatus.className = "text-xs font-mono font-bold text-brand-gold mt-2";
+
+          try {
+            // Fetch all matches to calculate the next match ID
+            const matches = await dbGetDocs("matches");
+            const maxIdNum = matches.reduce((max, m) => {
+              const num = parseInt(m.id.split('_')[1]);
+              return !isNaN(num) && num > max ? num : max;
+            }, 0);
+            
+            const nextMatchIdx = maxIdNum + 1;
+            const newMatchId = `match_${nextMatchIdx}`;
+
+            // Parse Date and offset (constructing an IST timezone string +05:30)
+            const istDateStr = `${localVal}:00+05:30`;
+            const utcDateStr = new Date(istDateStr).toISOString();
+
+            // Format timeIST string (e.g. "12:30 AM IST")
+            const [dPart, tPart] = localVal.split("T");
+            let [hours, minutes] = tPart.split(":").map(Number);
+            const ampm = hours >= 12 ? "PM" : "AM";
+            let displayHours = hours % 12;
+            if (displayHours === 0) displayHours = 12;
+            const displayMinutes = String(minutes).padStart(2, "0");
+            const timeIST = `${displayHours}:${displayMinutes} ${ampm} IST`;
+
+            // Default sportsdbEventId if not specified
+            const sportsdbEventId = sportsdbIdInput || `sdb_${500000 + nextMatchIdx}`;
+
+            const newMatch = {
+              id: newMatchId,
+              homeTeamId,
+              awayTeamId,
+              homePlaceholder: "",
+              awayPlaceholder: "",
+              date: utcDateStr,
+              timeIST,
+              stadiumId,
+              round,
+              group: null,
+              status: "Upcoming",
+              minute: 0,
+              homeScore: 0,
+              awayScore: 0,
+              featured: false,
+              sportsdbEventId,
+              watchLink: watchLinkAndroid || watchLinkIOS || "",
+              watchLinkAndroid,
+              watchLinkIOS
+            };
+
+            await dbSetDoc("matches", newMatchId, newMatch);
+
+            createStatus.innerText = `Match fixture ${newMatchId.toUpperCase()} created successfully!`;
+            createStatus.className = "text-xs font-mono font-bold text-green-500 mt-2";
+
+            // Reset form fields
+            document.getElementById("new-home-team").value = "";
+            document.getElementById("new-away-team").value = "";
+            document.getElementById("new-match-date").value = "";
+            document.getElementById("new-match-round").value = "Round of 32";
+            document.getElementById("new-match-stadium").value = "";
+            document.getElementById("new-watch-android").value = "";
+            document.getElementById("new-watch-ios").value = "";
+            document.getElementById("new-sportsdb-id").value = "";
+
+            // Reload dropdown lists so the new match is in the edit dropdown list
+            await loadAdminData();
+
+            setTimeout(() => {
+              createStatus.innerText = "";
+            }, 5000);
+
+          } catch (error) {
+            console.error("Match creation error:", error);
+            createStatus.innerText = "Failed to create match: " + error.message;
+            createStatus.className = "text-xs font-mono font-bold text-brand-red mt-2";
+          }
+        });
+      }
 
       // 6. Match Manager Form handlers
       const matchSelect = document.getElementById("mgr-match-select");
@@ -1011,12 +1241,48 @@ You MUST return a valid JSON array of 3 objects with the exact keys described. R
     async function loadAdminData() {
       const matches = await dbGetDocs("matches");
       const teams = await dbGetDocs("teams");
+      const stadiums = await dbGetDocs("stadiums");
 
       const matchSelect = document.getElementById("mgr-match-select");
       matchSelect.innerHTML = `<option value="">-- Select a match --</option>`;
 
       // Sort matches by index
       matches.sort((a, b) => parseInt(a.id.split('_')[1]) - parseInt(b.id.split('_')[1]));
+
+      // Populate Home/Away team dropdowns for manual match creator
+      const newHomeSelect = document.getElementById("new-home-team");
+      const newAwaySelect = document.getElementById("new-away-team");
+      if (newHomeSelect && newAwaySelect) {
+        newHomeSelect.innerHTML = `<option value="">-- Select Team --</option>`;
+        newAwaySelect.innerHTML = `<option value="">-- Select Team --</option>`;
+        
+        // Sort teams alphabetically
+        const sortedTeams = [...teams].sort((a, b) => a.name.localeCompare(b.name));
+        sortedTeams.forEach(t => {
+          const optHome = document.createElement("option");
+          optHome.value = t.id;
+          optHome.innerText = `${t.name} (${t.code})`;
+          newHomeSelect.appendChild(optHome);
+
+          const optAway = document.createElement("option");
+          optAway.value = t.id;
+          optAway.innerText = `${t.name} (${t.code})`;
+          newAwaySelect.appendChild(optAway);
+        });
+      }
+
+      // Populate Stadium dropdown for manual match creator
+      const newStadiumSelect = document.getElementById("new-match-stadium");
+      if (newStadiumSelect && stadiums) {
+        newStadiumSelect.innerHTML = `<option value="">-- Select Stadium --</option>`;
+        const sortedStadiums = [...stadiums].sort((a, b) => a.name.localeCompare(b.name));
+        sortedStadiums.forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s.id;
+          opt.innerText = `${s.name} (${s.city})`;
+          newStadiumSelect.appendChild(opt);
+        });
+      }
 
       matches.forEach(m => {
         const home = teams.find(t => t.id === m.homeTeamId) || { name: m.homePlaceholder || "TBD" };
