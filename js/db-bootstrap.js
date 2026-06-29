@@ -1,5 +1,6 @@
-// Database Bootstrapper and Fixture Generator - Red Card Live World Cup 2026
+// Database Bootstrapper and Fixture Generator - RedCardLive World Cup 2026
 import { dbSetDoc, dbGetDoc } from "./firebase-config.js";
+import TEAMS_DATA from "../world_cup_2026_team_profiles.json";
 
 export const STADIUMS = [
   { id: "metlife", name: "MetLife Stadium", city: "East Rutherford, NJ", capacity: 82500, image: "https://images.unsplash.com/photo-1564198879120-ed341af72d89?w=600&auto=format&fit=crop&q=80" },
@@ -20,68 +21,22 @@ export const STADIUMS = [
   { id: "guadalajara", name: "Estadio Akron", city: "Guadalajara, Mexico", capacity: 48071, image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&auto=format&fit=crop&q=80" }
 ];
 
-export const TEAMS = [
-  // Group A
-  { id: "mexico", name: "Mexico", code: "MEX", flag: "🇲🇽", group: "A", rank: 15, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "south_africa", name: "South Africa", code: "RSA", flag: "🇿🇦", group: "A", rank: 58, titles: 0, form: ["L", "D", "W", "L", "D"] },
-  { id: "south_korea", name: "South Korea", code: "KOR", flag: "🇰🇷", group: "A", rank: 22, titles: 0, form: ["W", "L", "W", "D", "W"] },
-  { id: "czechia", name: "Czechia", code: "CZE", flag: "🇨🇿", group: "A", rank: 36, titles: 0, form: ["W", "D", "L", "W", "L"] },
-  // Group B
-  { id: "canada", name: "Canada", code: "CAN", flag: "🇨🇦", group: "B", rank: 40, titles: 0, form: ["L", "W", "D", "W", "W"] },
-  { id: "bosnia", name: "Bosnia & Herzegovina", code: "BIH", flag: "🇧🇦", group: "B", rank: 74, titles: 0, form: ["L", "D", "W", "L", "L"] },
-  { id: "qatar", name: "Qatar", code: "QAT", flag: "🇶🇦", group: "B", rank: 38, titles: 0, form: ["W", "W", "D", "L", "L"] },
-  { id: "switzerland", name: "Switzerland", code: "SUI", flag: "🇨🇭", group: "B", rank: 19, titles: 0, form: ["W", "D", "L", "W", "D"] },
-  // Group C
-  { id: "brazil", name: "Brazil", code: "BRA", flag: "🇧🇷", group: "C", rank: 3, titles: 5, form: ["W", "W", "D", "W", "W"] },
-  { id: "morocco", name: "Morocco", code: "MAR", flag: "🇲🇦", group: "C", rank: 13, titles: 0, form: ["W", "W", "D", "W", "W"] },
-  { id: "haiti", name: "Haiti", code: "HAI", flag: "🇭🇹", group: "C", rank: 86, titles: 0, form: ["L", "L", "W", "D", "L"] },
-  { id: "scotland", name: "Scotland", code: "SCO", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", group: "C", rank: 39, titles: 0, form: ["L", "W", "D", "L", "W"] },
-  // Group D
-  { id: "usa", name: "United States", code: "USA", flag: "🇺🇸", group: "D", rank: 11, titles: 0, form: ["W", "D", "W", "L", "W"] },
-  { id: "paraguay", name: "Paraguay", code: "PAR", flag: "🇵🇾", group: "D", rank: 56, titles: 0, form: ["L", "L", "W", "D", "L"] },
-  { id: "australia", name: "Australia", code: "AUS", flag: "🇦🇺", group: "D", rank: 24, titles: 0, form: ["W", "D", "L", "W", "W"] },
-  { id: "turkey", name: "Türkiye", code: "TUR", flag: "🇹🇷", group: "D", rank: 35, titles: 0, form: ["W", "D", "L", "W", "W"] },
-  // Group E
-  { id: "germany", name: "Germany", code: "GER", flag: "🇩🇪", group: "E", rank: 16, titles: 4, form: ["W", "L", "W", "D", "W"] },
-  { id: "curacao", name: "Curaçao", code: "CUW", flag: "🇨🇼", group: "E", rank: 88, titles: 0, form: ["L", "W", "D", "L", "L"] },
-  { id: "ivory_coast", name: "Ivory Coast", code: "CIV", flag: "🇨🇮", group: "E", rank: 37, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "ecuador", name: "Ecuador", code: "ECU", flag: "🇪🇨", group: "E", rank: 31, titles: 0, form: ["W", "W", "L", "D", "W"] },
-  // Group F
-  { id: "netherlands", name: "Netherlands", code: "NED", flag: "🇳🇱", group: "F", rank: 7, titles: 0, form: ["W", "W", "D", "W", "L"] },
-  { id: "japan", name: "Japan", code: "JPN", flag: "🇯🇵", group: "F", rank: 18, titles: 0, form: ["W", "W", "L", "W", "W"] },
-  { id: "sweden", name: "Sweden", code: "SWE", flag: "🇸🇪", group: "F", rank: 23, titles: 0, form: ["L", "W", "D", "L", "W"] },
-  { id: "tunisia", name: "Tunisia", code: "TUN", flag: "🇹🇳", group: "F", rank: 41, titles: 0, form: ["L", "W", "D", "L", "L"] },
-  // Group G
-  { id: "belgium", name: "Belgium", code: "BEL", flag: "🇧🇪", group: "G", rank: 5, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "egypt", name: "Egypt", code: "EGY", flag: "🇪🇬", group: "G", rank: 36, titles: 0, form: ["W", "L", "L", "W", "W"] },
-  { id: "iran", name: "Iran", code: "IRN", flag: "🇮🇷", group: "G", rank: 20, titles: 0, form: ["W", "W", "D", "W", "L"] },
-  { id: "new_zealand", name: "New Zealand", code: "NZL", flag: "🇳🇿", group: "G", rank: 104, titles: 0, form: ["W", "L", "L", "W", "D"] },
-  // Group H
-  { id: "spain", name: "Spain", code: "ESP", flag: "🇪🇸", group: "H", rank: 8, titles: 1, form: ["W", "W", "W", "W", "D"] },
-  { id: "cape_verde", name: "Cape Verde", code: "CPV", flag: "🇨🇻", group: "H", rank: 65, titles: 0, form: ["W", "L", "L", "W", "D"] },
-  { id: "saudi_arabia", name: "Saudi Arabia", code: "KSA", flag: "🇸🇦", group: "H", rank: 56, titles: 0, form: ["L", "L", "W", "D", "L"] },
-  { id: "uruguay", name: "Uruguay", code: "URU", flag: "🇺🇾", group: "H", rank: 14, titles: 2, form: ["W", "D", "W", "L", "W"] },
-  // Group I
-  { id: "france", name: "France", code: "FRA", flag: "🇫🇷", group: "I", rank: 2, titles: 2, form: ["W", "W", "D", "W", "L"] },
-  { id: "senegal", name: "Senegal", code: "SEN", flag: "🇸🇳", group: "I", rank: 17, titles: 0, form: ["W", "L", "W", "W", "D"] },
-  { id: "iraq", name: "Iraq", code: "IRQ", flag: "🇮🇶", group: "I", rank: 59, titles: 0, form: ["W", "L", "D", "L", "W"] },
-  { id: "norway", name: "Norway", code: "NOR", flag: "🇳🇴", group: "I", rank: 47, titles: 0, form: ["L", "W", "D", "L", "W"] },
-  // Group J
-  { id: "argentina", name: "Argentina", code: "ARG", flag: "🇦🇷", group: "J", rank: 1, titles: 3, form: ["W", "W", "W", "D", "W"] },
-  { id: "algeria", name: "Algeria", code: "ALG", flag: "🇩🇿", group: "J", rank: 33, titles: 0, form: ["L", "W", "W", "D", "L"] },
-  { id: "austria", name: "Austria", code: "AUT", flag: "🇦🇹", group: "J", rank: 25, titles: 0, form: ["W", "L", "W", "D", "L"] },
-  { id: "jordan", name: "Jordan", code: "JOR", flag: "🇯🇴", group: "J", rank: 71, titles: 0, form: ["W", "L", "W", "D", "L"] },
-  // Group K
-  { id: "portugal", name: "Portugal", code: "POR", flag: "🇵🇹", group: "K", rank: 6, titles: 0, form: ["W", "W", "D", "W", "L"] },
-  { id: "dr_congo", name: "DR Congo", code: "COD", flag: "🇨🇩", group: "K", rank: 62, titles: 0, form: ["L", "W", "L", "D", "L"] },
-  { id: "uzbekistan", name: "Uzbekistan", code: "UZB", flag: "UZB", group: "K", rank: 64, titles: 0, form: ["W", "D", "W", "L", "D"] },
-  { id: "colombia", name: "Colombia", code: "COL", flag: "🇨🇴", group: "K", rank: 12, titles: 0, form: ["W", "L", "W", "W", "D"] },
-  // Group L
-  { id: "england", name: "England", code: "ENG", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", group: "L", rank: 4, titles: 1, form: ["W", "W", "D", "L", "W"] },
-  { id: "croatia", name: "Croatia", code: "CRO", flag: "🇭🇷", group: "L", rank: 10, titles: 0, form: ["W", "L", "W", "D", "W"] },
-  { id: "ghana", name: "Ghana", code: "GHA", flag: "🇬🇭", group: "L", rank: 60, titles: 0, form: ["L", "W", "L", "D", "L"] },
-  { id: "panama", name: "Panama", code: "PAN", flag: "🇵🇦", group: "L", rank: 41, titles: 0, form: ["W", "W", "L", "D", "L"] }
-];
+const ID_MAP = {
+  "south-africa": "south_africa",
+  "south-korea": "south_korea",
+  "bosnia-and-herzegovina": "bosnia",
+  "united-states": "usa",
+  "ivory-coast": "ivory_coast",
+  "new-zealand": "new_zealand",
+  "saudi-arabia": "saudi_arabia",
+  "cape-verde": "cape_verde",
+  "dr-congo": "dr_congo"
+};
+
+export const TEAMS = TEAMS_DATA.map(t => ({
+  ...t,
+  id: ID_MAP[t.id] || t.id
+}));
 
 export const generateSquads = (teamId) => {
   const players = {
@@ -115,6 +70,63 @@ export const generateSquads = (teamId) => {
       { name: "Vinicius Junior", position: "Winger", number: 7, apps: 30, goals: 5, assists: 9 },
       { name: "Rodrygo", position: "Winger", number: 10, apps: 25, goals: 6, assists: 5 },
       { name: "Endrick", position: "Striker", number: 9, apps: 10, goals: 3, assists: 1 }
+    ],
+    france: [
+      { name: "Mike Maignan", position: "Goalkeeper", number: 16, apps: 14, cleanSheets: 6, goals: 0 },
+      { name: "William Saliba", position: "Defender", number: 4, apps: 15, cleanSheets: 8, goals: 0 },
+      { name: "Theo Hernandez", position: "Defender", number: 22, apps: 27, cleanSheets: 10, goals: 2 },
+      { name: "Antoine Griezmann", position: "Midfielder", number: 7, apps: 127, goals: 44, assists: 38 },
+      { name: "Aurelien Tchouameni", position: "Midfielder", number: 8, apps: 31, goals: 3, assists: 2 },
+      { name: "Eduardo Camavinga", position: "Midfielder", number: 6, apps: 15, goals: 1, assists: 1 },
+      { name: "Kylian Mbappe", position: "Striker", number: 10, apps: 77, goals: 46, assists: 30 },
+      { name: "Ousmane Dembele", position: "Winger", number: 11, apps: 43, goals: 5, assists: 12 }
+    ],
+    portugal: [
+      { name: "Diogo Costa", position: "Goalkeeper", number: 22, apps: 20, cleanSheets: 8, goals: 0 },
+      { name: "Ruben Dias", position: "Defender", number: 4, apps: 54, cleanSheets: 20, goals: 3 },
+      { name: "Joao Cancelo", position: "Defender", number: 2, apps: 50, cleanSheets: 18, goals: 10 },
+      { name: "Bruno Fernandes", position: "Midfielder", number: 8, apps: 64, goals: 22, assists: 25 },
+      { name: "Bernardo Silva", position: "Midfielder", number: 10, apps: 88, goals: 11, assists: 20 },
+      { name: "Vitinha", position: "Midfielder", number: 23, apps: 15, goals: 0, assists: 4 },
+      { name: "Cristiano Ronaldo", position: "Striker", number: 7, apps: 206, goals: 128, assists: 45 },
+      { name: "Rafael Leao", position: "Winger", number: 17, apps: 25, goals: 4, assists: 8 }
+    ],
+    spain: [
+      { name: "Unai Simon", position: "Goalkeeper", number: 23, apps: 40, cleanSheets: 16, goals: 0 },
+      { name: "Robin Le Normand", position: "Defender", number: 3, apps: 10, cleanSheets: 4, goals: 1 },
+      { name: "Dani Carvajal", position: "Defender", number: 2, apps: 43, cleanSheets: 15, goals: 0 },
+      { name: "Rodri", position: "Midfielder", number: 16, apps: 50, goals: 3, assists: 6 },
+      { name: "Pedri", position: "Midfielder", number: 20, apps: 20, goals: 2, assists: 8 },
+      { name: "Lamine Yamal", position: "Winger", number: 19, apps: 10, goals: 2, assists: 5 },
+      { name: "Nico Williams", position: "Winger", number: 17, apps: 15, goals: 2, assists: 4 },
+      { name: "Alvaro Morata", position: "Striker", number: 7, apps: 73, goals: 36, assists: 10 }
+    ],
+    germany: [
+      { name: "Ter Stegen", position: "Goalkeeper", number: 1, apps: 40, cleanSheets: 14, goals: 0 },
+      { name: "Antonio Rudiger", position: "Defender", number: 2, apps: 69, cleanSheets: 22, goals: 3 },
+      { name: "Joshua Kimmich", position: "Defender", number: 6, apps: 82, goals: 6, assists: 19 },
+      { name: "Toni Kroos", position: "Midfielder", number: 8, apps: 109, goals: 17, assists: 28 },
+      { name: "Florian Wirtz", position: "Midfielder", number: 10, apps: 18, goals: 2, assists: 6 },
+      { name: "Jamal Musiala", position: "Midfielder", number: 42, apps: 29, goals: 2, assists: 8 },
+      { name: "Ilkay Gundogan", position: "Midfielder", number: 21, apps: 77, goals: 19, assists: 15 },
+      { name: "Kai Havertz", position: "Striker", number: 7, apps: 46, goals: 16, assists: 10 }
+    ],
+    usa: [
+      { name: "Matt Turner", position: "Goalkeeper", number: 1, apps: 38, cleanSheets: 14, goals: 0 },
+      { name: "Antonee Robinson", position: "Defender", number: 5, apps: 39, cleanSheets: 12, goals: 4 },
+      { name: "Weston McKennie", position: "Midfielder", number: 8, apps: 49, goals: 11, assists: 8 },
+      { name: "Tyler Adams", position: "Midfielder", number: 4, apps: 38, goals: 2, assists: 1 },
+      { name: "Christian Pulisic", position: "Winger", number: 10, apps: 64, goals: 28, assists: 16 },
+      { name: "Timothy Weah", position: "Winger", number: 21, apps: 35, goals: 4, assists: 5 },
+      { name: "Folarin Balogun", position: "Striker", number: 20, apps: 10, goals: 3, assists: 2 }
+    ],
+    mexico: [
+      { name: "Guillermo Ochoa", position: "Goalkeeper", number: 13, apps: 148, cleanSheets: 50, goals: 0 },
+      { name: "Cesar Montes", position: "Defender", number: 3, apps: 42, cleanSheets: 15, goals: 1 },
+      { name: "Edson Alvarez", position: "Midfielder", number: 4, apps: 74, goals: 5, assists: 4 },
+      { name: "Luis Chavez", position: "Midfielder", number: 18, apps: 28, goals: 4, assists: 3 },
+      { name: "Santiago Gimenez", position: "Striker", number: 11, apps: 25, goals: 4, assists: 2 },
+      { name: "Hirving Lozano", position: "Winger", number: 22, apps: 70, goals: 18, assists: 12 }
     ]
   };
   return players[teamId] || [
@@ -294,21 +306,38 @@ export const generateFixtures = () => {
     matchIdx++;
   }
 
-  // Round of 32 (16 matches: June 29 - July 3)
-  const groupLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
-  for (let i = 1; i <= 16; i++) {
-    const matchDate = new Date("2026-06-29T18:00:00Z");
-    matchDate.setDate(matchDate.getDate() + Math.floor(i / 3));
-    const stadium = STADIUMS[i % STADIUMS.length];
+  // Round of 32 (16 matches: June 29 - July 4)
+  const r32MatchesList = [
+    { home: "canada", away: "south_africa", date: "2026-06-29T00:30:00+05:30", timeIST: "12:30 AM IST" },
+    { home: "brazil", away: "japan", date: "2026-06-29T22:30:00+05:30", timeIST: "10:30 PM IST" },
+    { home: "germany", away: "paraguay", date: "2026-06-30T02:00:00+05:30", timeIST: "02:00 AM IST" },
+    { home: "netherlands", away: "morocco", date: "2026-06-30T06:30:00+05:30", timeIST: "06:30 AM IST" },
+    { home: "ivory_coast", away: "norway", date: "2026-06-30T22:30:00+05:30", timeIST: "10:30 PM IST" },
+    { home: "france", away: "sweden", date: "2026-07-01T02:30:00+05:30", timeIST: "02:30 AM IST" },
+    { home: "mexico", away: "ecuador", date: "2026-07-01T06:30:00+05:30", timeIST: "06:30 AM IST" },
+    { home: "england", away: "dr_congo", date: "2026-07-01T21:30:00+05:30", timeIST: "09:30 PM IST" },
+    { home: "belgium", away: "senegal", date: "2026-07-02T01:30:00+05:30", timeIST: "01:30 AM IST" },
+    { home: "usa", away: "bosnia", date: "2026-07-02T05:30:00+05:30", timeIST: "05:30 AM IST" },
+    { home: "spain", away: "austria", date: "2026-07-03T00:30:00+05:30", timeIST: "12:30 AM IST" },
+    { home: "portugal", away: "croatia", date: "2026-07-03T04:30:00+05:30", timeIST: "04:30 AM IST" },
+    { home: "switzerland", away: "algeria", date: "2026-07-03T08:30:00+05:30", timeIST: "08:30 AM IST" },
+    { home: "australia", away: "egypt", date: "2026-07-03T23:30:00+05:30", timeIST: "11:30 PM IST" },
+    { home: "argentina", away: "cape_verde", date: "2026-07-04T03:30:00+05:30", timeIST: "03:30 AM IST" },
+    { home: "colombia", away: "ghana", date: "2026-07-04T07:00:00+05:30", timeIST: "07:00 AM IST" }
+  ];
+
+  r32MatchesList.forEach((match) => {
+    const stadium = STADIUMS[matchIdx % STADIUMS.length];
+    const utcDateStr = new Date(match.date).toISOString();
     
     fixtures.push({
       id: `match_${matchIdx}`,
-      homeTeamId: "",
-      awayTeamId: "",
-      homePlaceholder: `Winner Group ${groupLetters[(i - 1) % 12]}`,
-      awayPlaceholder: `Runner Up Group ${groupLetters[(i + 1) % 12]}`,
-      date: matchDate.toISOString(),
-      timeIST: "20:30 IST",
+      homeTeamId: match.home,
+      awayTeamId: match.away,
+      homePlaceholder: "",
+      awayPlaceholder: "",
+      date: utcDateStr,
+      timeIST: match.timeIST,
       stadiumId: stadium.id,
       round: "Round of 32",
       group: null,
@@ -320,7 +349,7 @@ export const generateFixtures = () => {
       sportsdbEventId: `sdb_${500000 + matchIdx}`
     });
     matchIdx++;
-  }
+  });
 
   // Helper to pre-populate stats and lineups for finished matches during bootstrap
   const getMockStatsAndLineups = (homeId, awayId, homeScore, awayScore) => {
@@ -349,14 +378,14 @@ export const generateFixtures = () => {
 
   // Round of 16 (8 matches: July 4 - July 7)
   const r16Matches = [
-    { home: "argentina", away: "australia", homeScore: 3, awayScore: 1, status: "Finished" },
-    { home: "netherlands", away: "usa", homeScore: 2, awayScore: 0, status: "Finished" },
-    { home: "france", away: "poland", homeScore: 3, awayScore: 1, status: "Finished" },
-    { home: "england", away: "senegal", homeScore: 3, awayScore: 0, status: "Finished" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 1", awayPlaceholder: "Winner R32 Match 2", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 3", awayPlaceholder: "Winner R32 Match 4", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R32 Match 5", awayPlaceholder: "Winner R32 Match 6", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R32 Match 7", awayPlaceholder: "Winner R32 Match 8", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R32 Match 9", awayPlaceholder: "Winner R32 Match 10", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 11", awayPlaceholder: "Winner R32 Match 12", homeScore: 0, awayScore: 0, status: "Upcoming" }
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 11", awayPlaceholder: "Winner R32 Match 12", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 13", awayPlaceholder: "Winner R32 Match 14", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R32 Match 15", awayPlaceholder: "Winner R32 Match 16", homeScore: 0, awayScore: 0, status: "Upcoming" }
   ];
   r16Matches.forEach((match, idx) => {
     const matchDate = new Date("2026-07-04T18:00:00Z");
@@ -390,8 +419,8 @@ export const generateFixtures = () => {
 
   // Quarter Finals (4 matches: July 9 - July 11)
   const qfMatches = [
-    { home: "argentina", away: "netherlands", homeScore: 2, awayScore: 2, homePenalties: 4, awayPenalties: 3, status: "Finished" },
-    { home: "england", away: "france", homeScore: 1, awayScore: 2, status: "Finished" },
+    { home: "", away: "", homePlaceholder: "Winner R16 Match 1", awayPlaceholder: "Winner R16 Match 2", homeScore: 0, awayScore: 0, status: "Upcoming" },
+    { home: "", away: "", homePlaceholder: "Winner R16 Match 3", awayPlaceholder: "Winner R16 Match 4", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R16 Match 5", awayPlaceholder: "Winner R16 Match 6", homeScore: 0, awayScore: 0, status: "Upcoming" },
     { home: "", away: "", homePlaceholder: "Winner R16 Match 7", awayPlaceholder: "Winner R16 Match 8", homeScore: 0, awayScore: 0, status: "Upcoming" }
   ];
@@ -429,9 +458,11 @@ export const generateFixtures = () => {
 
   // Semi Finals (2 matches: July 14 - July 15)
   fixtures.push({
-    id: `match_${matchIdx}`, // match_102
-    homeTeamId: "argentina",
-    awayTeamId: "brazil",
+    id: `match_${matchIdx}`,
+    homeTeamId: "",
+    awayTeamId: "",
+    homePlaceholder: "Winner Quarter-Final 1",
+    awayPlaceholder: "Winner Quarter-Final 2",
     date: new Date("2026-07-14T18:00:00Z").toISOString(),
     timeIST: "20:30 IST",
     stadiumId: "sofi",
@@ -447,9 +478,11 @@ export const generateFixtures = () => {
   matchIdx++;
 
   fixtures.push({
-    id: `match_${matchIdx}`, // match_103
-    homeTeamId: "france",
-    awayTeamId: "germany",
+    id: `match_${matchIdx}`,
+    homeTeamId: "",
+    awayTeamId: "",
+    homePlaceholder: "Winner Quarter-Final 3",
+    awayPlaceholder: "Winner Quarter-Final 4",
     date: new Date("2026-07-15T18:00:00Z").toISOString(),
     timeIST: "20:30 IST",
     stadiumId: "dallas",
@@ -466,7 +499,7 @@ export const generateFixtures = () => {
 
   // Final (July 19)
   fixtures.push({
-    id: `match_${matchIdx}`, // match_104
+    id: `match_${matchIdx}`,
     homeTeamId: "",
     awayTeamId: "",
     homePlaceholder: "Winner Semi-Final 1",
@@ -680,4 +713,14 @@ export const bootstrapDatabase = async () => {
   }
   
   console.log("Database Bootstrap complete successfully!");
+};
+
+export const bootstrapRoundOf32Only = async () => {
+  console.log("Starting bootstrap of Round of 32 matches...");
+  const fixtures = generateFixtures();
+  const r32Matches = fixtures.filter(m => m.round === "Round of 32");
+  for (const match of r32Matches) {
+    await dbSetDoc("matches", match.id, match);
+  }
+  console.log("Bootstrap of Round of 32 matches complete.");
 };
