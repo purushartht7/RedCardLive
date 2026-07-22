@@ -43,8 +43,7 @@
     }
   </script>
 
-  <!-- Google AdSense Auto Ads -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504456064686356" crossorigin="anonymous"></script>
+
 </head>
 <body class="bg-brand-black text-on-surface font-sans min-h-screen flex flex-col selection:bg-brand-red/30">
 
@@ -666,12 +665,14 @@
             const newMatchId = `match_${nextMatchIdx}`;
 
             // Parse Date and offset (constructing an IST timezone string +05:30)
-            const istDateStr = `${localVal}:00+05:30`;
+            const parts = localVal.split("T");
+            const datePart = parts[0];
+            const timePart = parts[1].substring(0, 5); // Keep only HH:mm, ignoring any seconds
+            const istDateStr = `${datePart}T${timePart}:00+05:30`;
             const utcDateStr = new Date(istDateStr).toISOString();
 
             // Format timeIST string (e.g. "12:30 AM IST")
-            const [dPart, tPart] = localVal.split("T");
-            let [hours, minutes] = tPart.split(":").map(Number);
+            let [hours, minutes] = timePart.split(":").map(Number);
             const ampm = hours >= 12 ? "PM" : "AM";
             let displayHours = hours % 12;
             if (displayHours === 0) displayHours = 12;
