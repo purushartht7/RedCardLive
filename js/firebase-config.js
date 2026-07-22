@@ -1,4 +1,4 @@
-// Firebase Configuration and Fallback Mock Store - Red Card Live World Cup 2026
+// Firebase Configuration and Fallback Mock Store - RedCardLive World Cup 2026
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, getDocs, setDoc, addDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";

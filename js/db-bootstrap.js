@@ -210,6 +210,336 @@ const RAW_FIXTURES_TEXT = `12 June (Fri) 12:30 AM – Mexico vs South Africa
 07:30 AM – Algeria vs Austria
 07:30 AM – Jordan vs Argentina`;
 
+const GROUP_STAGE_SCORES = {
+  // Group A
+  "mexico_south_africa": { home: 2, away: 0 },
+  "south_korea_czechia": { home: 2, away: 1 },
+  "czechia_south_africa": { home: 1, away: 1 },
+  "mexico_south_korea": { home: 1, away: 0 },
+  "south_africa_south_korea": { home: 1, away: 0 },
+  "czechia_mexico": { home: 0, away: 3 },
+
+  // Group B
+  "canada_bosnia": { home: 1, away: 1 },
+  "qatar_switzerland": { home: 1, away: 1 },
+  "switzerland_bosnia": { home: 4, away: 1 },
+  "canada_qatar": { home: 6, away: 0 },
+  "switzerland_canada": { home: 2, away: 1 },
+  "bosnia_qatar": { home: 3, away: 1 },
+
+  // Group C
+  "brazil_morocco": { home: 1, away: 1 },
+  "haiti_scotland": { home: 0, away: 1 },
+  "scotland_morocco": { home: 0, away: 1 },
+  "brazil_haiti": { home: 3, away: 0 },
+  "scotland_brazil": { home: 0, away: 3 },
+  "morocco_haiti": { home: 4, away: 2 },
+
+  // Group D
+  "usa_paraguay": { home: 4, away: 1 },
+  "australia_turkey": { home: 2, away: 0 },
+  "usa_australia": { home: 2, away: 0 },
+  "turkey_paraguay": { home: 0, away: 1 },
+  "turkey_usa": { home: 3, away: 2 },
+  "paraguay_australia": { home: 0, away: 0 },
+
+  // Group E
+  "germany_curacao": { home: 7, away: 1 },
+  "ivory_coast_ecuador": { home: 1, away: 0 },
+  "germany_ivory_coast": { home: 2, away: 1 },
+  "ecuador_curacao": { home: 0, away: 0 },
+  "ecuador_germany": { home: 2, away: 1 },
+  "curacao_ivory_coast": { home: 0, away: 2 },
+
+  // Group F
+  "netherlands_japan": { home: 2, away: 2 },
+  "sweden_tunisia": { home: 5, away: 1 },
+  "netherlands_sweden": { home: 5, away: 1 },
+  "tunisia_japan": { home: 0, away: 4 },
+  "japan_sweden": { home: 1, away: 1 },
+  "tunisia_netherlands": { home: 2, away: 7 },
+
+  // Group G
+  "iran_new_zealand": { home: 2, away: 2 },
+  "belgium_egypt": { home: 1, away: 1 },
+  "belgium_iran": { home: 0, away: 0 },
+  "new_zealand_egypt": { home: 1, away: 3 },
+  "new_zealand_belgium": { home: 1, away: 5 },
+  "egypt_iran": { home: 1, away: 1 },
+
+  // Group H
+  "spain_cape_verde": { home: 0, away: 0 },
+  "saudi_arabia_uruguay": { home: 1, away: 1 },
+  "spain_saudi_arabia": { home: 4, away: 0 },
+  "uruguay_cape_verde": { home: 2, away: 2 },
+  "cape_verde_saudi_arabia": { home: 2, away: 1 },
+  "uruguay_spain": { home: 0, away: 2 },
+
+  // Group I
+  "france_senegal": { home: 3, away: 1 },
+  "iraq_norway": { home: 1, away: 4 },
+  "france_iraq": { home: 3, away: 0 },
+  "norway_senegal": { home: 3, away: 2 },
+  "norway_france": { home: 1, away: 4 },
+  "senegal_iraq": { home: 1, away: 1 },
+
+  // Group J
+  "argentina_algeria": { home: 3, away: 0 },
+  "austria_jordan": { home: 3, away: 1 },
+  "argentina_austria": { home: 2, away: 0 },
+  "jordan_algeria": { home: 1, away: 2 },
+  "jordan_argentina": { home: 1, away: 3 },
+  "algeria_austria": { home: 3, away: 3 },
+
+  // Group K
+  "portugal_dr_congo": { home: 1, away: 1 },
+  "uzbekistan_colombia": { home: 1, away: 3 },
+  "portugal_uzbekistan": { home: 5, away: 0 },
+  "colombia_dr_congo": { home: 1, away: 0 },
+  "colombia_portugal": { home: 0, away: 0 },
+  "dr_congo_uzbekistan": { home: 3, away: 1 },
+
+  // Group L
+  "england_croatia": { home: 4, away: 2 },
+  "ghana_panama": { home: 1, away: 0 },
+  "england_ghana": { home: 0, away: 0 },
+  "panama_croatia": { home: 0, away: 1 },
+  "panama_england": { home: 0, away: 2 },
+  "croatia_ghana": { home: 2, away: 1 }
+};
+
+const R32_SCORES = {
+  "canada_south_africa": { home: 1, away: 0, homePenalties: null, awayPenalties: null, minute: 90 },
+  "brazil_japan": { home: 2, away: 1, homePenalties: null, awayPenalties: null, minute: 90 },
+  "germany_paraguay": { home: 1, away: 1, homePenalties: 3, awayPenalties: 4, minute: 120 },
+  "netherlands_morocco": { home: 1, away: 1, homePenalties: 2, awayPenalties: 3, minute: 120 },
+  "ivory_coast_norway": { home: 1, away: 2, homePenalties: null, awayPenalties: null, minute: 90 },
+  "france_sweden": { home: 3, away: 0, homePenalties: null, awayPenalties: null, minute: 90 },
+  "mexico_ecuador": { home: 2, away: 0, homePenalties: null, awayPenalties: null, minute: 90 },
+  "england_dr_congo": { home: 2, away: 1, homePenalties: null, awayPenalties: null, minute: 90 },
+  "belgium_senegal": { home: 3, away: 2, homePenalties: null, awayPenalties: null, minute: 120 },
+  "usa_bosnia": { home: 2, away: 0, homePenalties: null, awayPenalties: null, minute: 90 },
+  "spain_austria": { home: 3, away: 0, homePenalties: null, awayPenalties: null, minute: 90 },
+  "portugal_croatia": { home: 2, away: 1, homePenalties: null, awayPenalties: null, minute: 90 },
+  "switzerland_algeria": { home: 2, away: 0, homePenalties: null, awayPenalties: null, minute: 90 },
+  "australia_egypt": { home: 1, away: 1, homePenalties: 2, awayPenalties: 4, minute: 120 },
+  "argentina_cape_verde": { home: 3, away: 2, homePenalties: null, awayPenalties: null, minute: 120 },
+  "colombia_ghana": { home: 1, away: 0, homePenalties: null, awayPenalties: null, minute: 90 }
+};
+
+export const getFixtureResult = (homeId, awayId, round) => {
+  if (round === "Group Stage") {
+    const key = `${homeId}_${awayId}`;
+    if (GROUP_STAGE_SCORES[key]) {
+      return {
+        homeScore: GROUP_STAGE_SCORES[key].home,
+        awayScore: GROUP_STAGE_SCORES[key].away,
+        homePenalties: null,
+        awayPenalties: null,
+        minute: 90
+      };
+    }
+    const revKey = `${awayId}_${homeId}`;
+    if (GROUP_STAGE_SCORES[revKey]) {
+      return {
+        homeScore: GROUP_STAGE_SCORES[revKey].away,
+        awayScore: GROUP_STAGE_SCORES[revKey].home,
+        homePenalties: null,
+        awayPenalties: null,
+        minute: 90
+      };
+    }
+    return { homeScore: 0, awayScore: 0, homePenalties: null, awayPenalties: null, minute: 90 };
+  }
+
+  if (round === "Round of 32") {
+    const key = `${homeId}_${awayId}`;
+    if (R32_SCORES[key]) {
+      const res = R32_SCORES[key];
+      return {
+        homeScore: res.home,
+        awayScore: res.away,
+        homePenalties: res.homePenalties,
+        awayPenalties: res.awayPenalties,
+        minute: res.minute
+      };
+    }
+    const revKey = `${awayId}_${homeId}`;
+    if (R32_SCORES[revKey]) {
+      const res = R32_SCORES[revKey];
+      return {
+        homeScore: res.away,
+        awayScore: res.home,
+        homePenalties: res.awayPenalties,
+        awayPenalties: res.homePenalties,
+        minute: res.minute
+      };
+    }
+    return { homeScore: 0, awayScore: 0, homePenalties: null, awayPenalties: null, minute: 90 };
+  }
+
+  if (round === "Round of 16") {
+    const matchesMap = {
+      "canada_morocco": { home: 0, away: 3, hp: null, ap: null, min: 90 },
+      "morocco_canada": { home: 3, away: 0, hp: null, ap: null, min: 90 },
+      "paraguay_france": { home: 0, away: 1, hp: null, ap: null, min: 90 },
+      "france_paraguay": { home: 1, away: 0, hp: null, ap: null, min: 90 },
+      "spain_portugal": { home: 1, away: 0, hp: null, ap: null, min: 90 },
+      "portugal_spain": { home: 0, away: 1, hp: null, ap: null, min: 90 },
+      "belgium_usa": { home: 4, away: 1, hp: null, ap: null, min: 90 },
+      "usa_belgium": { home: 1, away: 4, hp: null, ap: null, min: 90 },
+      "england_mexico": { home: 3, away: 2, hp: null, ap: null, min: 90 },
+      "mexico_england": { home: 2, away: 3, hp: null, ap: null, min: 90 },
+      "norway_brazil": { home: 2, away: 1, hp: null, ap: null, min: 90 },
+      "brazil_norway": { home: 1, away: 2, hp: null, ap: null, min: 90 },
+      "argentina_egypt": { home: 3, away: 2, hp: null, ap: null, min: 90 },
+      "egypt_argentina": { home: 2, away: 3, hp: null, ap: null, min: 90 },
+      "switzerland_colombia": { home: 0, away: 0, hp: 4, ap: 3, min: 120 },
+      "colombia_switzerland": { home: 0, away: 0, hp: 3, ap: 4, min: 120 }
+    };
+    const key = `${homeId}_${awayId}`;
+    const result = matchesMap[key];
+    if (result) {
+      return { homeScore: result.home, awayScore: result.away, homePenalties: result.hp, awayPenalties: result.ap, minute: result.min };
+    }
+  }
+
+  if (round === "Quarter Finals") {
+    const matchesMap = {
+      "france_morocco": { home: 2, away: 0, hp: null, ap: null, min: 90 },
+      "morocco_france": { home: 0, away: 2, hp: null, ap: null, min: 90 },
+      "spain_belgium": { home: 2, away: 1, hp: null, ap: null, min: 90 },
+      "belgium_spain": { home: 1, away: 2, hp: null, ap: null, min: 90 },
+      "england_norway": { home: 2, away: 1, hp: null, ap: null, min: 120 },
+      "norway_england": { home: 1, away: 2, hp: null, ap: null, min: 120 },
+      "argentina_switzerland": { home: 3, away: 1, hp: null, ap: null, min: 120 },
+      "switzerland_argentina": { home: 1, away: 3, hp: null, ap: null, min: 120 }
+    };
+    const key = `${homeId}_${awayId}`;
+    const result = matchesMap[key];
+    if (result) {
+      return { homeScore: result.home, awayScore: result.away, homePenalties: result.hp, awayPenalties: result.ap, minute: result.min };
+    }
+  }
+
+  if (round === "Semi Finals") {
+    const matchesMap = {
+      "spain_france": { home: 2, away: 0, hp: null, ap: null, min: 90 },
+      "france_spain": { home: 0, away: 2, hp: null, ap: null, min: 90 },
+      "argentina_england": { home: 2, away: 1, hp: null, ap: null, min: 90 },
+      "england_argentina": { home: 1, away: 2, hp: null, ap: null, min: 90 }
+    };
+    const key = `${homeId}_${awayId}`;
+    const result = matchesMap[key];
+    if (result) {
+      return { homeScore: result.home, awayScore: result.away, homePenalties: result.hp, awayPenalties: result.ap, minute: result.min };
+    }
+  }
+
+  if (round === "Final") {
+    const matchesMap = {
+      "spain_argentina": { home: 1, away: 0, hp: null, ap: null, min: 120 },
+      "argentina_spain": { home: 0, away: 1, hp: null, ap: null, min: 120 }
+    };
+    const key = `${homeId}_${awayId}`;
+    const result = matchesMap[key];
+    if (result) {
+      return { homeScore: result.home, awayScore: result.away, homePenalties: result.hp, awayPenalties: result.ap, minute: result.min };
+    }
+  }
+
+  return { homeScore: 0, awayScore: 0, homePenalties: null, awayPenalties: null, minute: 90 };
+};
+
+export const calculateStandings = (fixtures) => {
+  const groups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+  const standings = {};
+  
+  for (const group of groups) {
+    const groupTeams = TEAMS.filter(t => t.group === group);
+    standings[group] = {
+      id: group,
+      teams: groupTeams.map(t => ({
+        teamId: t.id,
+        played: 0,
+        won: 0,
+        drawn: 0,
+        lost: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        goalDifference: 0,
+        points: 0
+      }))
+    };
+  }
+
+  const groupStageMatches = fixtures.filter(m => m.round === "Group Stage");
+  for (const m of groupStageMatches) {
+    const group = m.group;
+    if (!group || !standings[group]) continue;
+
+    const homeRow = standings[group].teams.find(row => row.teamId === m.homeTeamId);
+    const awayRow = standings[group].teams.find(row => row.teamId === m.awayTeamId);
+
+    if (homeRow && awayRow) {
+      homeRow.played += 1;
+      awayRow.played += 1;
+      homeRow.goalsFor += m.homeScore;
+      homeRow.goalsAgainst += m.awayScore;
+      awayRow.goalsFor += m.awayScore;
+      awayRow.goalsAgainst += m.homeScore;
+
+      if (m.homeScore > m.awayScore) {
+        homeRow.won += 1;
+        homeRow.points += 3;
+        awayRow.lost += 1;
+      } else if (m.awayScore > m.homeScore) {
+        awayRow.won += 1;
+        awayRow.points += 3;
+        homeRow.lost += 1;
+      } else {
+        homeRow.drawn += 1;
+        homeRow.points += 1;
+        awayRow.drawn += 1;
+        awayRow.points += 1;
+      }
+    }
+  }
+
+  for (const group of groups) {
+    standings[group].teams.forEach(row => {
+      row.goalDifference = row.goalsFor - row.goalsAgainst;
+    });
+    standings[group].teams.sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor);
+  }
+
+  return standings;
+};
+
+export const getMockStatsAndLineups = (homeId, awayId, homeScore, awayScore) => {
+  const homeSquad = generateSquads(homeId);
+  const awaySquad = generateSquads(awayId);
+  const possessionHome = 45 + (homeScore - awayScore) * 3 + Math.floor(Math.random() * 5);
+  const possessionNormalized = Math.max(25, Math.min(75, possessionHome));
+  
+  return {
+    stats: {
+      possessionHome: possessionNormalized,
+      possessionAway: 100 - possessionNormalized,
+      shotsHome: 6 + homeScore * 2 + Math.floor(Math.random() * 3),
+      shotsAway: 4 + awayScore * 2 + Math.floor(Math.random() * 3),
+      passesHome: 390 + Math.floor(Math.random() * 40),
+      passesAway: 350 + Math.floor(Math.random() * 40),
+      foulsHome: 9 + Math.floor(Math.random() * 4),
+      foulsAway: 11 + Math.floor(Math.random() * 4)
+    },
+    lineups: {
+      home: homeSquad.slice(0, 4),
+      away: awaySquad.slice(0, 4)
+    }
+  };
+};
+
 export const generateFixtures = () => {
   const fixtures = [];
   const lines = RAW_FIXTURES_TEXT.split("\n");
@@ -250,11 +580,19 @@ export const generateFixtures = () => {
     const awayTeamName = teamsSplit[1].trim();
 
     const findTeamId = (name) => {
-      const matched = TEAMS.find(t => t.name.toLowerCase() === name.toLowerCase() || t.code.toLowerCase() === name.toLowerCase());
+      const cleanName = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const matched = TEAMS.find(t => {
+        const teamNameClean = t.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return teamNameClean === cleanName || t.code.toLowerCase() === cleanName;
+      });
       if (!matched) {
         if (name.includes("Bosnia")) return "bosnia";
         if (name.includes("Congo") || name.includes("DR")) return "dr_congo";
-        if (name.includes("Türkiye") || name.includes("Turkey")) return "turkey";
+        if (name.includes("Türkiye") || name.includes("Turkey") || name.includes("turkey")) return "turkey";
+        if (name.includes("Curaçao") || name.includes("Curacao")) return "curacao";
+        if (name.includes("Ivory Coast") || name.includes("Côte d'Ivoire") || name.includes("cote")) return "ivory_coast";
+        if (name.includes("Cabo Verde") || name.includes("Cape Verde")) return "cape_verde";
+        if (name.includes("Czech")) return "czechia";
         console.error("Team not found for name: " + name);
         return name.toLowerCase().replace(/\s+/g, "_");
       }
@@ -281,10 +619,8 @@ export const generateFixtures = () => {
 
     const homeTeamObj = TEAMS.find(t => t.id === homeId) || { group: null };
 
-    let status = "Upcoming";
-    let minute = 0;
-    let homeScore = 0;
-    let awayScore = 0;
+    const scoreResult = getFixtureResult(homeId, awayId, "Group Stage");
+    const extraData = getMockStatsAndLineups(homeId, awayId, scoreResult.homeScore, scoreResult.awayScore);
 
     fixtures.push({
       id: `match_${matchIdx}`,
@@ -295,12 +631,13 @@ export const generateFixtures = () => {
       stadiumId: STADIUMS[matchIdx % STADIUMS.length].id,
       round: "Group Stage",
       group: homeTeamObj.group,
-      status,
-      minute,
-      homeScore,
-      awayScore,
-      featured: matchIdx === 2, // Live match as featured
-      sportsdbEventId: `sdb_${500000 + matchIdx}`
+      status: "Finished",
+      minute: 90,
+      homeScore: scoreResult.homeScore,
+      awayScore: scoreResult.awayScore,
+      featured: false,
+      sportsdbEventId: `sdb_${500000 + matchIdx}`,
+      ...extraData
     });
 
     matchIdx++;
@@ -326,9 +663,14 @@ export const generateFixtures = () => {
     { home: "colombia", away: "ghana", date: "2026-07-04T07:00:00+05:30", timeIST: "07:00 AM IST" }
   ];
 
+  const r32Winners = [];
+
   r32MatchesList.forEach((match) => {
     const stadium = STADIUMS[matchIdx % STADIUMS.length];
     const utcDateStr = new Date(match.date).toISOString();
+    
+    const result = getFixtureResult(match.home, match.away, "Round of 32");
+    const extraData = getMockStatsAndLineups(match.home, match.away, result.homeScore, result.awayScore);
     
     fixtures.push({
       id: `match_${matchIdx}`,
@@ -341,167 +683,165 @@ export const generateFixtures = () => {
       stadiumId: stadium.id,
       round: "Round of 32",
       group: null,
-      status: "Upcoming",
-      minute: 0,
-      homeScore: 0,
-      awayScore: 0,
+      status: "Finished",
+      minute: result.minute,
+      homeScore: result.homeScore,
+      awayScore: result.awayScore,
+      homePenalties: result.homePenalties,
+      awayPenalties: result.awayPenalties,
       featured: false,
-      sportsdbEventId: `sdb_${500000 + matchIdx}`
+      sportsdbEventId: `sdb_${500000 + matchIdx}`,
+      ...extraData
     });
+    
+    const isHomeWinner = result.homeScore > result.awayScore || (result.homePenalties !== null && result.homePenalties > result.awayPenalties);
+    const winnerId = isHomeWinner ? match.home : match.away;
+    r32Winners.push(winnerId);
+    
     matchIdx++;
   });
 
-  // Helper to pre-populate stats and lineups for finished matches during bootstrap
-  const getMockStatsAndLineups = (homeId, awayId, homeScore, awayScore) => {
-    const homeSquad = generateSquads(homeId);
-    const awaySquad = generateSquads(awayId);
-    const possessionHome = 45 + (homeScore - awayScore) * 3 + Math.floor(Math.random() * 5);
-    const possessionNormalized = Math.max(25, Math.min(75, possessionHome));
-    
-    return {
-      stats: {
-        possessionHome: possessionNormalized,
-        possessionAway: 100 - possessionNormalized,
-        shotsHome: 6 + homeScore * 2 + Math.floor(Math.random() * 3),
-        shotsAway: 4 + awayScore * 2 + Math.floor(Math.random() * 3),
-        passesHome: 390 + Math.floor(Math.random() * 40),
-        passesAway: 350 + Math.floor(Math.random() * 40),
-        foulsHome: 9 + Math.floor(Math.random() * 4),
-        foulsAway: 11 + Math.floor(Math.random() * 4)
-      },
-      lineups: {
-        home: homeSquad.slice(0, 4),
-        away: awaySquad.slice(0, 4)
-      }
-    };
-  };
-
   // Round of 16 (8 matches: July 4 - July 7)
-  const r16Matches = [
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 1", awayPlaceholder: "Winner R32 Match 2", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 3", awayPlaceholder: "Winner R32 Match 4", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 5", awayPlaceholder: "Winner R32 Match 6", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 7", awayPlaceholder: "Winner R32 Match 8", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 9", awayPlaceholder: "Winner R32 Match 10", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 11", awayPlaceholder: "Winner R32 Match 12", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 13", awayPlaceholder: "Winner R32 Match 14", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R32 Match 15", awayPlaceholder: "Winner R32 Match 16", homeScore: 0, awayScore: 0, status: "Upcoming" }
+  const r16Winners = [];
+  const r16Pairings = [
+    { home: r32Winners[0], away: r32Winners[3], homePlaceholder: "Winner R32 Match 1", awayPlaceholder: "Winner R32 Match 4" }, // Canada vs Morocco
+    { home: r32Winners[2], away: r32Winners[5], homePlaceholder: "Winner R32 Match 3", awayPlaceholder: "Winner R32 Match 6" }, // Paraguay vs France
+    { home: r32Winners[10], away: r32Winners[11], homePlaceholder: "Winner R32 Match 11", awayPlaceholder: "Winner R32 Match 12" }, // Spain vs Portugal
+    { home: r32Winners[8], away: r32Winners[9], homePlaceholder: "Winner R32 Match 9", awayPlaceholder: "Winner R32 Match 10" }, // Belgium vs USA
+    { home: r32Winners[7], away: r32Winners[6], homePlaceholder: "Winner R32 Match 8", awayPlaceholder: "Winner R32 Match 7" }, // England vs Mexico
+    { home: r32Winners[4], away: r32Winners[1], homePlaceholder: "Winner R32 Match 5", awayPlaceholder: "Winner R32 Match 2" }, // Norway vs Brazil
+    { home: r32Winners[14], away: r32Winners[13], homePlaceholder: "Winner R32 Match 15", awayPlaceholder: "Winner R32 Match 14" }, // Argentina vs Egypt
+    { home: r32Winners[12], away: r32Winners[15], homePlaceholder: "Winner R32 Match 13", awayPlaceholder: "Winner R32 Match 16" } // Switzerland vs Colombia
   ];
-  r16Matches.forEach((match, idx) => {
+
+  r16Pairings.forEach((match, idx) => {
     const matchDate = new Date("2026-07-04T18:00:00Z");
     matchDate.setDate(matchDate.getDate() + Math.floor(idx / 2));
     const stadium = STADIUMS[(idx + 4) % STADIUMS.length];
     
-    const isFinished = match.status === "Finished";
-    const extraData = isFinished ? getMockStatsAndLineups(match.home, match.away, match.homeScore, match.awayScore) : { stats: null, lineups: null };
+    const result = getFixtureResult(match.home, match.away, "Round of 16");
+    const extraData = getMockStatsAndLineups(match.home, match.away, result.homeScore, result.awayScore);
 
     fixtures.push({
       id: `match_${matchIdx}`,
       homeTeamId: match.home,
       awayTeamId: match.away,
-      homePlaceholder: match.homePlaceholder || "",
-      awayPlaceholder: match.awayPlaceholder || "",
+      homePlaceholder: match.homePlaceholder,
+      awayPlaceholder: match.awayPlaceholder,
       date: matchDate.toISOString(),
       timeIST: "20:30 IST",
       stadiumId: stadium.id,
       round: "Round of 16",
       group: null,
-      status: match.status,
-      minute: match.status === "Finished" ? 90 : 0,
-      homeScore: match.homeScore,
-      awayScore: match.awayScore,
+      status: "Finished",
+      minute: result.minute,
+      homeScore: result.homeScore,
+      awayScore: result.awayScore,
+      homePenalties: result.homePenalties,
+      awayPenalties: result.awayPenalties,
       featured: false,
       sportsdbEventId: `sdb_${500000 + matchIdx}`,
       ...extraData
     });
+
+    const isHomeWinner = result.homeScore > result.awayScore || (result.homePenalties !== null && result.homePenalties > result.awayPenalties);
+    const winnerId = isHomeWinner ? match.home : match.away;
+    r16Winners.push(winnerId);
+    
     matchIdx++;
   });
 
   // Quarter Finals (4 matches: July 9 - July 11)
-  const qfMatches = [
-    { home: "", away: "", homePlaceholder: "Winner R16 Match 1", awayPlaceholder: "Winner R16 Match 2", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R16 Match 3", awayPlaceholder: "Winner R16 Match 4", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R16 Match 5", awayPlaceholder: "Winner R16 Match 6", homeScore: 0, awayScore: 0, status: "Upcoming" },
-    { home: "", away: "", homePlaceholder: "Winner R16 Match 7", awayPlaceholder: "Winner R16 Match 8", homeScore: 0, awayScore: 0, status: "Upcoming" }
-  ];
-  qfMatches.forEach((match, idx) => {
+  const qfWinners = [];
+  for (let idx = 0; idx < 4; idx++) {
+    const homeTeamId = r16Winners[idx * 2];
+    const awayTeamId = r16Winners[idx * 2 + 1];
     const matchDate = new Date("2026-07-09T18:00:00Z");
     matchDate.setDate(matchDate.getDate() + idx);
     const stadium = STADIUMS[(idx + 8) % STADIUMS.length];
     
-    const isFinished = match.status === "Finished";
-    const extraData = isFinished ? getMockStatsAndLineups(match.home, match.away, match.homeScore, match.awayScore) : { stats: null, lineups: null };
+    const result = getFixtureResult(homeTeamId, awayTeamId, "Quarter Finals");
+    const extraData = getMockStatsAndLineups(homeTeamId, awayTeamId, result.homeScore, result.awayScore);
 
     fixtures.push({
       id: `match_${matchIdx}`,
-      homeTeamId: match.home,
-      awayTeamId: match.away,
-      homePlaceholder: match.homePlaceholder || "",
-      awayPlaceholder: match.awayPlaceholder || "",
+      homeTeamId,
+      awayTeamId,
+      homePlaceholder: `Winner R16 Match ${idx * 2 + 1}`,
+      awayPlaceholder: `Winner R16 Match ${idx * 2 + 2}`,
       date: matchDate.toISOString(),
       timeIST: "23:30 IST",
       stadiumId: stadium.id,
       round: "Quarter Finals",
       group: null,
-      status: match.status,
-      minute: match.status === "Finished" ? 120 : 0,
-      homeScore: match.homeScore,
-      awayScore: match.awayScore,
-      homePenalties: match.homePenalties || null,
-      awayPenalties: match.awayPenalties || null,
+      status: "Finished",
+      minute: result.minute,
+      homeScore: result.homeScore,
+      awayScore: result.awayScore,
+      homePenalties: result.homePenalties,
+      awayPenalties: result.awayPenalties,
       featured: false,
       sportsdbEventId: `sdb_${500000 + matchIdx}`,
       ...extraData
     });
+
+    const isHomeWinner = result.homeScore > result.awayScore || (result.homePenalties !== null && result.homePenalties > result.awayPenalties);
+    const winnerId = isHomeWinner ? homeTeamId : awayTeamId;
+    qfWinners.push(winnerId);
+    
     matchIdx++;
-  });
+  }
 
   // Semi Finals (2 matches: July 14 - July 15)
-  fixtures.push({
-    id: `match_${matchIdx}`,
-    homeTeamId: "",
-    awayTeamId: "",
-    homePlaceholder: "Winner Quarter-Final 1",
-    awayPlaceholder: "Winner Quarter-Final 2",
-    date: new Date("2026-07-14T18:00:00Z").toISOString(),
-    timeIST: "20:30 IST",
-    stadiumId: "sofi",
-    round: "Semi Finals",
-    group: null,
-    status: "Upcoming",
-    minute: 0,
-    homeScore: 0,
-    awayScore: 0,
-    featured: false,
-    sportsdbEventId: `sdb_${500000 + matchIdx}`
-  });
-  matchIdx++;
+  const sfWinners = [];
+  for (let idx = 0; idx < 2; idx++) {
+    const homeTeamId = qfWinners[idx * 2];
+    const awayTeamId = qfWinners[idx * 2 + 1];
+    const matchDate = idx === 0 ? "2026-07-14T18:00:00Z" : "2026-07-15T18:00:00Z";
+    const stadiumId = idx === 0 ? "sofi" : "dallas";
+    
+    const result = getFixtureResult(homeTeamId, awayTeamId, "Semi Finals");
+    const extraData = getMockStatsAndLineups(homeTeamId, awayTeamId, result.homeScore, result.awayScore);
 
-  fixtures.push({
-    id: `match_${matchIdx}`,
-    homeTeamId: "",
-    awayTeamId: "",
-    homePlaceholder: "Winner Quarter-Final 3",
-    awayPlaceholder: "Winner Quarter-Final 4",
-    date: new Date("2026-07-15T18:00:00Z").toISOString(),
-    timeIST: "20:30 IST",
-    stadiumId: "dallas",
-    round: "Semi Finals",
-    group: null,
-    status: "Upcoming",
-    minute: 0,
-    homeScore: 0,
-    awayScore: 0,
-    featured: false,
-    sportsdbEventId: `sdb_${500000 + matchIdx}`
-  });
-  matchIdx++;
+    fixtures.push({
+      id: `match_${matchIdx}`,
+      homeTeamId,
+      awayTeamId,
+      homePlaceholder: `Winner Quarter-Final ${idx * 2 + 1}`,
+      awayPlaceholder: `Winner Quarter-Final ${idx * 2 + 2}`,
+      date: new Date(matchDate).toISOString(),
+      timeIST: "20:30 IST",
+      stadiumId,
+      round: "Semi Finals",
+      group: null,
+      status: "Finished",
+      minute: result.minute,
+      homeScore: result.homeScore,
+      awayScore: result.awayScore,
+      homePenalties: result.homePenalties,
+      awayPenalties: result.awayPenalties,
+      featured: false,
+      sportsdbEventId: `sdb_${500000 + matchIdx}`,
+      ...extraData
+    });
+
+    const isHomeWinner = result.homeScore > result.awayScore || (result.homePenalties !== null && result.homePenalties > result.awayPenalties);
+    const winnerId = isHomeWinner ? homeTeamId : awayTeamId;
+    sfWinners.push(winnerId);
+    
+    matchIdx++;
+  }
 
   // Final (July 19)
+  const finalHomeId = sfWinners[0];
+  const finalAwayId = sfWinners[1];
+  const result = getFixtureResult(finalHomeId, finalAwayId, "Final");
+  const extraData = getMockStatsAndLineups(finalHomeId, finalAwayId, result.homeScore, result.awayScore);
+
   fixtures.push({
     id: `match_${matchIdx}`,
-    homeTeamId: "",
-    awayTeamId: "",
+    homeTeamId: finalHomeId,
+    awayTeamId: finalAwayId,
     homePlaceholder: "Winner Semi-Final 1",
     awayPlaceholder: "Winner Semi-Final 2",
     date: new Date("2026-07-19T19:00:00Z").toISOString(),
@@ -509,12 +849,15 @@ export const generateFixtures = () => {
     stadiumId: "metlife",
     round: "Final",
     group: null,
-    status: "Upcoming",
-    minute: 0,
-    homeScore: 0,
-    awayScore: 0,
-    featured: false,
-    sportsdbEventId: `sdb_${500000 + matchIdx}`
+    status: "Finished",
+    minute: result.minute,
+    homeScore: result.homeScore,
+    awayScore: result.awayScore,
+    homePenalties: result.homePenalties,
+    awayPenalties: result.awayPenalties,
+    featured: true,
+    sportsdbEventId: `sdb_${500000 + matchIdx}`,
+    ...extraData
   });
 
   return fixtures;
@@ -593,6 +936,61 @@ export const bootstrapDatabase = async () => {
     // Add realistic events for finished matches to make it look premium
     if (match.status === "Finished") {
       const events = [];
+      const homeSquad = generateSquads(match.homeTeamId);
+      const awaySquad = generateSquads(match.awayTeamId);
+      
+      const getRandomPlayer = (squad) => {
+        if (squad && squad.length > 0) {
+          return squad[Math.floor(Math.random() * squad.length)].name;
+        }
+        return "Player";
+      };
+
+      let eventIdCounter = 1;
+      
+      // Inject Goals for Home Team
+      for (let g = 0; g < match.homeScore; g++) {
+        const minute = 1 + Math.floor(Math.random() * 89);
+        events.push({
+          id: `ev_${match.id}_g_h_${eventIdCounter++}`,
+          type: "Goal",
+          minute,
+          playerName: getRandomPlayer(homeSquad),
+          teamId: match.homeTeamId,
+          detail: "Spectacular goal!"
+        });
+      }
+      
+      // Inject Goals for Away Team
+      for (let g = 0; g < match.awayScore; g++) {
+        const minute = 1 + Math.floor(Math.random() * 89);
+        events.push({
+          id: `ev_${match.id}_g_a_${eventIdCounter++}`,
+          type: "Goal",
+          minute,
+          playerName: getRandomPlayer(awaySquad),
+          teamId: match.awayTeamId,
+          detail: "Clinical finish!"
+        });
+      }
+
+      // Add a couple of yellow cards
+      const numYellows = Math.floor(Math.random() * 4); // 0 to 3
+      for (let y = 0; y < numYellows; y++) {
+        const isHome = Math.random() > 0.5;
+        const squad = isHome ? homeSquad : awaySquad;
+        const teamId = isHome ? match.homeTeamId : match.awayTeamId;
+        const minute = 1 + Math.floor(Math.random() * 89);
+        events.push({
+          id: `ev_${match.id}_yc_${eventIdCounter++}`,
+          type: "Yellow Card",
+          minute,
+          playerName: getRandomPlayer(squad),
+          teamId
+        });
+      }
+
+      // Historical fallback specific events (optional, just in case)
       if (match.homeTeamId === "argentina" && match.awayTeamId === "australia") {
         events.push(
           { id: "ev_1", type: "Yellow Card", minute: 15, playerName: "Jackson Irvine", teamId: "australia" },
@@ -607,40 +1005,6 @@ export const bootstrapDatabase = async () => {
           { id: "ev_2", type: "Goal", minute: 45, playerName: "Daley Blind", detail: "Assisted by Denzel Dumfries", teamId: "netherlands" },
           { id: "ev_3", type: "Yellow Card", minute: 60, playerName: "Teun Koopmeiners", teamId: "netherlands" },
           { id: "ev_4", type: "Yellow Card", minute: 67, playerName: "Weston McKennie", teamId: "usa" }
-        );
-      } else if (match.homeTeamId === "france" && match.awayTeamId === "poland") {
-        events.push(
-          { id: "ev_1", type: "Yellow Card", minute: 31, playerName: "Aurélien Tchouaméni", teamId: "france" },
-          { id: "ev_2", type: "Goal", minute: 44, playerName: "Olivier Giroud", detail: "Assisted by Kylian Mbappé", teamId: "france" },
-          { id: "ev_3", type: "Goal", minute: 74, playerName: "Kylian Mbappé", detail: "Assisted by Ousmane Dembélé", teamId: "france" },
-          { id: "ev_4", type: "Yellow Card", minute: 88, playerName: "Matty Cash", teamId: "poland" },
-          { id: "ev_5", type: "Goal", minute: 90, playerName: "Kylian Mbappé", detail: "Assisted by Marcus Thuram", teamId: "france" },
-          { id: "ev_6", type: "Goal", minute: 99, playerName: "Robert Lewandowski", detail: "Penalty Kick", teamId: "poland" }
-        );
-      } else if (match.homeTeamId === "england" && match.awayTeamId === "senegal") {
-        events.push(
-          { id: "ev_1", type: "Goal", minute: 38, playerName: "Jordan Henderson", detail: "Assisted by Jude Bellingham", teamId: "england" },
-          { id: "ev_2", type: "Goal", minute: 45, playerName: "Harry Kane", detail: "Assisted by Phil Foden", teamId: "england" },
-          { id: "ev_3", type: "Goal", minute: 57, playerName: "Bukayo Saka", detail: "Assisted by Phil Foden", teamId: "england" },
-          { id: "ev_4", type: "Yellow Card", minute: 82, playerName: "Kalidou Koulibaly", teamId: "senegal" }
-        );
-      } else if (match.homeTeamId === "argentina" && match.awayTeamId === "netherlands") {
-        events.push(
-          { id: "ev_1", type: "Yellow Card", minute: 43, playerName: "Nahuel Molina", teamId: "argentina" },
-          { id: "ev_2", type: "Yellow Card", minute: 43, playerName: "Jurriën Timber", teamId: "netherlands" },
-          { id: "ev_3", type: "Goal", minute: 35, playerName: "Nahuel Molina", detail: "Assisted by Lionel Messi", teamId: "argentina" },
-          { id: "ev_4", type: "Goal", minute: 73, playerName: "Lionel Messi", detail: "Penalty Kick", teamId: "argentina" },
-          { id: "ev_5", type: "Goal", minute: 83, playerName: "Wout Weghorst", detail: "Assisted by Steven Berghuis", teamId: "netherlands" },
-          { id: "ev_6", type: "Yellow Card", minute: 84, playerName: "Cristian Romero", teamId: "argentina" },
-          { id: "ev_7", type: "Goal", minute: 90, playerName: "Wout Weghorst", detail: "Assisted by Teun Koopmeiners", teamId: "netherlands" }
-        );
-      } else if (match.homeTeamId === "england" && match.awayTeamId === "france") {
-        events.push(
-          { id: "ev_1", type: "Goal", minute: 17, playerName: "Aurélien Tchouaméni", detail: "Assisted by Antoine Griezmann", teamId: "france" },
-          { id: "ev_2", type: "Yellow Card", minute: 43, playerName: "Antoine Griezmann", teamId: "france" },
-          { id: "ev_3", type: "Goal", minute: 54, playerName: "Harry Kane", detail: "Penalty Kick", teamId: "england" },
-          { id: "ev_4", type: "Goal", minute: 78, playerName: "Olivier Giroud", detail: "Assisted by Antoine Griezmann", teamId: "france" },
-          { id: "ev_5", type: "Yellow Card", minute: 90, playerName: "Harry Maguire", teamId: "england" }
         );
       }
 
@@ -658,39 +1022,8 @@ export const bootstrapDatabase = async () => {
   console.log("Bootstrap: Default news articles written.");
 
   // 5. Initialize Standings based on Group Stage
-  const groups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
-  for (const group of groups) {
-    const groupTeams = TEAMS.filter(t => t.group === group);
-    const standingsData = {
-      id: group,
-      teams: groupTeams.map(t => {
-        // Compute mock standings data matching the finished match 1 and live match 2 in Group A
-        let played = 0;
-        let won = 0;
-        let drawn = 0;
-        let lost = 0;
-        let goalsFor = 0;
-        let goalsAgainst = 0;
-        let points = 0;
-
-        // Initialize all team standings clean at 0 played games
-
-        return {
-          teamId: t.id,
-          played,
-          won,
-          drawn,
-          lost,
-          goalsFor,
-          goalsAgainst,
-          goalDifference: goalsFor - goalsAgainst,
-          points
-        };
-      })
-    };
-    
-    // Sort standings
-    standingsData.teams.sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor);
+  const standings = calculateStandings(fixtures);
+  for (const [group, standingsData] of Object.entries(standings)) {
     await dbSetDoc("standings", group, standingsData);
   }
   console.log("Bootstrap: Group standings initialized.");
